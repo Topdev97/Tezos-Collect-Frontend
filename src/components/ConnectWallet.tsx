@@ -52,8 +52,8 @@ const ConnectButton = ({
     try {
       await wallet.requestPermissions({
         network: {
-          type: NetworkType.HANGZHOUNET,
-          rpcUrl: "https://hangzhounet.api.tez.ie"
+          type: NetworkType.GHOSTNET,
+          rpcUrl: "https://ghostnet.tezos.marigold.dev"
         }
       });
       // gets user's address

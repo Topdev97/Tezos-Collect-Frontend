@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@airgap/beacon-sdk": "^3.2.0",
     "@ledgerhq/hw-transport-u2f": "^5.22.0",
-    "@taquito/beacon-wallet": "^10.2.1",
+    "@taquito/beacon-wallet": "^14.0.0",
     "@taquito/ledger-signer": "^10.2.1",
     "@taquito/taquito": "^10.2.1",
     "@testing-library/jest-dom": "^5.11.9",
