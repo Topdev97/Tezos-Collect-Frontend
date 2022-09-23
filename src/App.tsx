@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { TezosToolkit } from "@taquito/taquito";
 import "./App.css";
+import "./output.css";
 import ConnectButton from "./components/ConnectWallet";
 import DisconnectButton from "./components/DisconnectWallet";
 import qrcode from "qrcode-generator";
@@ -12,12 +13,12 @@ enum BeaconConnection {
   LISTENING = "Listening to P2P channel",
   CONNECTED = "Channel connected",
   PERMISSION_REQUEST_SENT = "Permission request sent, waiting for response",
-  PERMISSION_REQUEST_SUCCESS = "Wallet is connected"
+  PERMISSION_REQUEST_SUCCESS = "Wallet is connected",
 }
 
 const App = () => {
   const [Tezos, setTezos] = useState<TezosToolkit>(
-    new TezosToolkit("https://hangzhounet.api.tez.ie")
+    new TezosToolkit("https://ghostnet.tezos.marigold.dev")
   );
   const [contract, setContract] = useState<any>(undefined);
   const [publicToken, setPublicToken] = useState<string | null>("");
@@ -45,7 +46,7 @@ const App = () => {
   if (publicToken && (!userAddress || isNaN(userBalance))) {
     return (
       <div className="main-box">
-        <h1>Taquito Boilerplate</h1>
+        <h1 className="underline decoration-1">Taquito Boilerplate</h1>
         <div id="dialog">
           <header>Try the Taquito Boilerplate App!</header>
           <div id="content">
@@ -94,7 +95,8 @@ const App = () => {
   } else if (userAddress && !isNaN(userBalance)) {
     return (
       <div className="main-box">
-        <h1>Taquito Boilerplate</h1>
+        <h1 className="underline decoration-1">Taquito Boilerplate</h1>
+
         <div id="tabs">
           <div
             id="transfer"
@@ -173,7 +175,7 @@ const App = () => {
     return (
       <div className="main-box">
         <div className="title">
-          <h1>Taquito Boilerplate</h1>
+          <h1 className="underline decoration-1">Taquito Boilerplate</h1>
           <a href="https://app.netlify.com/start/deploy?repository=https://github.com/ecadlabs/taquito-react-template">
             <img
               src="https://www.netlify.com/img/deploy/button.svg"

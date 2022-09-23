@@ -27,6 +27,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "tailwind": "tailwindcss -i ./src/input.css -o ./src/output.css --watch ",
     "update-taquito": "ncu -u --target newest --filter '/^@taquito.*$/' && npm i"
   },
   "eslintConfig": {
@@ -43,5 +44,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.1.8"
   }
 }
