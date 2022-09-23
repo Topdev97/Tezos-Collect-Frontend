@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { BeaconWallet } from "@taquito/beacon-wallet";
 import { TezosToolkit } from "@taquito/taquito";
+import { RPC_URL } from "../helper/constants";
 
 interface ButtonProps {
   wallet: BeaconWallet | null;
@@ -19,14 +20,14 @@ const DisconnectButton = ({
   setUserBalance,
   setWallet,
   setTezos,
-  setBeaconConnection
+  setBeaconConnection,
 }: ButtonProps): JSX.Element => {
   const disconnectWallet = async (): Promise<void> => {
     //window.localStorage.clear();
     setUserAddress("");
     setUserBalance(0);
     setWallet(null);
-    const tezosTK = new TezosToolkit("https://hangzhounet.api.tez.ie");
+    const tezosTK = new TezosToolkit(RPC_URL);
     setTezos(tezosTK);
     setBeaconConnection(false);
     setPublicToken(null);

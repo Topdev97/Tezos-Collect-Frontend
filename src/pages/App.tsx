@@ -1,25 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { TezosToolkit } from "@taquito/taquito";
-import "./App.css";
-import "./output.css";
-import ConnectButton from "./components/ConnectWallet";
-import DisconnectButton from "./components/DisconnectWallet";
+import "output.css";
+import ConnectButton from "components/ConnectWallet";
+import DisconnectButton from "components/DisconnectWallet";
 import qrcode from "qrcode-generator";
-import UpdateContract from "./components/UpdateContract";
-import Transfers from "./components/Transfers";
-
-enum BeaconConnection {
-  NONE = "",
-  LISTENING = "Listening to P2P channel",
-  CONNECTED = "Channel connected",
-  PERMISSION_REQUEST_SENT = "Permission request sent, waiting for response",
-  PERMISSION_REQUEST_SUCCESS = "Wallet is connected",
-}
+import UpdateContract from "components/UpdateContract";
+import Transfers from "components/Transfers";
+import { RPC_URL } from "helper/constants";
 
 const App = () => {
-  const [Tezos, setTezos] = useState<TezosToolkit>(
-    new TezosToolkit("https://ghostnet.tezos.marigold.dev")
-  );
+  const [Tezos, setTezos] = useState<TezosToolkit>(new TezosToolkit(RPC_URL));
   const [contract, setContract] = useState<any>(undefined);
   const [publicToken, setPublicToken] = useState<string | null>("");
   const [wallet, setWallet] = useState<any>(null);
@@ -46,7 +36,7 @@ const App = () => {
   if (publicToken && (!userAddress || isNaN(userBalance))) {
     return (
       <div className="main-box">
-        <h1 className="underline decoration-1">Taquito Boilerplate</h1>
+        <h1 className="underline decoration-1">Taquito Boilerplate 40</h1>
         <div id="dialog">
           <header>Try the Taquito Boilerplate App!</header>
           <div id="content">
@@ -87,15 +77,12 @@ const App = () => {
             </p>
           </div>
         </div>
-        <div id="footer">
-          <img src="built-with-taquito.png" alt="Built with Taquito" />
-        </div>
       </div>
     );
   } else if (userAddress && !isNaN(userBalance)) {
     return (
       <div className="main-box">
-        <h1 className="underline decoration-1">Taquito Boilerplate</h1>
+        <h1 className="underline decoration-1">Taquito Boilerplate 86</h1>
 
         <div id="tabs">
           <div
@@ -166,43 +153,12 @@ const App = () => {
             setBeaconConnection={setBeaconConnection}
           />
         </div>
-        <div id="footer">
-          <img src="built-with-taquito.png" alt="Built with Taquito" />
-        </div>
       </div>
     );
   } else if (!publicToken && !userAddress && !userBalance) {
     return (
       <div className="main-box">
-        <div className="title">
-          <h1 className="underline decoration-1">Taquito Boilerplate</h1>
-          <a href="https://app.netlify.com/start/deploy?repository=https://github.com/ecadlabs/taquito-react-template">
-            <img
-              src="https://www.netlify.com/img/deploy/button.svg"
-              alt="netlify-button"
-            />
-          </a>
-        </div>
         <div id="dialog">
-          <header>Welcome to Taquito Boilerplate App!</header>
-          <div id="content">
-            <p>Hello!</p>
-            <p>
-              This is a template Tezos dApp built using Taquito. It's a starting
-              point for you to hack on and build your own dApp for Tezos.
-              <br />
-              If you have not done so already, go to the{" "}
-              <a
-                href="https://github.com/ecadlabs/taquito-boilerplate"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Taquito boilerplate Github page
-              </a>{" "}
-              and click the <em>"Use this template"</em> button.
-            </p>
-            <p>Go forth and Tezos!</p>
-          </div>
           <ConnectButton
             Tezos={Tezos}
             setContract={setContract}
@@ -215,9 +171,6 @@ const App = () => {
             setBeaconConnection={setBeaconConnection}
             wallet={wallet}
           />
-        </div>
-        <div id="footer">
-          <img src="built-with-taquito.png" alt="Built with Taquito" />
         </div>
       </div>
     );

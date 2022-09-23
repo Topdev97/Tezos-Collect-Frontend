@@ -1,0 +1,1 @@
+export const RPC_URL:string = "https://ghostnet.tezos.marigold.dev"
