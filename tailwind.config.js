@@ -6,7 +6,10 @@ module.exports = {
     extend: {},
     colors: {
       ...colors,
-      kadDarkBg: "#151526",
+      componentBorder: "#FFFFFF14",
+      componentFocus: "#FFFFFF55",
+      tezGrSt: "#00FBFB",
+      tezGrEd: "#0050EA",
     },
   },
   plugins: [],
