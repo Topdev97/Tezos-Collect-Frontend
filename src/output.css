@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 /*
 ! tailwindcss v3.1.8 | MIT License | https://tailwindcss.com
@@ -413,8 +413,8 @@ video {
 }
 
 *,
-    ::before,
-    ::after {
+  ::before,
+  ::after {
   --tw-backdrop-blur: ;
   --tw-backdrop-brightness: ;
   --tw-backdrop-contrast: ;
@@ -435,8 +435,38 @@ video {
   --tw-drop-shadow: ;
 }
 
+h1{
+  font-size: 6rem;
+  line-height: 1;
+  font-weight: 700;
+}
+
+h2{
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+}
+
+h3{
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+}
+
+h4{
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+}
+
+h5{
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+}
+
 input, 
-    textarea{
+  textarea{
   border-radius: 0.75rem;
   border-width: 2px;
   border-color: #FFFFFF14;
@@ -444,39 +474,50 @@ input,
   padding: 0.625rem;
   outline: 2px solid transparent;
   outline-offset: 2px;
-  transition-duration: 150ms;
+  transition-duration: 100ms;
 }
 
 input:focus, 
-    textarea:focus{
+  textarea:focus{
   border-color: #FFFFFF55;
 }
 
 .nav-button, 
-    button, 
-    .button{
+  button, 
+  .button{
   border-radius: 0.75rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   padding-left: 1rem;
   padding-right: 1rem;
   font-weight: 500;
-  transition-duration: 150ms;
+  transition-duration: 100ms;
 }
 
 .nav-button:hover, 
-    button:hover, 
-    .button:hover{
+  button:hover, 
+  .button:hover{
   --tw-bg-opacity: 0.8;
 }
 
+svg{
+  transition-duration: 100ms;
+}
+
 .home-logo {
-  background-image: url("./assets/images/tezos-collect-logo-text.svg");
+  background-image: url("./assets/images/tezos-collect-logo.svg");
   height: 40px;
-  width: 180px;
+  width: 60px;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+@media (min-width: 768px){
+  .home-logo {
+    background-image: url("./assets/images/tezos-collect-logo-text.svg");
+    width: 180px;
+  }
 }
 
 .tezGr-button{
@@ -488,7 +529,7 @@ input:focus,
   padding-right: 2rem;
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-  transition-duration: 150ms;
+  transition-duration: 100ms;
 }
 
 .tezGr-button:hover{
@@ -499,7 +540,36 @@ input:focus,
 }
 
 .tezGr-button {
-  background: linear-gradient(90deg, #00FBFB 0%, #0050EA 100%);
+  background: linear-gradient(90deg, #00fbfb 0%, #0050ea 100%);
+}
+
+.main-container{
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+@media (min-width: 768px){
+  .main-container{
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+}
+
+@media (min-width: 1024px){
+  .main-container{
+    padding-left: 6rem;
+    padding-right: 6rem;
+  }
+}
+
+.main-container {
+  min-height: calc(100vh - 140px);
+}
+
+.font-playfair {
+  font-family: "Playfair Display", serif;
 }
 
 *, ::before, ::after{
@@ -643,10 +713,6 @@ input:focus,
   --tw-backdrop-sepia:  ;
 }
 
-.fixed{
-  position: fixed;
-}
-
 .absolute{
   position: absolute;
 }
@@ -663,6 +729,10 @@ input:focus,
   left: 0px;
 }
 
+.left-3{
+  left: 0.75rem;
+}
+
 .z-10{
   z-index: 10;
 }
@@ -671,9 +741,29 @@ input:focus,
   z-index: -1;
 }
 
+.z-\[1\]{
+  z-index: 1;
+}
+
 .my-2{
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+}
+
+.ml-auto{
+  margin-left: auto;
+}
+
+.ml-24{
+  margin-left: 6rem;
+}
+
+.mr-auto{
+  margin-right: auto;
+}
+
+.ml-4{
+  margin-left: 1rem;
 }
 
 .flex{
@@ -692,8 +782,16 @@ input:focus,
   width: 100%;
 }
 
-.w-12{
-  width: 3rem;
+.w-0{
+  width: 0px;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.flex-col{
+  flex-direction: column;
 }
 
 .items-start{
@@ -708,25 +806,55 @@ input:focus,
   justify-content: space-between;
 }
 
-.gap-2{
-  gap: 0.5rem;
+.gap-8{
+  gap: 2rem;
+}
+
+.gap-4{
+  gap: 1rem;
 }
 
 .rounded-lg{
   border-radius: 0.5rem;
 }
 
+.border-0{
+  border-width: 0px;
+}
+
 .border-b-2{
   border-bottom-width: 2px;
+}
+
+.border-b-white\/30{
+  border-bottom-color: rgb(255 255 255 / 0.3);
 }
 
 .border-b-white\/10{
   border-bottom-color: rgb(255 255 255 / 0.1);
 }
 
+.bg-componentBg{
+  --tw-bg-opacity: 1;
+  background-color: rgb(34 44 52 / var(--tw-bg-opacity));
+}
+
+.p-1\.5{
+  padding: 0.375rem;
+}
+
+.p-1{
+  padding: 0.25rem;
+}
+
 .px-4{
   padding-left: 1rem;
   padding-right: 1rem;
+}
+
+.py-4{
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .px-3{
@@ -739,24 +867,34 @@ input:focus,
   padding-bottom: 1.5rem;
 }
 
-.pl-10{
-  padding-left: 2.5rem;
+.px-2{
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
-.text-\[14px\]{
-  font-size: 14px;
+.pl-10{
+  padding-left: 2.5rem;
 }
 
 .text-\[15px\]{
   font-size: 15px;
 }
 
-.font-normal{
-  font-weight: 400;
+.text-\[14px\]{
+  font-size: 14px;
+}
+
+.font-medium{
+  font-weight: 500;
 }
 
 .-tracking-tight{
   letter-spacing: 0.025em;
+}
+
+.text-tezGrSt{
+  --tw-text-opacity: 1;
+  color: rgb(0 251 251 / var(--tw-text-opacity));
 }
 
 .underline{
@@ -780,12 +918,12 @@ input:focus,
   transition-duration: 150ms;
 }
 
-.duration-300{
-  transition-duration: 300ms;
-}
-
 .duration-150{
   transition-duration: 150ms;
+}
+
+.duration-300{
+  transition-duration: 300ms;
 }
 
 /* font-family: 'Playfair Display', serif; */
@@ -798,15 +936,15 @@ html {
 
 body {
   margin: 0;
-  font-family: "Montserrat", -apple-system, BlinkMacSystemFont,
-        "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-        "Droid Sans", "Helvetica Neue", sans-serif !important;
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: none;
   font-weight: 500;
-  background: #161E24;
-  color:#FFFFFF
+  background: #161e24;
+  color: #ffffff;
 }
 
 body::-webkit-scrollbar {
@@ -878,27 +1016,73 @@ body {
   background-color: #fff5;
 }
 
-.focus\:w-48:focus{
-  width: 12rem;
+.hover\:text-tezGrMd:hover{
+  --tw-text-opacity: 1;
+  color: rgb(0 166 114 / var(--tw-text-opacity));
+}
+
+.hover\:text-tezGrSt:hover{
+  --tw-text-opacity: 1;
+  color: rgb(0 251 251 / var(--tw-text-opacity));
+}
+
+.focus\:w-40:focus{
+  width: 10rem;
+}
+
+.focus\:border-2:focus{
+  border-width: 2px;
 }
 
 @media (min-width: 768px){
+  .md\:left-5{
+    left: 1.25rem;
+  }
+
+  .md\:ml-0{
+    margin-left: 0px;
+  }
+
+  .md\:block{
+    display: block;
+  }
+
+  .md\:flex{
+    display: flex;
+  }
+
+  .md\:hidden{
+    display: none;
+  }
+
+  .md\:gap-8{
+    gap: 2rem;
+  }
+
+  .md\:p-2{
+    padding: 0.5rem;
+  }
+
   .md\:px-24{
     padding-left: 6rem;
     padding-right: 6rem;
   }
 
+  .md\:px-8{
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
   .md\:pl-12{
     padding-left: 3rem;
+  }
+
+  .md\:focus\:w-48:focus{
+    width: 12rem;
   }
 }
 
 @media (min-width: 1024px){
-  .lg\:px-16{
-    padding-left: 4rem;
-    padding-right: 4rem;
-  }
-
   .lg\:px-24{
     padding-left: 6rem;
     padding-right: 6rem;
