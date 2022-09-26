@@ -45,7 +45,7 @@ const Header = () => {
           size={20}
         />
       </div>
-      <button className="tezGr-button px-2 md:px-8 ml-4 md:ml-0">
+      <button className="tezGr-button px-2 md:px-8 ml-4 md:ml-0 duration-100">
         <span className="hidden md:block">Connect Wallet</span>
         <RiWallet3Line className="md:hidden" size={20} />
       </button>
@@ -70,6 +70,6 @@ const pageLinks = [
   },
   {
     text: "FAQ",
-    link: "faq",
+    link: "/domain/dota-2",
   },
 ];
