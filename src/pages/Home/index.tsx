@@ -1,6 +1,6 @@
 import TezosCollectCard from "assets/images/landing/tezos-collect-card.png";
 import RecommendedSales from "components/RecommendedSales";
-import TopCategories from "components/TopCategories";
+import TopCategories from "components/LandingTopCategories";
 import { FiSearch } from "react-icons/fi";
 const Home = () => {
   return (

@@ -2,9 +2,9 @@ import LinkWithSearchParams from "components/LinkWithSearchParams";
 import tezosCollectLogo from "assets/images/tezos-collect-logo.svg";
 import { convertNum2DateString } from "helper/formatters";
 
-const TopCategories = () => {
+const RecommendedSales = () => {
   return (
-    <div className="flex gap-12">
+    <div className="flex flex-col md:flex-row gap-y-4 gap-x-12">
       <div className="flex w-full flex-col rounded-lg border-2 border-tezCyan recommended-sale-component">
         <div className="flex border-b-2 border-b-tezCyan p-4 items-center">
           <span className="size-1">Top Categories</span>
@@ -13,7 +13,7 @@ const TopCategories = () => {
           </select>
         </div>
         <div className="flex flex-col p-2">
-          {topCategories.map((category, index) => {
+          {recommendedSales.map((category, index) => {
             return (
               <div
                 key={index}
@@ -84,9 +84,9 @@ const TopCategories = () => {
   );
 };
 
-export default TopCategories;
+export default RecommendedSales;
 
-const topCategories = [
+const recommendedSales = [
   {
     avatar: "100K",
     name: "10k Club",

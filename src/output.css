@@ -1030,16 +1030,16 @@ svg{
   margin-left: 1rem;
 }
 
-.mt-\[3px\]{
-  margin-top: 3px;
-}
-
 .mb-6{
   margin-bottom: 1.5rem;
 }
 
 .mr-2{
   margin-right: 0.5rem;
+}
+
+.mt-\[3px\]{
+  margin-top: 3px;
 }
 
 .mt-4{
@@ -1070,6 +1070,10 @@ svg{
   margin-bottom: 2rem;
 }
 
+.ml-1{
+  margin-left: 0.25rem;
+}
+
 .flex{
   display: flex;
 }
@@ -1090,16 +1094,16 @@ svg{
   height: 100%;
 }
 
+.h-12{
+  height: 3rem;
+}
+
 .h-8{
   height: 2rem;
 }
 
 .h-9{
   height: 2.25rem;
-}
-
-.h-12{
-  height: 3rem;
 }
 
 .h-48{
@@ -1130,20 +1134,20 @@ svg{
   width: 0px;
 }
 
-.w-9{
-  width: 2.25rem;
-}
-
-.w-5{
-  width: 1.25rem;
-}
-
 .w-1\/4{
   width: 25%;
 }
 
 .w-12{
   width: 3rem;
+}
+
+.w-9{
+  width: 2.25rem;
+}
+
+.w-5{
+  width: 1.25rem;
 }
 
 .w-32{
@@ -1178,6 +1182,10 @@ svg{
 
 .cursor-pointer{
   cursor: pointer;
+}
+
+.grid-cols-\[30\%_12\%_17\%_14\%_13\%_14\%\]{
+  grid-template-columns: 30% 12% 17% 14% 13% 14%;
 }
 
 .grid-cols-4{
@@ -1228,20 +1236,37 @@ svg{
   gap: 1rem;
 }
 
-.gap-12{
-  gap: 3rem;
-}
-
 .gap-6{
   gap: 1.5rem;
+}
+
+.gap-12{
+  gap: 3rem;
 }
 
 .gap-3{
   gap: 0.75rem;
 }
 
+.gap-y-4{
+  row-gap: 1rem;
+}
+
+.gap-x-12{
+  -webkit-column-gap: 3rem;
+          column-gap: 3rem;
+}
+
 .overflow-hidden{
   overflow: hidden;
+}
+
+.overflow-x-auto{
+  overflow-x: auto;
+}
+
+.whitespace-nowrap{
+  white-space: nowrap;
 }
 
 .rounded-lg{
@@ -1290,9 +1315,9 @@ svg{
   border-color: rgb(0 251 251 / var(--tw-border-opacity));
 }
 
-.border-itemBorder{
+.border-inputBorder{
   --tw-border-opacity: 1;
-  border-color: rgb(69 75 80 / var(--tw-border-opacity));
+  border-color: rgb(52 68 81 / var(--tw-border-opacity));
 }
 
 .border-tezCyan{
@@ -1304,9 +1329,9 @@ svg{
   border-color: rgb(255 255 255 / 0.2);
 }
 
-.border-inputBorder{
+.border-itemBorder{
   --tw-border-opacity: 1;
-  border-color: rgb(52 68 81 / var(--tw-border-opacity));
+  border-color: rgb(69 75 80 / var(--tw-border-opacity));
 }
 
 .border-y-itemBorder{
@@ -1315,9 +1340,9 @@ svg{
   border-bottom-color: rgb(69 75 80 / var(--tw-border-opacity));
 }
 
-.border-b-itemBorder{
+.border-b-inputBorder{
   --tw-border-opacity: 1;
-  border-bottom-color: rgb(69 75 80 / var(--tw-border-opacity));
+  border-bottom-color: rgb(52 68 81 / var(--tw-border-opacity));
 }
 
 .border-b-white\/30{
@@ -1328,19 +1353,19 @@ svg{
   border-bottom-color: rgb(255 255 255 / 0.1);
 }
 
-.border-b-tezCyan{
-  --tw-border-opacity: 1;
-  border-bottom-color: rgb(51 223 234 / var(--tw-border-opacity));
-}
-
 .border-b-tezGrMd{
   --tw-border-opacity: 1;
   border-bottom-color: rgb(0 166 114 / var(--tw-border-opacity));
 }
 
-.border-b-inputBorder{
+.border-b-tezCyan{
   --tw-border-opacity: 1;
-  border-bottom-color: rgb(52 68 81 / var(--tw-border-opacity));
+  border-bottom-color: rgb(51 223 234 / var(--tw-border-opacity));
+}
+
+.border-b-itemBorder{
+  --tw-border-opacity: 1;
+  border-bottom-color: rgb(69 75 80 / var(--tw-border-opacity));
 }
 
 .bg-componentBg{
@@ -1415,6 +1440,11 @@ svg{
   padding-bottom: 1rem;
 }
 
+.py-3{
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
 .px-4{
   padding-left: 1rem;
   padding-right: 1rem;
@@ -1445,11 +1475,6 @@ svg{
   padding-right: 2rem;
 }
 
-.py-3{
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-}
-
 .px-20{
   padding-left: 5rem;
   padding-right: 5rem;
@@ -1474,6 +1499,14 @@ svg{
 
 .pl-3{
   padding-left: 0.75rem;
+}
+
+.pl-8{
+  padding-left: 2rem;
+}
+
+.text-center{
+  text-align: center;
 }
 
 .text-right{
@@ -1525,11 +1558,6 @@ svg{
   color: rgb(0 251 251 / var(--tw-text-opacity));
 }
 
-.text-tezWarn{
-  --tw-text-opacity: 1;
-  color: rgb(253 121 121 / var(--tw-text-opacity));
-}
-
 .text-tezGrEd{
   --tw-text-opacity: 1;
   color: rgb(0 80 234 / var(--tw-text-opacity));
@@ -1558,6 +1586,16 @@ svg{
 .text-tezDarkBg{
   --tw-text-opacity: 1;
   color: rgb(22 30 36 / var(--tw-text-opacity));
+}
+
+.text-tezWarning{
+  --tw-text-opacity: 1;
+  color: rgb(253 121 121 / var(--tw-text-opacity));
+}
+
+.text-tezSuccess{
+  --tw-text-opacity: 1;
+  color: rgb(0 251 100 / var(--tw-text-opacity));
 }
 
 .underline{
@@ -1865,6 +1903,14 @@ body {
 }
 
 @media (min-width: 1024px){
+  .lg\:w-64{
+    width: 16rem;
+  }
+
+  .lg\:justify-between{
+    justify-content: space-between;
+  }
+
   .lg\:px-24{
     padding-left: 6rem;
     padding-right: 6rem;

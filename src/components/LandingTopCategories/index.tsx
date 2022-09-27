@@ -1,9 +1,9 @@
 import LinkWithSearchParams from "components/LinkWithSearchParams";
-import { TEZOS_PRICE } from "helper/constants";
+import { TEZOS_PRICE, topCategories } from "helper/constants";
 import { commafyFormatter } from "helper/formatters";
 import { FiChevronRight } from "react-icons/fi";
 
-const TopCategories = () => {
+const TopLastSales = () => {
   return (
     <div className="flex flex-col my-12">
       <div className="flex items-center">
@@ -58,77 +58,4 @@ const TopCategories = () => {
   );
 };
 
-export default TopCategories;
-
-const topCategories = [
-  {
-    avatar: "100K",
-    name: "10k Club",
-    floorPrice: "2.275 ꜩ",
-    volumn: 94450.818,
-    link: "10k-club",
-  },
-  {
-    avatar: "999",
-    name: "999 Club",
-    floorPrice: "2.275 ꜩ",
-    volumn: 8853.818,
-    link: "10k-club",
-  },
-  {
-    avatar: "100K",
-    name: "100k Club",
-    floorPrice: "2.275 ꜩ",
-    volumn: 3183.818,
-    link: "10k-club",
-  },
-  {
-    avatar: "ABC",
-    name: "3 Letters",
-    floorPrice: "2.275 ꜩ",
-    volumn: 8893.818,
-    link: "10k-club",
-  },
-  {
-    avatar: "4LP",
-    name: "4 Letters",
-    floorPrice: "2.275 ꜩ",
-    volumn: 8893.818,
-    link: "10k-club",
-  },
-  {
-    avatar: "5LP",
-    name: "5+ letters",
-    floorPrice: "2.275 ꜩ",
-    volumn: 8893.818,
-    link: "10k-club",
-  },
-  {
-    avatar: "CN",
-    name: "Countries",
-    floorPrice: "2.275 ꜩ",
-    volumn: 8893.818,
-    link: "10k-club",
-  },
-  {
-    avatar: "H",
-    name: "Hyphens ",
-    floorPrice: "2.275 ꜩ",
-    volumn: 8893.818,
-    link: "10k-club",
-  },
-  {
-    avatar: "PG1",
-    name: "Pokémon Generation 1",
-    floorPrice: "2.275 ꜩ",
-    volumn: 8893.818,
-    link: "10k-club",
-  },
-  {
-    avatar: "MF",
-    name: "Male firstnames",
-    floorPrice: "2.275 ꜩ",
-    volumn: 8893.818,
-    link: "10k-club",
-  },
-];
+export default TopLastSales;

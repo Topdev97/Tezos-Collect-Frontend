@@ -1,9 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import AllListings from "./AllListings";
+import MarketTopCategories from "./MarketTopCategories";
+import TopLastSales from "./TopLastSales";
 const MarketList = () => {
   return (
     <Routes>
       <Route path="all" element={<AllListings />} />
+      <Route path="top-categories" element={<MarketTopCategories />} />
+      <Route path="top-sales" element={<TopLastSales />} />
     </Routes>
   );
 };

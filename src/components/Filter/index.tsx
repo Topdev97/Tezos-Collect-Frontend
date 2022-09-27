@@ -15,7 +15,7 @@ const Filter = () => {
       options: ["Yes", "No"],
     },
     {
-      label: "Pre-Punk",
+      label: "Hypen",
       options: ["Yes", "No"],
     },
   ];
@@ -23,7 +23,7 @@ const Filter = () => {
     <div className="flex flex-col p-4 bg-componentBg row-span-3 gap-5">
       <div className="flex items-center border-b border-b-inputBorder pb-4">
         <span className="size-1">Filter</span>
-        <span className="ml-auto text-tezWarn">Reset Filter</span>
+        <span className="ml-auto text-tezWarning">Reset Filter</span>
       </div>
       <div className="flex cursor-pointer">
         <label htmlFor="listed">Listed</label>

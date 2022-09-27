@@ -5,13 +5,13 @@ const Market = () => {
   return (
     <div className="flex flex-col gap-8 my-8">
       <RecommendedSales />
-      <div className="flex justify-between mt-4">
+      <div className="flex gap-3 lg:justify-between mt-4 overflow-x-auto">
         {MARKET_LIST.map((link, index) => (
           <LinkWithSearchParams
             key={index}
             className={({ isActive }: { isActive: boolean }) =>
-              `button hover-bg-tezGr ${
-                isActive ? "bg-tezGr outline-0 text-white" : ""
+              `button hover-bg-tezGr whitespace-nowrap ${
+                isActive ? "bg-tezGr outline-0 text-white " : ""
               }`
             }
             to={{

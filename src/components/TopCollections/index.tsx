@@ -3,12 +3,12 @@ import { FiExternalLink } from "react-icons/fi";
 
 const TopCollections = () => {
   return (
-    <div className="hidden md:flex justify-between">
+    <div className="hidden md:flex gap-4">
       {topCollectionData.map((collection, index) => {
         return (
           <LinkWithSearchParams
             key={index}
-            className="button hover-bg-tezGr"
+            className="button hover-bg-tezGr flex-grow text-center tracking-wide font-semibold"
             to={{
               pathname: collection.link,
             }}
