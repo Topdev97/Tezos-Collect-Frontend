@@ -58,7 +58,7 @@ export default Header;
 const pageLinks = [
   {
     text: "Market",
-    link: "market",
+    link: "market/all",
   },
   {
     text: "Categories",

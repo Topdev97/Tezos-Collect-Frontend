@@ -180,6 +180,51 @@ body {
     @apply outline-none bg-transparent border-2 border-componentBorder focus:border-componentFocus duration-100 rounded-lg p-2.5;
   }
 
+  [type="radio"]:checked,
+  [type="checkbox"]:checked {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+DQo8ZGVmcz4NCiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImdyYWRpZW50IiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+DQogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMDBGQkZCIi8+DQogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMEE2NzIiLz4NCiAgICA8L2xpbmVhckdyYWRpZW50Pg0KICAgIDwvZGVmcz4NCjxyZWN0IGZpbGw9InVybCgjZ3JhZGllbnQpIiBoZWlnaHQ9IjE2IiB3aWR0aD0iMTYiIHJ4PSIyIi8+PC9zdmc+);
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: 60% 60%;
+    /* border-color: transparent; */
+  }
+
+  [type="checkbox"],
+  [type="radio"] {
+    @apply focus:border-white cursor-pointer;
+    print-color-adjust: exact;
+    --tw-shadow: 0 0 #0000;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-position: 50%;
+    background-size: 0% 0%;
+    /* background-color: #fff; */
+    background-origin: border-box;
+    border-color: white;
+    border-radius: 3px;
+    border-width: 1px;
+    color: #1c64f2;
+    display: inline-block;
+    flex-shrink: 0;
+    padding: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .input-light {
+    @apply bg-white placeholder-grayText text-componentBg;
+  }
+
+  .select-light {
+    @apply bg-white text-componentBg;
+  }
+
   .nav-button,
   button,
   .button {

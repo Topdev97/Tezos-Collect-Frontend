@@ -3,6 +3,7 @@ import Header from "components/Header";
 import { Route, Router, Routes } from "react-router-dom";
 import DomainDetails from "./DomainDetails";
 import Home from "./Home";
+import Market from "./Market";
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/tokens" element={"tokens"} />
+          <Route path="/market/*" element={<Market />} />
           <Route path="/domain/:domain" element={<DomainDetails />} />
         </Routes>
       </div>

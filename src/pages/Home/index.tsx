@@ -22,15 +22,12 @@ const Home = () => {
               <span>Search Domain</span>
               <input
                 placeholder="Type your perfect domain"
-                className="mt-4 w-48 md:w-80 bg-white placeholder-grayText text-componentBg"
+                className="mt-4 w-48 md:w-80 input-light"
               />
             </div>
             <div className="flex flex-col">
               <span>Categories</span>
-              <select
-                id="states"
-                className="bg-white text-componentBg w-full mt-4 p-3"
-              >
+              <select id="states" className="select-light w-full mt-4 p-3">
                 <option>All types</option>
                 <option value="CA">California</option>
                 <option value="TX">Texas</option>
