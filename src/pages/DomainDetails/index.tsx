@@ -134,6 +134,7 @@ const mockup: TYPE_DOMAIN = {
   tags: ["numbers"],
   registedAt: new Date(),
   expiresAt: new Date(),
+  bookmarked: true,
 };
 
 const detailList = [

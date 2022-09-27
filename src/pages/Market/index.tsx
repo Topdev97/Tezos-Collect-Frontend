@@ -47,12 +47,16 @@ const MARKET_LIST = [
     text: "Last Sale",
   },
   {
-    path: "/market/new",
+    path: "/market/new-listings",
     text: "New Listings",
   },
   {
-    path: "/market/bids",
+    path: "/market/top-bids",
     text: "Top Bids",
+  },
+  {
+    path: "/market/new-bids",
+    text: "New Bids",
   },
   {
     path: "/market/registrations",

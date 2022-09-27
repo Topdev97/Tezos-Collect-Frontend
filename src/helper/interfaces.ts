@@ -8,5 +8,9 @@ interface TYPE_DOMAIN {
   tags: string[];
   registedAt?: Date;
   expiresAt?: Date;
+  bookmarked: boolean;
 }
-export type { TYPE_DOMAIN };
+
+type TYPE_VIEWMODE = "VM_LIST" | "VM_COMPACT" | "VM_MASS";
+
+export type { TYPE_DOMAIN, TYPE_VIEWMODE };
