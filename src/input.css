@@ -282,4 +282,21 @@ body {
     border: 1.5px solid #33dfea;
     backdrop-filter: blur(4px);
   }
+
+  .address-gr-br-box {
+    @apply gradient-border-box duration-100 hover:bg-componentBg/70 bg-componentBg cursor-pointer;
+  }
+
+  .gradient-border-box {
+    @apply relative z-0;
+    border-radius: 6px;
+  }
+
+  .gradient-border-box::before {
+    @apply absolute top-0 bottom-0 right-0 left-0 z-[-1];
+    margin: -2px;
+    border-radius: 8px;
+    content: "";
+    background: linear-gradient(to right, #00fbfb, #0050ea);
+  }
 }

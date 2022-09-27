@@ -6,6 +6,9 @@ import { AiFillHeart } from "react-icons/ai";
 import tezosCollectLogo from "assets/images/tezos-collect-logo.svg";
 
 import { TYPE_DOMAIN } from "helper/interfaces";
+import ComponentTable from "components/UI/ComponentTable";
+import PriceHistory from "components/PriceHistory";
+import DomainCard from "components/DomainCard";
 
 const DomainDetails = () => {
   return (
@@ -93,6 +96,28 @@ const DomainDetails = () => {
           </div>
         </div>
       </div>
+      <div className="flex gap-6">
+        <div className="flex-grow">
+          <ComponentTable {...domainListings} />
+        </div>
+        <div className="flex-grow">
+          <ComponentTable {...domainOffers} />
+        </div>
+      </div>
+      <ComponentTable {...domainActivities} />
+      <PriceHistory heading="Price History" collapsible={true} />
+      <div className="flex flex-col gap-4 mb-8">
+        <h4 className="font-playfair font-medium">See Also</h4>
+        <div className="flex gap-6">
+          {relatedDomains.map((domain, index) => {
+            return (
+              <div key={index} className="flex-1">
+                <DomainCard {...domain} />
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 };
@@ -122,4 +147,98 @@ const detailList = [
     value: mockup.registedAt?.toLocaleDateString(),
   },
   { label: "Expiration Date", value: mockup.expiresAt?.toLocaleDateString() },
+];
+
+const domainListings = {
+  textAlign: "center",
+  heading: "Listings (6)",
+  collapsible: true,
+  header: ["Price", "Valid From", "Valid Until"],
+  tableData: [
+    ["70.6 ꜩ", "7 hours ago", "4 weeks"],
+    ["70.6 ꜩ", "7 hours ago", "4 weeks"],
+    ["70.6 ꜩ", "7 hours ago", "4 weeks"],
+    ["70.6 ꜩ", "7 hours ago", "4 weeks"],
+    ["70.6 ꜩ", "7 hours ago", "4 weeks"],
+    ["70.6 ꜩ", "7 hours ago", "4 weeks"],
+  ],
+};
+
+const domainOffers = {
+  textAlign: "center",
+  heading: "Offers (6)",
+  collapsible: true,
+  header: ["Price", "Valid From", "Valid Until", "From"],
+  tableData: [
+    ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
+    ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
+    ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
+    ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
+    ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
+    ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
+  ],
+};
+
+const domainActivities = {
+  textAlign: "left",
+  heading: "Activity",
+  collapsible: true,
+  header: ["Event", "Price", "From", "To", "TX", "Date"],
+  tableData: [
+    [
+      "Sale",
+      "70.6 ꜩ",
+      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+      "tz1aSjTFe...",
+      "3 weeks ago",
+    ],
+    [
+      "Sale",
+      "70.6 ꜩ",
+      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+      "tz1aSjTFe...",
+      "3 weeks ago",
+    ],
+    [
+      "Sale",
+      "70.6 ꜩ",
+      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+      "tz1aSjTFe...",
+      "3 weeks ago",
+    ],
+    [
+      "Sale",
+      "70.6 ꜩ",
+      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+      "tz1aSjTFe...",
+      "3 weeks ago",
+    ],
+    [
+      "Sale",
+      "70.6 ꜩ",
+      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+      "tz1aSjTFe...",
+      "3 weeks ago",
+    ],
+    [
+      "Sale",
+      "70.6 ꜩ",
+      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+      "tz1aSjTFe...",
+      "3 weeks ago",
+    ],
+  ],
+};
+
+const relatedDomains = [
+  { name: "5471.tez", price: 27.86, bookmarked: true },
+  { name: "5480.tez", price: 40.86, bookmarked: false },
+  { name: "1358.tez", price: 96.1, bookmarked: false },
+  { name: "axis.tez", price: 107.56, bookmarked: true },
 ];
