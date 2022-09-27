@@ -16,6 +16,7 @@ module.exports = {
       tezGrEd: "#0050EA",
       tezText: "#99BAD3",
       grayText: "#6A7B89",
+      tezCyan: "#33DFEA",
     },
   },
   plugins: [],
