@@ -253,7 +253,7 @@ body {
   }
 
   .main-container {
-    @apply lg:px-24 px-4 py-4 md:py-8 overflow-hidden;
+    @apply lg:px-24 px-4 py-4 md:py-8 overflow-hidden relative;
     min-height: calc(100vh - 140px);
   }
 
@@ -266,6 +266,9 @@ body {
 
   .bg-tezGr {
     background: linear-gradient(90deg, #00fbfb 0%, #0050ea 100%);
+  }
+  .bg-tezLightGr {
+    background: linear-gradient(90deg, #00fbfb 0%, #00a672 100%);
   }
 
   .text-tezGr {
@@ -343,5 +346,66 @@ body {
     border-radius: 8px;
     content: "";
     background: linear-gradient(to right, #00fbfb, #0050ea);
+  }
+
+  .ace-modal,
+  .ace-drawer {
+    @apply absolute w-full h-full top-0 left-0 flex-col items-center;
+    z-index: 20;
+    overflow: overlay;
+  }
+
+  .ace-modal-overlay,
+  .ace-drawer-overlay {
+    @apply w-full h-full bg-black/60 absolute top-0 left-0;
+  }
+  .ace-drawer-main {
+    @apply h-full;
+  }
+  .ace-modal-main {
+    @apply mt-4 rounded-lg animation-enter;
+  }
+  .ace-modal-main,
+  .ace-drawer-main {
+    @apply z-10 bg-componentBg;
+  }
+
+  .ace-drawer-main {
+    @apply animation-slide-left;
+  }
+
+  .ace-modal-close-button {
+    @apply bg-transparent rounded-lg text-sm p-1.5 inline-flex items-center hover:bg-gray-600 ml-auto;
+  }
+
+  .animation-enter {
+    animation: enter 0.2s ease-out;
+  }
+  .animation-slide-left {
+    animation: slide-left 0.2s ease-out;
+  }
+
+  @keyframes enter {
+    0% {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-left {
+    0% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
   }
 }

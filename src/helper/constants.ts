@@ -1,3 +1,4 @@
+import { FiExternalLink } from "react-icons/fi";
 import { TYPE_DOMAIN } from "./interfaces";
 
 export const RPC_URL: string = "https://ghostnet.tezos.marigold.dev";
@@ -156,6 +157,7 @@ export const mockupDomains: TYPE_DOMAIN[] = [
     tokenId: 1775,
     lastSalePrice: 10.5,
     registedAt: new Date(new Date().getTime() - 800000000),
+    auctionEndsAt: new Date(new Date().getTime() + 800000000),
     expiresAt: new Date(new Date().getTime() + 900000000),
     bookmarked: false,
   },
@@ -168,6 +170,7 @@ export const mockupDomains: TYPE_DOMAIN[] = [
     tokenId: 1775,
     lastSalePrice: 17.5,
     registedAt: new Date(new Date().getTime() - 500000000),
+    auctionEndsAt: new Date(new Date().getTime() + 500000000),
     expiresAt: new Date(new Date().getTime() + 500000000),
     bookmarked: true,
   },
@@ -180,6 +183,7 @@ export const mockupDomains: TYPE_DOMAIN[] = [
     tokenId: 1775,
     lastSalePrice: 17.5,
     registedAt: new Date(new Date().getTime() - 500000000),
+    auctionEndsAt: new Date(new Date().getTime() + 500000000),
     expiresAt: new Date(new Date().getTime() + 500000000),
     bookmarked: true,
   },
@@ -192,6 +196,7 @@ export const mockupDomains: TYPE_DOMAIN[] = [
     tokenId: 1775,
     lastSalePrice: 17.5,
     registedAt: new Date(new Date().getTime() - 500000000),
+    auctionEndsAt: new Date(new Date().getTime() + 500000000),
     expiresAt: new Date(new Date().getTime() + 500000000),
     bookmarked: false,
   },
@@ -204,6 +209,7 @@ export const mockupDomains: TYPE_DOMAIN[] = [
     tokenId: 1775,
     lastSalePrice: 17.5,
     registedAt: new Date(new Date().getTime() - 500000000),
+    auctionEndsAt: new Date(new Date().getTime() + 500000000),
     expiresAt: new Date(new Date().getTime() + 500000000),
     bookmarked: true,
   },
@@ -216,6 +222,7 @@ export const mockupDomains: TYPE_DOMAIN[] = [
     tokenId: 1775,
     lastSalePrice: 17.5,
     registedAt: new Date(new Date().getTime() - 500000000),
+    auctionEndsAt: new Date(new Date().getTime() + 500000000),
     expiresAt: new Date(new Date().getTime() + 500000000),
     bookmarked: true,
   },
@@ -228,6 +235,7 @@ export const mockupDomains: TYPE_DOMAIN[] = [
     tokenId: 1775,
     lastSalePrice: 17.5,
     registedAt: new Date(new Date().getTime() - 500000000),
+    auctionEndsAt: new Date(new Date().getTime() + 500000000),
     expiresAt: new Date(new Date().getTime() + 500000000),
     bookmarked: false,
   },
@@ -240,6 +248,7 @@ export const mockupDomains: TYPE_DOMAIN[] = [
     tokenId: 1775,
     lastSalePrice: 17.5,
     registedAt: new Date(new Date().getTime() - 500000000),
+    auctionEndsAt: new Date(new Date().getTime() + 500000000),
     expiresAt: new Date(new Date().getTime() + 500000000),
     bookmarked: false,
   },

@@ -10,7 +10,7 @@ const TopCollections = () => {
             key={index}
             className="button hover-bg-tezGr flex-grow text-center tracking-wide font-semibold"
             to={{
-              pathname: collection.link,
+              pathname: `/collection${collection.link}`,
             }}
           >
             {collection.name}
@@ -23,42 +23,42 @@ const TopCollections = () => {
 
 export default TopCollections;
 
-const topCollectionData = [
+export const topCollectionData = [
   {
     name: "10k Club",
-    link: "10k-club",
+    link: "/10k-club",
   },
   {
     name: "100k Club",
-    link: "10k-club",
+    link: "/100k-club",
   },
   {
     name: "999 Club",
-    link: "10k-club",
+    link: "/999-club",
   },
   {
     name: "3 letters",
-    link: "10k-club",
+    link: "/3-letters",
   },
   {
     name: "4 letters ",
-    link: "10k-club",
+    link: "/4-letters",
   },
   {
     name: "5+ letters",
-    link: "10k-club",
+    link: "/5-letters",
   },
   {
     name: "Countries",
-    link: "10k-club",
+    link: "/countries",
   },
   {
     name: "Hyphens",
-    link: "10k-club",
+    link: "/hypens",
   },
   {
     name: "Pokémon Generations 1",
-    link: "10k-club",
+    link: "/pokemon-generation-1",
   },
   {
     name: (
@@ -67,6 +67,6 @@ const topCollectionData = [
         <FiExternalLink />
       </span>
     ),
-    link: "10k-club",
+    link: "/more",
   },
 ];

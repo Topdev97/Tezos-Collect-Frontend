@@ -10,6 +10,7 @@ function commafy(num: number) {
 }
 
 export const convertNum2DateString = (seconds: number) => {
+  seconds = parseInt(seconds.toFixed(0));
   const d = (seconds / 87600).toFixed(0);
   const h = ((seconds % 87600) / 3600).toFixed(0);
   const m = ((seconds % 3600) / 60).toFixed(0);
