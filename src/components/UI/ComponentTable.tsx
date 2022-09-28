@@ -5,7 +5,7 @@ const ComponentTable = (props: {
   textAlign: string;
   heading: string;
   collapsible: boolean;
-  header: string[];
+  header: any[];
   tableData: any[][];
 }) => {
   const [collapsed, setCollapsed] = useState<boolean>(false);
@@ -38,7 +38,7 @@ const ComponentTable = (props: {
         >
           {header.map((item, index) => {
             return (
-              <span className={`flex-1 text-${textAlign}`} key={index}>
+              <span className={`flex-1 flex text-${textAlign}`} key={index}>
                 {item}
               </span>
             );
