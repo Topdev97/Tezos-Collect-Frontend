@@ -1,10 +1,18 @@
+import { useState } from "react";
 import LinkWithSearchParams from "components/LinkWithSearchParams";
 import { FiSearch } from "react-icons/fi";
 import { AiFillStar } from "react-icons/ai";
-import { IoMdCart } from "react-icons/io";
+import { IoMdCart, IoMdHeart } from "react-icons/io";
 import { RiWallet3Line } from "react-icons/ri";
+import HoverMenu from "components/UI/HoverMenu";
+import { FaUserCircle } from "react-icons/fa";
+import { BiUser } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
+import offerPercentage from "assets/images/offer-percentage.svg";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const [beaconConnected, setBeaconConnected] = useState<boolean>(false);
   return (
     <div className="flex items-center justify-between border-b-2 border-b-white/10 w-full top-0 lg:px-24 px-4 z-10 transition-all duration-300">
       <div className="backdrop-blur-md absolute left-0 top-0 w-full h-full z-[-1]" />
@@ -45,10 +53,49 @@ const Header = () => {
           size={20}
         />
       </div>
-      <button className="tezGr-button px-2 md:px-8 ml-4 md:ml-0 duration-100">
-        <span className="hidden md:block">Connect Wallet</span>
-        <RiWallet3Line className="md:hidden" size={20} />
-      </button>
+      {beaconConnected === false ? (
+        <button
+          className="tezGr-button px-2 md:px-6 ml-4 md:ml-0 duration-100"
+          onClick={() => setBeaconConnected(true)}
+        >
+          <span className="hidden md:block">Connect Wallet</span>
+          <RiWallet3Line className="md:hidden" size={20} />
+        </button>
+      ) : (
+        <HoverMenu
+          options={[
+            {
+              icon: <FaUserCircle size={20} />,
+              text: "My Profile",
+              handler: () => {
+                navigate("/profile");
+              },
+            },
+            {
+              icon: <img src={offerPercentage} />,
+              text: "Offers",
+              handler: () => {
+                navigate("/profile");
+              },
+            },
+            {
+              icon: <IoMdHeart size={20} />,
+              text: "Watchlist",
+              handler: () => {
+                navigate("/profile");
+              },
+            },
+            {
+              text: <span className="text-tezWarning">Disconnect Wallet</span>,
+              class:
+                "p-4 pr-8 flex gap-2 border-t-2 border-t-inputBorder items-center bg-componentBg hover:bg-white/10 duration-50",
+              handler: () => setBeaconConnected(false),
+            },
+          ]}
+          icon={<BiUser size={20} className="mx-2" />}
+          text={<span className="mr-4">tz1gu...RKpE</span>}
+        />
+      )}
     </div>
   );
 };
@@ -58,7 +105,7 @@ export default Header;
 const pageLinks = [
   {
     text: "Market",
-    link: "market/all",
+    link: "market",
   },
   {
     text: "Categories",

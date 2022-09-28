@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 const HoverMenu = (props: {
   options: any[];
   icon: any;
-  text: string | undefined;
+  text: any | undefined;
 }) => {
   const { options, icon, text } = props;
   const [dropdown, setDropdown] = useState(false);
@@ -37,13 +37,17 @@ const HoverMenu = (props: {
         {text}
       </div>
       {dropdown && (
-        <div className="absolute right-0 top-12 backdrop-blur-md z-10 animation-fade-in rounded-lg overflow-hidden">
+        <div className="absolute shadow-lg right-0 top-12 backdrop-blur-md z-10 animation-fade-in rounded-lg overflow-hidden">
           {options.map(
             (el: any, index: number) =>
               el && (
                 <div
                   key={index}
-                  className="p-4 pr-8 flex gap-2 border-b border-kadComponentBorder last:border-0 items-center bg-tezDarkBg hover:bg-white/5 duration-50"
+                  className={`${
+                    el.class
+                      ? el.class
+                      : "p-4 pr-8 flex gap-2 items-center bg-componentBg hover:bg-white/10 duration-50"
+                  }`}
                   onClick={() => {
                     el.handler && el.handler(el);
                   }}

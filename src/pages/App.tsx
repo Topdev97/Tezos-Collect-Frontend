@@ -5,6 +5,7 @@ import Auctions from "./Auctions";
 import DomainDetails from "./DomainDetails";
 import Home from "./Home";
 import Market from "./Market";
+import Profile from "./Profile";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="/market/*" element={<Market />} />
           <Route path="/domain/:domain" element={<DomainDetails />} />
           <Route path="/auction" element={<Auctions />} />
+          <Route path="/profile/*" element={<Profile />} />
         </Routes>
       </div>
       <Footer />

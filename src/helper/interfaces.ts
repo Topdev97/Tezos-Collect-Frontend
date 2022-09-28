@@ -20,6 +20,8 @@ type TYPE_DOMAIN_CARD =
   | "DC_PREMIUM"
   | "DC_SOLD"
   | "DC_PURCHASE"
+  | "DC_LISTING"
+  | "DC_OFFER"
   | undefined;
 
 export type { TYPE_DOMAIN, TYPE_VIEWMODE, TYPE_DOMAIN_CARD };

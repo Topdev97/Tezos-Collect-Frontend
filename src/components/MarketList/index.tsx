@@ -12,6 +12,7 @@ import TopLastSales from "./TopLastSales";
 const MarketList = () => {
   return (
     <Routes>
+      <Route path="" element={<AllListings />} />
       <Route path="all" element={<AllListings />} />
       <Route path="top-categories" element={<MarketTopCategories />} />
       <Route path="top-sales" element={<TopLastSales />} />

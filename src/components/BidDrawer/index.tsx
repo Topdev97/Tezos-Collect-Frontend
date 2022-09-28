@@ -84,6 +84,7 @@ const BidDrawer = ({
                   tab.tabId === activeTab ? "text-tezLightGr" : "text-tezText"
                 } `}
                 key={index}
+                onClick={() => setActiveTab(tab.tabId)}
               >
                 <div className="p-2 text-center">{tab.label}</div>
                 <div

@@ -35,6 +35,12 @@ const DomainCard = (props: {
             )}
           </span>
         )}
+        {cardType === "DC_SOLD" && auctionEndsAt && (
+          <span className="ml-auto">5 days ago</span>
+        )}
+        {cardType === "DC_PURCHASE" && auctionEndsAt && (
+          <span className="ml-auto">5 days ago</span>
+        )}
       </div>
       {cardType === "DC_CART" && (
         <div className="flex items-center">
@@ -60,6 +66,42 @@ const DomainCard = (props: {
           >
             Place Bid
           </button>
+        </div>
+      )}
+      {cardType === "DC_SOLD" && (
+        <div className="flex items-center">
+          <span className="font-semibold">
+            <span className="size-sm text-grayText">Sell Price</span>
+            <br />
+            <span className="text-tezLightGr">{price} ꜩ</span>
+          </span>
+        </div>
+      )}
+      {cardType === "DC_PURCHASE" && (
+        <div className="flex items-center">
+          <span className="font-semibold">
+            <span className="size-sm text-grayText">Purchase Price</span>
+            <br />
+            <span className="text-tezLightGr">{price} ꜩ</span>
+          </span>
+        </div>
+      )}
+      {cardType === "DC_LISTING" && (
+        <div className="flex items-center">
+          <span className="font-semibold">
+            <span className="size-sm text-grayText">Price</span>
+            <br />
+            <span className="text-tezLightGr">{price} ꜩ</span>
+          </span>
+        </div>
+      )}
+      {cardType === "DC_OFFER" && (
+        <div className="flex items-center">
+          <span className="font-semibold">
+            <span className="size-sm text-grayText">Current Bid</span>
+            <br />
+            <span className="text-tezLightGr">{price} ꜩ</span>
+          </span>
         </div>
       )}
     </div>
