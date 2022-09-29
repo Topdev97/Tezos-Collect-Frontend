@@ -15,7 +15,7 @@ const Header = () => {
   const [beaconConnected, setBeaconConnected] = useState<boolean>(false);
   return (
     <div className="flex items-center justify-between border-b-2 border-b-white/10 w-full top-0 lg:px-24 px-4 z-10 transition-all duration-300">
-      <div className="backdrop-blur-md absolute left-0 top-0 w-full h-full z-[-1]" />
+      <div className="backdrop-blur-12px absolute left-0 top-0 w-full h-full z-[-1]" />
       <LinkWithSearchParams
         to={{
           pathname: "/",
