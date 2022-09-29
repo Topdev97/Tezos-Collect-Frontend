@@ -9,11 +9,14 @@ type IPlaceBidModalProps = {
   drawerDomain: TYPE_DOMAIN | undefined;
 };
 
+type T_BIDSTAGE = "BID_" | "TAB_BIDS" | "TAB_HISTORY";
+
 const PlaceBidModal = ({
   placeBidModalVisible,
   setplaceBidModalVisible,
   drawerDomain = undefined,
 }: IPlaceBidModalProps) => {
+  const [bidStage, setBidStage] = useState<T_BIDSTAGE>("TAB_BIDS");
   return (
     <div className="z-30">
       <AceModal
