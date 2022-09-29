@@ -94,7 +94,7 @@ body {
 }
 
 @layer base {
-  /* *,
+  *,
   ::before,
   ::after {
     --tw-backdrop-blur: ;
@@ -116,7 +116,7 @@ body {
     --tw-saturate: ;
     --tw-sepia: ;
     --tw-drop-shadow: ;
-  } */
+  }
 
   h1 {
     @apply size-5 md:size-8 font-bold;
@@ -215,6 +215,10 @@ body {
     vertical-align: middle;
     width: 1.5rem;
     height: 1.5rem;
+  }
+
+  .backdrop-blur-md {
+    backdrop-filter: blur(12px);
   }
 
   .input-light {
