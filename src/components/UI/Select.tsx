@@ -42,7 +42,7 @@ const Selects = ({ select, initialValue, forRef2, handler }: any) => {
         )}
       </div>
       {dropdown && (
-        <div className="absolute top-12 w-full backdrop-blur-md z-10 animation-fade-in">
+        <div className="absolute top-12 w-full backdrop-blur-12px z-10 animation-fade-in">
           {select.map((el: string, i: number) => (
             <div
               key={i}

@@ -37,7 +37,7 @@ const HoverMenu = (props: {
         {text}
       </div>
       {dropdown && (
-        <div className="absolute shadow-lg right-0 top-12 backdrop-blur-md z-10 animation-fade-in rounded-lg overflow-hidden">
+        <div className="absolute shadow-lg right-0 top-12 backdrop-blur-12px z-10 animation-fade-in rounded-lg overflow-hidden">
           {options.map(
             (el: any, index: number) =>
               el && (

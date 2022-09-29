@@ -559,7 +559,7 @@ input:focus,
   height: 1.5rem;
 }
 
-.backdrop-blur-md {
+.backdrop-blur-12px {
   -webkit-backdrop-filter: blur(12px);
           backdrop-filter: blur(12px);
 }
