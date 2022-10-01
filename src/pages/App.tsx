@@ -1,5 +1,6 @@
 import Footer from "components/Footer";
 import Header from "components/Header";
+import TxModal from "components/TxModal";
 import { Route, Router, Routes } from "react-router-dom";
 import Auctions from "./Auctions";
 import DomainDetails from "./DomainDetails";
@@ -12,6 +13,7 @@ const App = () => {
     <>
       <Header />
       <div className="main-container">
+        <TxModal />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/tokens" element={"tokens"} />

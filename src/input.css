@@ -355,7 +355,7 @@ body {
   .ace-modal,
   .ace-drawer {
     @apply absolute w-full h-full top-0 left-0 flex-col items-center;
-    z-index: 20;
+    z-index: 10;
     overflow: overlay;
   }
 

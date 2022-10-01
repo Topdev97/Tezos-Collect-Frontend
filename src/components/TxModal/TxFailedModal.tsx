@@ -1,9 +1,9 @@
 import { useState } from "react";
 import AceModal from "components/UI/AceModal";
-import txSuccessImg from "assets/images/market/tx-success.png";
+import txFailedImg from "assets/images/market/tx-failed.png";
 import { useTezosCollectStore } from "store";
 
-const TxSuccessModal = () => {
+const TxFailedModal = () => {
   const currentTransaction = useTezosCollectStore(
     (state) => state.currentTransaction
   );
@@ -15,7 +15,7 @@ const TxSuccessModal = () => {
     setModalVisible(false);
     setCurrentTransaction({
       txHash: currentTransaction.txHash,
-      txStatus: "TX_NONE",
+      txStatus: "TX_SUCCESS",
     });
   };
   return (
@@ -26,8 +26,8 @@ const TxSuccessModal = () => {
       zIndex={25}
     >
       <div className="p-8 flex flex-col items-center gap-4 w-[25rem]">
-        <img className="w-24 my-8" src={txSuccessImg} />
-        <span className="font-semibold size-2">Transaction Success!</span>
+        <img className="w-24 my-8" src={txFailedImg} />
+        <span className="font-semibold size-2">Transaction failed!</span>
         <span className="text-grayText size-sm text-center">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
           vulputate libero et velit interdum.
@@ -49,4 +49,4 @@ const TxSuccessModal = () => {
     </AceModal>
   );
 };
-export default TxSuccessModal;
+export default TxFailedModal;

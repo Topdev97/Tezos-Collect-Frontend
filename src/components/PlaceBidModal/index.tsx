@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TYPE_DOMAIN } from "helper/interfaces";
 import AceModal from "components/UI/AceModal";
 import AceModalCloseButton from "components/UI/AceModal/AceModalCloseButton";
+import { useTezosCollectStore } from "store";
 
 type IPlaceBidModalProps = {
   placeBidModalVisible: boolean;
@@ -9,16 +10,25 @@ type IPlaceBidModalProps = {
   drawerDomain: TYPE_DOMAIN | undefined;
 };
 
-type T_BIDSTAGE = "BID_" | "TAB_BIDS" | "TAB_HISTORY";
-
 const PlaceBidModal = ({
   placeBidModalVisible,
   setplaceBidModalVisible,
   drawerDomain = undefined,
 }: IPlaceBidModalProps) => {
-  const [bidStage, setBidStage] = useState<T_BIDSTAGE>("TAB_BIDS");
+  const currentTransaction = useTezosCollectStore(
+    (state) => state.currentTransaction
+  );
+  const setCurrentTransaction = useTezosCollectStore(
+    (state) => state.setCurrentTransaction
+  );
+  const onPlaceBidSubmit = () => {
+    setCurrentTransaction({
+      txHash: "onkCuDUWTp6yxnCYNuHc6u6yCNfjWKe1ZBkMkkjnxu5WKzNrLuo",
+      txStatus: "TX_SUBMIT",
+    });
+  };
   return (
-    <div className="z-30">
+    <div className="z-20">
       <AceModal
         modalVisible={placeBidModalVisible}
         setModalVisible={setplaceBidModalVisible}
@@ -53,7 +63,12 @@ const PlaceBidModal = ({
             </div>
           </div>
 
-          <button className="tezGr-button py-3">Place Bid</button>
+          <button
+            className="tezGr-button py-3"
+            onClick={() => onPlaceBidSubmit()}
+          >
+            Place Bid
+          </button>
         </div>
       </AceModal>
     </div>

@@ -109,7 +109,7 @@ const pageLinks = [
   },
   {
     text: "Categories",
-    link: "market",
+    link: "market/top-categories",
   },
   {
     text: "Auctions",

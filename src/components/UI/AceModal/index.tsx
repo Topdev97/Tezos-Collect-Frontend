@@ -2,6 +2,7 @@ type IProps = {
   modalVisible: boolean;
   setModalVisible: any;
   drawAlign?: IDrawerAlign;
+  zIndex?: number;
   children: React.ReactNode;
 };
 
@@ -11,11 +12,17 @@ const AceModal = ({
   modalVisible,
   setModalVisible,
   drawAlign = "D_CENTER",
+  zIndex = 10,
   children,
 }: IProps) => {
   //   const { modalVisible, setModalVisible, children } = props;
   return (
-    <div className={`${modalVisible ? "flex" : "hidden"} ace-modal`}>
+    <div
+      className={`${modalVisible ? "flex" : "hidden"} ace-modal`}
+      style={{
+        zIndex,
+      }}
+    >
       <div
         className="ace-modal-overlay"
         onClick={() => setModalVisible(false)}

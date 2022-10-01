@@ -1,9 +1,9 @@
 import { useState } from "react";
 import AceModal from "components/UI/AceModal";
-import txSuccessImg from "assets/images/market/tx-success.png";
+import txSubmittedImg from "assets/images/market/tx-submitted.png";
 import { useTezosCollectStore } from "store";
 
-const TxSuccessModal = () => {
+const TxSubmitModal = () => {
   const currentTransaction = useTezosCollectStore(
     (state) => state.currentTransaction
   );
@@ -15,7 +15,7 @@ const TxSuccessModal = () => {
     setModalVisible(false);
     setCurrentTransaction({
       txHash: currentTransaction.txHash,
-      txStatus: "TX_NONE",
+      txStatus: "TX_FAILED",
     });
   };
   return (
@@ -26,11 +26,10 @@ const TxSuccessModal = () => {
       zIndex={25}
     >
       <div className="p-8 flex flex-col items-center gap-4 w-[25rem]">
-        <img className="w-24 my-8" src={txSuccessImg} />
-        <span className="font-semibold size-2">Transaction Success!</span>
-        <span className="text-grayText size-sm text-center">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-          vulputate libero et velit interdum.
+        <img className="w-24 my-8" src={txSubmittedImg} />
+        <span className="font-semibold size-2">Transaction Confirmed!</span>
+        <span className="text-grayText size-sm">
+          Your transaction is pending confirmation.
         </span>
         <div className="flex  mt-4">
           <a
@@ -49,4 +48,4 @@ const TxSuccessModal = () => {
     </AceModal>
   );
 };
-export default TxSuccessModal;
+export default TxSubmitModal;
