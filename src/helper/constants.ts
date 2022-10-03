@@ -1,4 +1,3 @@
-import { FiExternalLink } from "react-icons/fi";
 import { TYPE_DOMAIN } from "./interfaces";
 
 import {
@@ -19,6 +18,9 @@ export const TEZOS_COLLECT_CLIENT = new DAppClient({
 
 export const RPC_URL: string = "https://ghostnet.tezos.marigold.dev";
 export const TEZOS_PRICE: number = 1.48;
+
+export const API_ENDPOINT =
+  process.env.NODE_ENV === "development" ? "http://localhost:4000" : "";
 
 export const topCategories = [
   {

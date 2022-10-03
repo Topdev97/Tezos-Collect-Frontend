@@ -13,6 +13,22 @@ interface TYPE_DOMAIN {
   bookmarked: boolean;
 }
 
+interface TYPE_COLLECTION {
+  slug: string;
+  avatar: string;
+  label: string;
+  description: string;
+  discordLink: string;
+  numberOfItems: number;
+  numberOfOwners: number;
+  totalVolume: number;
+  topSale: number;
+  floorPrice: number;
+  volumeDay: number;
+  volumeChange: number;
+  floorPriceChange: number;
+}
+
 type TYPE_VIEWMODE = "VM_LIST" | "VM_COMPACT" | "VM_MASS";
 type TYPE_DOMAIN_CARD =
   | "DC_AUCTION"
@@ -26,4 +42,10 @@ type TYPE_DOMAIN_CARD =
 
 type TYPE_TX_STATUS = "TX_NONE" | "TX_SUBMIT" | "TX_FAILED" | "TX_SUCCESS";
 
-export type { TYPE_DOMAIN, TYPE_VIEWMODE, TYPE_DOMAIN_CARD, TYPE_TX_STATUS };
+export type {
+  TYPE_COLLECTION,
+  TYPE_DOMAIN,
+  TYPE_VIEWMODE,
+  TYPE_DOMAIN_CARD,
+  TYPE_TX_STATUS,
+};

@@ -257,7 +257,7 @@ body {
   }
 
   .main-container {
-    @apply lg:px-24 px-4 py-4 md:py-8 overflow-hidden relative;
+    @apply lg:px-24 px-4 pt-16 md:pt-20 pb-4 md:pb-8 overflow-hidden relative;
     min-height: calc(100vh - 140px);
   }
 

@@ -3,9 +3,10 @@ import { HiOutlineRefresh } from "react-icons/hi";
 import CSVSvg from "assets/images/market/csv.svg";
 import { FiSearch } from "react-icons/fi";
 import { TbHeart } from "react-icons/tb";
-import { topCategories } from "helper/constants";
+import { useTezosCollectStore } from "store";
 
 const MarketTopCategories = () => {
+  const { collectionStore } = useTezosCollectStore();
   return (
     <div className="flex flex-col gap-6">
       <div className="flex gap-6">
@@ -42,7 +43,7 @@ const MarketTopCategories = () => {
           <span>Supply</span>
         </div>
         <div className="flex flex-col">
-          {topCategories.map((category, index) => (
+          {collectionStore.collections.map((collection, index) => (
             <div
               key={index}
               className="grid grid-cols-[30%_12%_17%_14%_13%_14%] items-center mt-4 cursor-pointer hover:bg-white/10 py-2"
@@ -50,57 +51,57 @@ const MarketTopCategories = () => {
               <div className="flex items-center gap-4">
                 <TbHeart
                   className={`ml-1 size-2 cursor-pointer duration-150 hover:stroke-tezGrSt mr-0.5 ${
-                    category.bookmarked ? "stroke-tezGrSt fill-tezGrSt" : ""
+                    true ? "stroke-tezGrSt fill-tezGrSt" : ""
+                    // collection.bookmarked
                   }`}
                 />
                 <div className="rounded-full w-10 h-10 bg-tezGr flex items-center justify-center tracking-tight font-oswald size-1">
-                  {category.avatar}
+                  {collection.avatar}
                 </div>
                 <div>
-                  <span>{category.name}</span>
+                  <span>{collection.label}</span>
                   <br />
                   <span className="text-grayText size-sm font-normal">
-                    {category.description}
+                    {collection.description}
                   </span>
                 </div>
               </div>
               <div>
-                <span>{category.volumn} ꜩ</span>
+                <span>{collection.totalVolume.toFixed(2)} ꜩ</span>
                 <br />
                 <span
                   className={`size-sm ${
-                    category.volumnChange >= 0
+                    collection.volumeChange >= 0
                       ? "text-tezSuccess"
                       : "text-tezWarning"
                   } font-normal`}
                 >
-                  {category.volumnChange >= 0
-                    ? `+${category.volumnChange}`
-                    : category.volumnChange}
+                  {collection.volumeChange >= 0
+                    ? `+${collection.volumeChange.toFixed(2)}`
+                    : collection.volumeChange.toFixed(2)}
                   %
                 </span>
               </div>
-              <div>{category.volumn} ꜩ</div>
+              <div>{collection.totalVolume.toFixed(2)} ꜩ</div>
               <div>
-                <span>{category.floorPrice} ꜩ</span>
+                <span>{collection.floorPrice.toFixed(2)} ꜩ</span>
                 <br />
                 <span
                   className={`size-sm ${
-                    category.floorChange >= 0
+                    collection.floorPriceChange >= 0
                       ? "text-tezSuccess"
                       : "text-tezWarning"
                   } font-normal`}
                 >
-                  {category.floorChange >= 0
-                    ? `+${category.floorChange}`
-                    : category.floorChange}
+                  {collection.floorPriceChange >= 0
+                    ? `+${collection.floorPriceChange.toFixed(2)}`
+                    : collection.floorPriceChange.toFixed(2)}
                   %
                 </span>
               </div>
-              <div>{category.holders}</div>
-              <div>
-                {category.totalSupply} / {category.maxSupply}
-              </div>
+              <div>{collection.numberOfOwners}</div>
+              <div>{collection.numberOfItems} / 10000</div>
+              {/* {collection.maxSupply} */}
             </div>
           ))}
         </div>

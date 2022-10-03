@@ -653,13 +653,13 @@ svg{
   overflow: hidden;
   padding-left: 1rem;
   padding-right: 1rem;
-  padding-top: 1rem;
+  padding-top: 4rem;
   padding-bottom: 1rem;
 }
 
 @media (min-width: 768px){
   .main-container{
-    padding-top: 2rem;
+    padding-top: 5rem;
     padding-bottom: 2rem;
   }
 }
@@ -1043,6 +1043,10 @@ svg{
   --tw-backdrop-opacity:  ;
   --tw-backdrop-saturate:  ;
   --tw-backdrop-sepia:  ;
+}
+
+.fixed{
+  position: fixed;
 }
 
 .absolute{

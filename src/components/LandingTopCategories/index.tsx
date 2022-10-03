@@ -1,9 +1,11 @@
 import LinkWithSearchParams from "components/LinkWithSearchParams";
-import { TEZOS_PRICE, topCategories } from "helper/constants";
+import { TEZOS_PRICE } from "helper/constants";
 import { commafyFormatter } from "helper/formatters";
 import { FiChevronRight } from "react-icons/fi";
+import { useTezosCollectStore } from "store";
 
 const TopLastSales = () => {
+  const { collectionStore } = useTezosCollectStore();
   return (
     <div className="flex flex-col my-12">
       <div className="flex items-center">
@@ -19,7 +21,7 @@ const TopLastSales = () => {
         </LinkWithSearchParams>
       </div>
       <div className="flex w-full flex-col gap-2">
-        {topCategories.map((category, index) => {
+        {collectionStore.collections.map((collection, index) => {
           return (
             <div
               key={index}
@@ -27,24 +29,24 @@ const TopLastSales = () => {
             >
               <div className="flex w-1/4 items-center">
                 <div className="rounded-full w-12 h-12 bg-tezGr flex items-center justify-center tracking-tight font-oswald size-1">
-                  {category.avatar}
+                  {collection.avatar}
                 </div>
-                <span className="ml-4">{category.name}</span>
+                <span className="ml-4">{collection.label}</span>
               </div>
               <div className="flex w-1/4">
                 <span>
                   <span className="text-grayText">Floor: </span>
-                  {category.floorPrice}
+                  {collection.floorPrice.toFixed(2)} ꜩ
                 </span>
               </div>
               <div className="flex w-1/4">
                 <span className="font-normal tracking-wide">
-                  {commafyFormatter(category.volumn)} ꜩ
+                  {commafyFormatter(collection.totalVolume)} ꜩ
                 </span>
               </div>
               <div className="flex w-1/4">
                 <span className="tracking-wide">
-                  ${commafyFormatter(TEZOS_PRICE * category.volumn)}
+                  ${commafyFormatter(TEZOS_PRICE * collection.totalVolume)}
                 </span>
                 <span className="ml-auto mr-2 text-tezLightGr font-bold border-b-2 border-b-tezGrMd">
                   View

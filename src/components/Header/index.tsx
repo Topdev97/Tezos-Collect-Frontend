@@ -14,7 +14,6 @@ import ConnectWallet from "components/ConnectWallet";
 
 const Header = () => {
   const navigate = useNavigate();
-  const [beaconConnected, setBeaconConnected] = useState<boolean>(false);
 
   const cartDrawerVisible = useTezosCollectStore(
     (state) => state.domainCart.cartDrawerVisible
@@ -24,7 +23,7 @@ const Header = () => {
   );
 
   return (
-    <div className="flex items-center justify-between border-b-2 border-b-white/10 w-full top-0 lg:px-24 px-4 z-10 transition-all duration-300">
+    <div className="flex fixed items-center justify-between border-b-2 border-b-white/10 w-full top-0 lg:px-24 px-4 z-10 transition-all duration-300">
       <div className="backdrop-blur-12px absolute left-0 top-0 w-full h-full z-[-1]" />
       <LinkWithSearchParams
         to={{
