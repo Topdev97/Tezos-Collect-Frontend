@@ -8,11 +8,21 @@ import HoverMenu from "components/UI/HoverMenu";
 import { FaUserCircle } from "react-icons/fa";
 import { BiUser } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
-import offerPercentage from "assets/images/offer-percentage.svg";
+
+import { useTezosCollectStore } from "store";
+import ConnectWallet from "components/ConnectWallet";
 
 const Header = () => {
   const navigate = useNavigate();
   const [beaconConnected, setBeaconConnected] = useState<boolean>(false);
+
+  const cartDrawerVisible = useTezosCollectStore(
+    (state) => state.domainCart.cartDrawerVisible
+  );
+  const setCartDrawerVisible = useTezosCollectStore(
+    (state) => state.setCartDrawerVisible
+  );
+
   return (
     <div className="flex items-center justify-between border-b-2 border-b-white/10 w-full top-0 lg:px-24 px-4 z-10 transition-all duration-300">
       <div className="backdrop-blur-12px absolute left-0 top-0 w-full h-full z-[-1]" />
@@ -51,51 +61,10 @@ const Header = () => {
         <IoMdCart
           className="cursor-pointer text-tezGrSt hover:text-tezGrMd"
           size={20}
+          onClick={() => setCartDrawerVisible(!cartDrawerVisible)}
         />
+        <ConnectWallet />
       </div>
-      {beaconConnected === false ? (
-        <button
-          className="tezGr-button px-2 md:px-6 ml-4 md:ml-0 duration-100"
-          onClick={() => setBeaconConnected(true)}
-        >
-          <span className="hidden md:block">Connect Wallet</span>
-          <RiWallet3Line className="md:hidden" size={20} />
-        </button>
-      ) : (
-        <HoverMenu
-          options={[
-            {
-              icon: <FaUserCircle size={20} />,
-              text: "My Profile",
-              handler: () => {
-                navigate("/profile");
-              },
-            },
-            {
-              icon: <img src={offerPercentage} />,
-              text: "Offers",
-              handler: () => {
-                navigate("/profile");
-              },
-            },
-            {
-              icon: <IoMdHeart size={20} />,
-              text: "Watchlist",
-              handler: () => {
-                navigate("/profile");
-              },
-            },
-            {
-              text: <span className="text-tezWarning">Disconnect Wallet</span>,
-              class:
-                "p-4 pr-8 flex gap-2 border-t-2 border-t-inputBorder items-center bg-componentBg hover:bg-white/10 duration-50",
-              handler: () => setBeaconConnected(false),
-            },
-          ]}
-          icon={<BiUser size={20} className="mx-2" />}
-          text={<span className="mr-4">tz1gu...RKpE</span>}
-        />
-      )}
     </div>
   );
 };

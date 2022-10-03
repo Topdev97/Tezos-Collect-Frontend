@@ -354,14 +354,13 @@ body {
 
   .ace-modal,
   .ace-drawer {
-    @apply absolute w-full h-full top-0 left-0 flex-col items-center;
+    @apply absolute overflow-hidden w-screen h-full top-0 left-0 flex-col items-center;
     z-index: 10;
-    overflow: overlay;
   }
 
   .ace-modal-overlay,
   .ace-drawer-overlay {
-    @apply w-full h-full bg-black/60 absolute top-0 left-0;
+    @apply overflow-hidden w-screen h-full bg-black/60 absolute top-0 left-0;
   }
   .ace-drawer-main {
     @apply h-full;

@@ -1,6 +1,22 @@
 import { FiExternalLink } from "react-icons/fi";
 import { TYPE_DOMAIN } from "./interfaces";
 
+import {
+  ColorMode,
+  DAppClient,
+  Network,
+  NetworkType,
+} from "@airgap/beacon-sdk";
+
+// Set the network (Mainnet is default)
+export const TEZOS_COLLECT_NETWORK: Network = { type: NetworkType.GHOSTNET };
+// Create a new DAppClient instance
+export const TEZOS_COLLECT_CLIENT = new DAppClient({
+  name: "Beacon Docs",
+  preferredNetwork: TEZOS_COLLECT_NETWORK.type,
+  colorMode: ColorMode.DARK,
+});
+
 export const RPC_URL: string = "https://ghostnet.tezos.marigold.dev";
 export const TEZOS_PRICE: number = 1.48;
 

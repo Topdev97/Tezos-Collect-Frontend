@@ -791,11 +791,11 @@ svg{
   top: 0px;
   left: 0px;
   height: 100%;
-  width: 100%;
+  width: 100vw;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
   z-index: 10;
-  overflow: overlay;
 }
 
 .ace-modal-overlay, 
@@ -804,7 +804,8 @@ svg{
   top: 0px;
   left: 0px;
   height: 100%;
-  width: 100%;
+  width: 100vw;
+  overflow: hidden;
   background-color: rgb(0 0 0 / 0.6);
 }
 
@@ -1084,6 +1085,10 @@ svg{
   left: 50%;
 }
 
+.z-30{
+  z-index: 30;
+}
+
 .z-10{
   z-index: 10;
 }
@@ -1094,10 +1099,6 @@ svg{
 
 .z-\[1\]{
   z-index: 1;
-}
-
-.z-30{
-  z-index: 30;
 }
 
 .z-20{
@@ -1121,6 +1122,11 @@ svg{
   margin-bottom: 1rem;
 }
 
+.mx-2{
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
 .my-6{
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
@@ -1129,11 +1135,6 @@ svg{
 .my-2{
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
-}
-
-.mx-2{
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
 }
 
 .my-12{
@@ -1149,16 +1150,6 @@ svg{
 .my-8{
   margin-top: 2rem;
   margin-bottom: 2rem;
-}
-
-.my-16{
-  margin-top: 4rem;
-  margin-bottom: 4rem;
-}
-
-.mx-4{
-  margin-left: 1rem;
-  margin-right: 1rem;
 }
 
 .ml-auto{
@@ -1181,6 +1172,10 @@ svg{
   margin-left: 1rem;
 }
 
+.mr-4{
+  margin-right: 1rem;
+}
+
 .mt-auto{
   margin-top: auto;
 }
@@ -1191,10 +1186,6 @@ svg{
 
 .mr-auto{
   margin-right: auto;
-}
-
-.mr-4{
-  margin-right: 1rem;
 }
 
 .mr-2{
@@ -1231,14 +1222,6 @@ svg{
 
 .ml-1{
   margin-left: 0.25rem;
-}
-
-.mb-4{
-  margin-bottom: 1rem;
-}
-
-.ml-8{
-  margin-left: 2rem;
 }
 
 .flex{
@@ -1361,6 +1344,14 @@ svg{
   width: 1.25rem;
 }
 
+.w-24{
+  width: 6rem;
+}
+
+.w-40{
+  width: 10rem;
+}
+
 .w-6{
   width: 1.5rem;
 }
@@ -1379,18 +1370,6 @@ svg{
 
 .w-10{
   width: 2.5rem;
-}
-
-.w-40{
-  width: 10rem;
-}
-
-.w-24{
-  width: 6rem;
-}
-
-.w-28{
-  width: 7rem;
 }
 
 .flex-1{
@@ -1552,12 +1531,12 @@ svg{
   border-bottom-width: 1px;
 }
 
-.border-b-2{
-  border-bottom-width: 2px;
-}
-
 .border-t-2{
   border-top-width: 2px;
+}
+
+.border-b-2{
+  border-bottom-width: 2px;
 }
 
 .border-t{
@@ -1619,17 +1598,17 @@ svg{
   border-bottom-color: rgb(52 68 81 / var(--tw-border-opacity));
 }
 
+.border-t-inputBorder{
+  --tw-border-opacity: 1;
+  border-top-color: rgb(52 68 81 / var(--tw-border-opacity));
+}
+
 .border-b-white\/30{
   border-bottom-color: rgb(255 255 255 / 0.3);
 }
 
 .border-b-white\/10{
   border-bottom-color: rgb(255 255 255 / 0.1);
-}
-
-.border-t-inputBorder{
-  --tw-border-opacity: 1;
-  border-top-color: rgb(52 68 81 / var(--tw-border-opacity));
 }
 
 .border-b-tezGrMd{
@@ -1742,6 +1721,11 @@ svg{
   padding-bottom: 1rem;
 }
 
+.px-2{
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
 .py-3{
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
@@ -1760,11 +1744,6 @@ svg{
 .py-6{
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
-}
-
-.px-2{
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
 }
 
 .py-2{
@@ -1792,16 +1771,16 @@ svg{
   padding-bottom: 0.625rem;
 }
 
+.pr-8{
+  padding-right: 2rem;
+}
+
 .pb-4{
   padding-bottom: 1rem;
 }
 
 .pl-10{
   padding-left: 2.5rem;
-}
-
-.pr-8{
-  padding-right: 2rem;
 }
 
 .pl-3\.5{
@@ -1874,6 +1853,11 @@ svg{
   color: rgb(153 186 211 / var(--tw-text-opacity));
 }
 
+.text-tezWarning{
+  --tw-text-opacity: 1;
+  color: rgb(253 121 121 / var(--tw-text-opacity));
+}
+
 .text-tezGrSt{
   --tw-text-opacity: 1;
   color: rgb(0 251 251 / var(--tw-text-opacity));
@@ -1882,11 +1866,6 @@ svg{
 .text-tezSuccess{
   --tw-text-opacity: 1;
   color: rgb(0 251 100 / var(--tw-text-opacity));
-}
-
-.text-tezWarning{
-  --tw-text-opacity: 1;
-  color: rgb(253 121 121 / var(--tw-text-opacity));
 }
 
 .text-tezGrEd{
@@ -1907,15 +1886,6 @@ svg{
 .text-tezDarkBg{
   --tw-text-opacity: 1;
   color: rgb(22 30 36 / var(--tw-text-opacity));
-}
-
-.underline{
-  -webkit-text-decoration-line: underline;
-          text-decoration-line: underline;
-}
-
-.decoration-1{
-  text-decoration-thickness: 1px;
 }
 
 .shadow-lg{
@@ -1943,12 +1913,12 @@ svg{
   transition-duration: 150ms;
 }
 
-.duration-300{
-  transition-duration: 300ms;
-}
-
 .duration-100{
   transition-duration: 100ms;
+}
+
+.duration-300{
+  transition-duration: 300ms;
 }
 
 /* font-family: 'Playfair Display', serif; */
@@ -2200,14 +2170,14 @@ body {
     padding: 0.5rem;
   }
 
-  .md\:px-24{
-    padding-left: 6rem;
-    padding-right: 6rem;
-  }
-
   .md\:px-6{
     padding-left: 1.5rem;
     padding-right: 1.5rem;
+  }
+
+  .md\:px-24{
+    padding-left: 6rem;
+    padding-right: 6rem;
   }
 
   .md\:py-6{

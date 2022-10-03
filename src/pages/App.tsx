@@ -1,3 +1,4 @@
+import CartDrawer from "components/CartDrawer";
 import Footer from "components/Footer";
 import Header from "components/Header";
 import TxModal from "components/TxModal";
@@ -14,6 +15,7 @@ const App = () => {
       <Header />
       <div className="main-container">
         <TxModal />
+        <CartDrawer />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/tokens" element={"tokens"} />

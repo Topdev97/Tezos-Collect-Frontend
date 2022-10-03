@@ -21,3 +21,7 @@ export const convertNum2DateString = (seconds: number) => {
 export const commafyFormatter = (number: number, decimals: number = 2) => {
   return commafy(parseFloat(number.toFixed(decimals)));
 };
+
+export const beautifyAddress = (address: string, prefixCnt: number = 5) => {
+  return `${address.substr(0, 5)}...${address.substr(-5)}`;
+};
