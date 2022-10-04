@@ -33,3 +33,15 @@ export const fetchAuctionedDomains = async (): Promise<TYPE_DOMAIN[]> => {
     return [];
   }
 };
+
+export const fetchDomain = async (
+  name: string
+): Promise<TYPE_DOMAIN | undefined> => {
+  try {
+    const response = await axios.get(`${API_ENDPOINT}/domains/find/${name}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return undefined;
+  }
+};

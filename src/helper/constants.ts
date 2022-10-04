@@ -1,5 +1,3 @@
-import { TYPE_DOMAIN } from "./interfaces";
-
 import {
   ColorMode,
   DAppClient,
@@ -18,6 +16,14 @@ export const TEZOS_COLLECT_CLIENT = new DAppClient({
 
 export const RPC_URL: string = "https://ghostnet.tezos.marigold.dev";
 export const TEZOS_PRICE: number = 1.48;
+
+const GHOSTNET_ADDRESS = "KT1Q4nCfd87KnBWmbgBiBchyysEhavf7qt5i";
+const MAINNET_ADDRESS = "KT1Q4nCfd87KnBWmbgBiBchyysEhavf7qt5i";
+
+export const MARKETPLACE_CONTRACT_ADDRESS =
+  TEZOS_COLLECT_NETWORK.type === NetworkType.GHOSTNET
+    ? GHOSTNET_ADDRESS
+    : MAINNET_ADDRESS;
 
 export const API_ENDPOINT =
   process.env.NODE_ENV === "development" ? "http://localhost:4000" : "";

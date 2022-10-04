@@ -32,6 +32,7 @@ interface TYPE_DOMAIN {
 }
 
 interface TYPE_COLLECTION {
+  _id: string;
   slug: string;
   avatar: string;
   label: string;

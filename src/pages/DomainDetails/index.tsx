@@ -5,18 +5,150 @@ import { HiMenu, HiOutlineRefresh } from "react-icons/hi";
 import { AiFillHeart } from "react-icons/ai";
 import tezosCollectLogo from "assets/images/tezos-collect-logo.svg";
 
-import { TYPE_DOMAIN } from "helper/interfaces";
 import ComponentTable from "components/UI/ComponentTable";
 import PriceHistory from "components/PriceHistory";
 import DomainCard from "components/DomainCard";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { TYPE_COLLECTION, TYPE_DOMAIN } from "helper/interfaces";
+import { useTezosCollectStore } from "store";
 
 const DomainDetails = () => {
+  const { domain: domainName } = useParams();
+  const { findDomainByName, findCollectionById } = useTezosCollectStore();
+
+  const [domain, setDomain] = useState<TYPE_DOMAIN | undefined>(undefined);
+  const [collection, setCollection] = useState<TYPE_COLLECTION>();
+  useEffect(() => {
+    if (domainName) {
+      findDomainByName(domainName).then((_domain) => {
+        setDomain(_domain);
+        if (_domain?.collectionId) {
+          setCollection(findCollectionById(_domain?.collectionId));
+        }
+      });
+    }
+  }, [domainName]);
+
+  const detailList = [
+    { label: "Collection", value: collection?.label },
+    { label: "Tags", value: domain?.tags.join(" ") },
+    {
+      label: "Last Sale Price",
+      value: `${domain?.lastSoldAmount.toFixed(2)} ꜩ`,
+    },
+    { label: "TokenId", value: domain?.tokenId },
+    { label: "Length", value: domainName?.length },
+    {
+      label: "Registration Date",
+      value: domain?.registeredAt,
+    },
+    {
+      label: "Expiration Date",
+      value: domain?.expiresAt?.toLocaleDateString(),
+    },
+  ];
+
+  const domainListings = {
+    textAlign: "left",
+    heading: "Listings (6)",
+    collapsible: true,
+    header: ["Price", "Valid From", "Valid Until"],
+    tableData: [
+      ["70.6 ꜩ", "7 hours ago", "4 weeks"],
+      ["70.6 ꜩ", "7 hours ago", "4 weeks"],
+      ["70.6 ꜩ", "7 hours ago", "4 weeks"],
+      ["70.6 ꜩ", "7 hours ago", "4 weeks"],
+      ["70.6 ꜩ", "7 hours ago", "4 weeks"],
+      ["70.6 ꜩ", "7 hours ago", "4 weeks"],
+    ],
+  };
+
+  const domainOffers = {
+    textAlign: "left",
+    heading: "Offers (6)",
+    collapsible: true,
+    header: ["Price", "Valid From", "Valid Until", "From"],
+    tableData: [
+      ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
+      ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
+      ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
+      ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
+      ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
+      ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
+    ],
+  };
+
+  const domainActivities = {
+    textAlign: "left",
+    heading: "Activity",
+    collapsible: true,
+    header: ["Event", "Price", "From", "To", "TX", "Date"],
+    tableData: [
+      [
+        "Sale",
+        "70.6 ꜩ",
+        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+        "tz1aSjTFe...",
+        "3 weeks ago",
+      ],
+      [
+        "Sale",
+        "70.6 ꜩ",
+        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+        "tz1aSjTFe...",
+        "3 weeks ago",
+      ],
+      [
+        "Sale",
+        "70.6 ꜩ",
+        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+        "tz1aSjTFe...",
+        "3 weeks ago",
+      ],
+      [
+        "Sale",
+        "70.6 ꜩ",
+        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+        "tz1aSjTFe...",
+        "3 weeks ago",
+      ],
+      [
+        "Sale",
+        "70.6 ꜩ",
+        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+        "tz1aSjTFe...",
+        "3 weeks ago",
+      ],
+      [
+        "Sale",
+        "70.6 ꜩ",
+        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
+        "tz1aSjTFe...",
+        "3 weeks ago",
+      ],
+    ],
+  };
+
+  const relatedDomains = [
+    { name: "5471.tez", price: 27.86, bookmarked: true },
+    { name: "5480.tez", price: 40.86, bookmarked: false },
+    { name: "1358.tez", price: 96.1, bookmarked: false },
+    { name: "axis.tez", price: 107.56, bookmarked: true },
+  ];
+
   return (
     <div className="flex flex-col gap-8 pt-4">
       {/* <TopCollections /> */}
       <div className="flex flex-col bg-componentBg rounded-lg">
         <div className="flex items-center py-3 md:py-6 px-4 md:px-8 border-b border-white/20">
-          <h4>{mockup.name}</h4>
+          <h4>{domainName}.tez</h4>
           <div className="flex text-tezText ml-auto gap-2 md:gap-6">
             <IoMdShare
               size={24}
@@ -39,12 +171,10 @@ const DomainDetails = () => {
         <div className="flex flex-col md:flex-row p-6">
           <div className="bg-tezDarkBg border-2 border-itemBorder rounded-lg px-20 aspect-square flex flex-col justify-center items-center">
             <img src={tezosCollectLogo} className="w-32" />
-            <span className="size-2 mt-6">{mockup.name}</span>
           </div>
           <div className="md:ml-8 mt-4 md:mt-0 bg-tezDarkBg border-2 border-itemBorder rounded-lg flex-grow flex flex-col">
             <div className="flex border-b-2 px-4 py-4 border-itemBorder">
               <span className="font-semibold size-1">OWNER</span>
-              <span className="ml-auto text-tezLightGr">{mockup.owner}</span>
             </div>
             <div className="flex flex-col p-4">
               <div className="flex justify-between">
@@ -73,7 +203,6 @@ const DomainDetails = () => {
             <div className="flex items-center border-t-2 px-4 py-4 mt-auto border-itemBorder">
               <div className="flex flex-col font-semibold">
                 <span className="text-grayText">Top Offer</span>
-                <h4>{mockup.price} ꜩ</h4>
               </div>
               <button className="ml-auto tezGr-button px-6 py-3">
                 Make Offer
@@ -123,123 +252,3 @@ const DomainDetails = () => {
 };
 
 export default DomainDetails;
-
-const mockup = {
-  tokenId: 10,
-  name: "dota-2.tez",
-  owner: "tz1d1c442",
-  lastSoldAmount: 1.467,
-  price: 2.061,
-  collection: "10k Club",
-  tags: ["numbers"],
-  registedAt: new Date(),
-  expiresAt: new Date(),
-  bookmarked: true,
-};
-
-const detailList = [
-  { label: "Collection", value: mockup.collection },
-  { label: "Tags", value: mockup.tags.join(" ") },
-  { label: "Last Sale Price", value: `${mockup.lastSoldAmount} ꜩ` },
-  { label: "TokenId", value: mockup.tokenId },
-  { label: "Length", value: mockup.name.length - 4 },
-  {
-    label: "Registration Date",
-    value: mockup.registedAt?.toLocaleDateString(),
-  },
-  { label: "Expiration Date", value: mockup.expiresAt?.toLocaleDateString() },
-];
-
-const domainListings = {
-  textAlign: "center",
-  heading: "Listings (6)",
-  collapsible: true,
-  header: ["Price", "Valid From", "Valid Until"],
-  tableData: [
-    ["70.6 ꜩ", "7 hours ago", "4 weeks"],
-    ["70.6 ꜩ", "7 hours ago", "4 weeks"],
-    ["70.6 ꜩ", "7 hours ago", "4 weeks"],
-    ["70.6 ꜩ", "7 hours ago", "4 weeks"],
-    ["70.6 ꜩ", "7 hours ago", "4 weeks"],
-    ["70.6 ꜩ", "7 hours ago", "4 weeks"],
-  ],
-};
-
-const domainOffers = {
-  textAlign: "center",
-  heading: "Offers (6)",
-  collapsible: true,
-  header: ["Price", "Valid From", "Valid Until", "From"],
-  tableData: [
-    ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
-    ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
-    ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
-    ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
-    ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
-    ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
-  ],
-};
-
-const domainActivities = {
-  textAlign: "left",
-  heading: "Activity",
-  collapsible: true,
-  header: ["Event", "Price", "From", "To", "TX", "Date"],
-  tableData: [
-    [
-      "Sale",
-      "70.6 ꜩ",
-      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-      "tz1aSjTFe...",
-      "3 weeks ago",
-    ],
-    [
-      "Sale",
-      "70.6 ꜩ",
-      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-      "tz1aSjTFe...",
-      "3 weeks ago",
-    ],
-    [
-      "Sale",
-      "70.6 ꜩ",
-      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-      "tz1aSjTFe...",
-      "3 weeks ago",
-    ],
-    [
-      "Sale",
-      "70.6 ꜩ",
-      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-      "tz1aSjTFe...",
-      "3 weeks ago",
-    ],
-    [
-      "Sale",
-      "70.6 ꜩ",
-      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-      "tz1aSjTFe...",
-      "3 weeks ago",
-    ],
-    [
-      "Sale",
-      "70.6 ꜩ",
-      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-      <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-      "tz1aSjTFe...",
-      "3 weeks ago",
-    ],
-  ],
-};
-
-const relatedDomains = [
-  { name: "5471.tez", price: 27.86, bookmarked: true },
-  { name: "5480.tez", price: 40.86, bookmarked: false },
-  { name: "1358.tez", price: 96.1, bookmarked: false },
-  { name: "axis.tez", price: 107.56, bookmarked: true },
-];

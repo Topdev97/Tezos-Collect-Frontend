@@ -3,13 +3,14 @@ import { useTezosCollectStore } from "store";
 import tezosCollectLogo from "assets/images/tezos-collect-logo.svg";
 import { TOP_SALE_DURATIONS } from "helper/constants";
 import { convertNum2DateString } from "helper/formatters";
+import LinkWithSearchParams from "components/LinkWithSearchParams";
 
 const RecommendedSales = () => {
   const { collectionStore, topSaleDomains, featuredAuctions } =
     useTezosCollectStore();
   const recommendedSales = collectionStore.collections
     .sort((itemA, itemB) => itemA.totalVolume - itemB.totalVolume)
-    .slice(0, 4);
+    .slice(0, 5);
 
   const [currentDuration, setCurrentDuration] = useState<number>(0);
 
@@ -58,8 +59,11 @@ const RecommendedSales = () => {
         <div className="flex flex-col p-2">
           {topSaleDomains[currentDuration]?.map((domain, index) => {
             return (
-              <div
+              <LinkWithSearchParams
                 key={index}
+                to={{
+                  pathname: `/domain/${domain.name}`,
+                }}
                 className="px-3 py-2 hover:bg-white/10 flex items-center cursor-pointer rounded-lg duration-100"
               >
                 <div className="rounded-full w-9 h-9 bg-white/10 flex items-center justify-center tracking-tight font-oswald">
@@ -69,7 +73,7 @@ const RecommendedSales = () => {
                 <span className="ml-auto">
                   {domain.lastSoldAmount?.toFixed(2)} ꜩ
                 </span>
-              </div>
+              </LinkWithSearchParams>
             );
           })}
         </div>
@@ -79,24 +83,27 @@ const RecommendedSales = () => {
           <span className="size-1">Featured Auctions</span>
         </div>
         <div className="flex flex-col p-2">
-          {featuredAuctions.map((category, index) => {
+          {featuredAuctions.map((domain, index) => {
             return (
-              <div
+              <LinkWithSearchParams
+                to={{
+                  pathname: `/domain/${domain.name}`,
+                }}
                 key={index}
                 className="px-3 py-2 hover:bg-white/10 flex items-center cursor-pointer rounded-lg duration-100"
               >
                 <div className="rounded-full w-9 h-9 bg-white/10 flex items-center justify-center tracking-tight font-oswald">
                   <img src={tezosCollectLogo} className="w-5" />
                 </div>
-                <span className="ml-4">{category.name}</span>
+                <span className="ml-4">{domain.name}.tez</span>
                 <span className="ml-4">
                   {convertNum2DateString(
-                    (category.auctionEndsAt.getTime() - new Date().getTime()) /
+                    (domain.auctionEndsAt.getTime() - new Date().getTime()) /
                       1000
                   )}
                 </span>
-                <span className="ml-auto">{category.topBid} ꜩ</span>
-              </div>
+                <span className="ml-auto">{domain.topBid.toFixed(2)} ꜩ</span>
+              </LinkWithSearchParams>
             );
           })}
         </div>

@@ -1,6 +1,7 @@
 import { fetchCollections } from "helper/api/collections.api";
 import {
   fetchAuctionedDomains,
+  fetchDomain,
   fetchFeaturedAuctions,
   fetchTopSaleDomains,
 } from "helper/api/domains.api";
@@ -40,6 +41,7 @@ interface ITezosCollectState {
 
   collectionStore: ICollectionStore;
   fetchCollections: { (): void };
+  findCollectionById: { (_collectionId: string): TYPE_COLLECTION | undefined };
 
   topSaleDomains: TYPE_DOMAIN[][];
   fetchTopSaleDomains: { (): void };
@@ -49,6 +51,8 @@ interface ITezosCollectState {
 
   auctionedDomains: TYPE_DOMAIN[];
   fetchAuctionedDomains: { (): void };
+
+  findDomainByName: { (name: string): Promise<TYPE_DOMAIN | undefined> };
 }
 
 export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
@@ -149,6 +153,11 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       collectionStore: { loading: false, collections },
     }));
   },
+  findCollectionById: (_collectionId: string) => {
+    return get().collectionStore.collections.find(
+      (item) => item._id === _collectionId
+    );
+  },
 
   topSaleDomains: [],
   fetchTopSaleDomains: async () => {
@@ -185,5 +194,13 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       ...state,
       auctionedDomains: _auctionedDomains,
     }));
+  },
+  findDomainByName: async (name: string) => {
+    let _domain = get().featuredAuctions.find((item) => item.name === name);
+    if (_domain) return _domain;
+    _domain = get().auctionedDomains.find((item) => item.name === name);
+    if (_domain) return _domain;
+    _domain = await fetchDomain(name);
+    return _domain;
   },
 }));
