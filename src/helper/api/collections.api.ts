@@ -1,4 +1,4 @@
-import { TYPE_COLLECTION } from "helper/interfaces";
+import { TYPE_COLLECTION, TYPE_DOMAIN } from "helper/interfaces";
 import axios from "axios";
 import { API_ENDPOINT } from "helper/constants";
 

@@ -1,8 +1,18 @@
-import LinkWithSearchParams from "components/LinkWithSearchParams";
+import { useState } from "react";
+import { useTezosCollectStore } from "store";
 import tezosCollectLogo from "assets/images/tezos-collect-logo.svg";
+import { TOP_SALE_DURATIONS } from "helper/constants";
 import { convertNum2DateString } from "helper/formatters";
 
 const RecommendedSales = () => {
+  const { collectionStore, topSaleDomains, featuredAuctions } =
+    useTezosCollectStore();
+  const recommendedSales = collectionStore.collections
+    .sort((itemA, itemB) => itemA.totalVolume - itemB.totalVolume)
+    .slice(0, 4);
+
+  const [currentDuration, setCurrentDuration] = useState<number>(0);
+
   return (
     <div className="flex flex-col md:flex-row gap-y-4 gap-x-12">
       <div className="flex w-full flex-col rounded-lg border-2 border-tezCyan recommended-sale-component">
@@ -22,8 +32,10 @@ const RecommendedSales = () => {
                 <div className="rounded-full w-9 h-9 bg-tezGr flex items-center justify-center tracking-tight font-oswald">
                   {category.avatar}
                 </div>
-                <span className="ml-4">{category.name}</span>
-                <span className="ml-auto">{category.value}</span>
+                <span className="ml-4">{category.label}</span>
+                <span className="ml-auto">
+                  {category.totalVolume.toFixed(2)} ꜩ
+                </span>
               </div>
             );
           })}
@@ -32,12 +44,19 @@ const RecommendedSales = () => {
       <div className="flex w-full flex-col rounded-lg border-2 border-tezCyan recommended-sale-component">
         <div className="flex border-b-2 border-b-tezCyan p-4 items-center">
           <span className="size-1">Top Sales</span>
-          <select className="ml-auto">
-            <option>24h</option>
+          <select
+            className="ml-auto"
+            onChange={(e) => setCurrentDuration(parseInt(e.target.value))}
+          >
+            {TOP_SALE_DURATIONS.map((item, index) => (
+              <option key={index} value={index}>
+                {item.label}
+              </option>
+            ))}
           </select>
         </div>
         <div className="flex flex-col p-2">
-          {topSales.map((category, index) => {
+          {topSaleDomains[currentDuration]?.map((domain, index) => {
             return (
               <div
                 key={index}
@@ -46,8 +65,10 @@ const RecommendedSales = () => {
                 <div className="rounded-full w-9 h-9 bg-white/10 flex items-center justify-center tracking-tight font-oswald">
                   <img src={tezosCollectLogo} className="w-5" />
                 </div>
-                <span className="ml-4">{category.name}</span>
-                <span className="ml-auto">{category.value}</span>
+                <span className="ml-4">{domain.name}.tez</span>
+                <span className="ml-auto">
+                  {domain.lastSoldAmount?.toFixed(2)} ꜩ
+                </span>
               </div>
             );
           })}
@@ -56,9 +77,6 @@ const RecommendedSales = () => {
       <div className="flex w-full flex-col rounded-lg border-2 border-tezCyan recommended-sale-component">
         <div className="flex border-b-2 border-b-tezCyan p-4 items-center">
           <span className="size-1">Featured Auctions</span>
-          <select className="ml-auto">
-            <option>24h</option>
-          </select>
         </div>
         <div className="flex flex-col p-2">
           {featuredAuctions.map((category, index) => {
@@ -72,9 +90,12 @@ const RecommendedSales = () => {
                 </div>
                 <span className="ml-4">{category.name}</span>
                 <span className="ml-4">
-                  {convertNum2DateString(category.remainigSeconds)}
+                  {convertNum2DateString(
+                    (category.auctionEndsAt.getTime() - new Date().getTime()) /
+                      1000
+                  )}
                 </span>
-                <span className="ml-auto">{category.value}</span>
+                <span className="ml-auto">{category.topBid} ꜩ</span>
               </div>
             );
           })}
@@ -85,56 +106,6 @@ const RecommendedSales = () => {
 };
 
 export default RecommendedSales;
-
-const recommendedSales = [
-  {
-    avatar: "100K",
-    name: "10k Club",
-    link: "10k-club",
-    value: "83.818 ꜩ ",
-  },
-  {
-    avatar: "999",
-    name: "999 Club",
-    link: "10k-club",
-    value: "83.818 ꜩ ",
-  },
-  {
-    avatar: "100K",
-    name: "100k Club",
-    link: "10k-club",
-    value: "83.818 ꜩ ",
-  },
-  {
-    avatar: "ABC",
-    name: "3 Letters",
-    link: "10k-club",
-    value: "83.818 ꜩ ",
-  },
-];
-
-const topSales = [
-  {
-    name: "026.tez",
-    link: "10k-club",
-    value: "83.818 ꜩ ",
-  },
-  {
-    name: "027.tez",
-    link: "10k-club",
-    value: "71.650 ꜩ",
-  },
-  {
-    name: "028.tez",
-    link: "10k-club",
-    value: "83.818 ꜩ ",
-  },
-  {
-    name: "029.tez",
-    link: "10k-club",
-    value: "83.818 ꜩ ",
-  },
-];
 
 const featuredAuctions = [
   {

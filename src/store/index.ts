@@ -1,4 +1,9 @@
-import { fetchCollections } from "helper/api/collections";
+import { fetchCollections } from "helper/api/collections.api";
+import {
+  fetchAuctionedDomains,
+  fetchFeaturedAuctions,
+  fetchTopSaleDomains,
+} from "helper/api/domains.api";
 import {
   TYPE_COLLECTION,
   TYPE_DOMAIN,
@@ -35,6 +40,15 @@ interface ITezosCollectState {
 
   collectionStore: ICollectionStore;
   fetchCollections: { (): void };
+
+  topSaleDomains: TYPE_DOMAIN[][];
+  fetchTopSaleDomains: { (): void };
+
+  featuredAuctions: TYPE_DOMAIN[];
+  fetchFeaturedAuctions: { (): void };
+
+  auctionedDomains: TYPE_DOMAIN[];
+  fetchAuctionedDomains: { (): void };
 }
 
 export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
@@ -133,6 +147,43 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
     set((state: any) => ({
       ...state,
       collectionStore: { loading: false, collections },
+    }));
+  },
+
+  topSaleDomains: [],
+  fetchTopSaleDomains: async () => {
+    const _topSaleDomains = await fetchTopSaleDomains();
+    set((state: any) => ({
+      ...state,
+      topSaleDomains: _topSaleDomains,
+    }));
+  },
+
+  featuredAuctions: [],
+  fetchFeaturedAuctions: async () => {
+    const _featuredAuctions = await fetchFeaturedAuctions();
+    _featuredAuctions.forEach((item) => {
+      item.auctionEndsAt = new Date(item.auctionEndsAt);
+      item.auctionStartedAt = new Date(item.auctionStartedAt);
+      item.lastSoldAt = new Date(item.lastSoldAt);
+    });
+    set((state: any) => ({
+      ...state,
+      featuredAuctions: _featuredAuctions,
+    }));
+  },
+
+  auctionedDomains: [],
+  fetchAuctionedDomains: async () => {
+    const _auctionedDomains = await fetchAuctionedDomains();
+    _auctionedDomains.forEach((item) => {
+      item.auctionEndsAt = new Date(item.auctionEndsAt);
+      item.auctionStartedAt = new Date(item.auctionStartedAt);
+      item.lastSoldAt = new Date(item.lastSoldAt);
+    });
+    set((state: any) => ({
+      ...state,
+      auctionedDomains: _auctionedDomains,
     }));
   },
 }));

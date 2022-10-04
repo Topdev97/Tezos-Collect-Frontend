@@ -1,15 +1,33 @@
 interface TYPE_DOMAIN {
-  tokenId: number;
   name: string;
   owner: string;
-  lastSalePrice?: number;
-  currentBid?: number;
-  price: number;
-  collection: string;
   tags: string[];
-  registedAt?: Date;
-  expiresAt?: Date;
-  auctionEndsAt?: Date;
+  lastSoldAt: Date;
+  lastSoldAmount: number;
+
+  isRegisterd: boolean;
+  registeredAt: Date;
+  expiresAt: Date;
+
+  isForSale: boolean;
+  price: number;
+  saleStartedAt: Date;
+  saleEndsAt: Date;
+
+  topOffer: number;
+  topOfferer: string;
+
+  isForAuction: boolean;
+  auctionStartedAt: Date;
+  auctionEndsAt: Date;
+  topBid: number;
+  topBidder: string;
+
+  tokenId: number;
+
+  collectionId: string;
+
+  isFeatured: boolean;
   bookmarked: boolean;
 }
 

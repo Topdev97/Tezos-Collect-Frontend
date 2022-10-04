@@ -15,7 +15,12 @@ import { useTezosCollectStore } from "store";
 const App = () => {
   const { pathname } = useLocation();
 
-  const { fetchCollections } = useTezosCollectStore();
+  const {
+    fetchCollections,
+    fetchTopSaleDomains,
+    fetchAuctionedDomains,
+    fetchFeaturedAuctions,
+  } = useTezosCollectStore();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -23,6 +28,9 @@ const App = () => {
 
   useEffect(() => {
     fetchCollections();
+    fetchTopSaleDomains();
+    fetchAuctionedDomains();
+    fetchFeaturedAuctions();
   }, []);
 
   return (

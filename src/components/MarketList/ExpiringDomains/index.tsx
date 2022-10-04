@@ -5,13 +5,14 @@ import CSVSvg from "assets/images/market/csv.svg";
 import { useState } from "react";
 import { TYPE_VIEWMODE } from "helper/interfaces";
 import ViewModeControl from "components/UI/ViewModeControl";
-import { mockupDomains } from "helper/constants";
 import HoverMenu from "components/UI/HoverMenu";
 import { MdReport } from "react-icons/md";
 import DomainCard from "components/DomainCard";
 import DomainWideCard from "components/DomainWideCard";
+import { useTezosCollectStore } from "store";
 
 const MarketNewListings = () => {
+  const { auctionedDomains } = useTezosCollectStore();
   const [viewMode, setViewMode] = useState<TYPE_VIEWMODE>("VM_LIST");
 
   return (
@@ -57,7 +58,7 @@ const MarketNewListings = () => {
             <span className="text-center">Action</span>
           </div>
           <div className="flex flex-col">
-            {mockupDomains.map((domain, index) => (
+            {auctionedDomains.map((domain, index) => (
               <div
                 key={index}
                 className="grid grid-cols-[15%_16%_13%_14%_16%_19%_7%] items-center mt-4 cursor-pointer py-2 border-b border-b-inputBorder"
@@ -71,8 +72,8 @@ const MarketNewListings = () => {
                   </span>
                 </div>
                 <div>{domain.owner} </div>
-                <div>{domain.lastSalePrice} ꜩ</div>
-                <div>{domain.registedAt?.toLocaleDateString()}</div>
+                <div>{domain.price} ꜩ</div>
+                <div>{domain.registeredAt?.toLocaleDateString()}</div>
                 <div>
                   <span>PREMIUM PERIOD</span>
                   <br />
@@ -101,13 +102,13 @@ const MarketNewListings = () => {
         </div>
       ) : viewMode === "VM_COMPACT" ? (
         <div className="grid grid-cols-4 gap-5">
-          {mockupDomains.map((domain, index) => (
+          {auctionedDomains.map((domain, index) => (
             <DomainCard key={index} {...domain} />
           ))}
         </div>
       ) : (
         <div className="grid grid-cols-4 gap-5">
-          {mockupDomains.map((domain, index) => (
+          {auctionedDomains.map((domain, index) => (
             <DomainWideCard key={index} {...domain} />
           ))}
         </div>

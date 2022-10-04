@@ -1,20 +1,21 @@
 import { useState } from "react";
 import DomainCard from "components/DomainCard";
 import TopCollections from "components/TopCollections";
-import { mockupDomains } from "helper/constants";
 import { TYPE_DOMAIN } from "helper/interfaces";
 import { FiSearch } from "react-icons/fi";
 import { HiOutlineRefresh } from "react-icons/hi";
 import BidDrawer from "components/BidDrawer";
+import { useTezosCollectStore } from "store";
 
 const Auctions = () => {
+  const { auctionedDomains } = useTezosCollectStore();
   const [bidDrawerVisible, setBidDrawerVisible] = useState<boolean>(false);
 
   const [drawerDomain, setDrawerDomain] = useState<TYPE_DOMAIN | undefined>(
     undefined
   );
   const cardHandler = (name: string) => {
-    const clickedDomain: TYPE_DOMAIN | undefined = mockupDomains.find(
+    const clickedDomain = auctionedDomains.find(
       (domain) => domain.name === name
     );
     if (clickedDomain === undefined) return;
@@ -50,10 +51,11 @@ const Auctions = () => {
       </div>
 
       <div className="grid grid-cols-4 gap-5">
-        {mockupDomains.map((domain, index) => (
+        {auctionedDomains.map((domain, index) => (
           <DomainCard
             key={index}
             {...domain}
+            price={domain.topBid}
             cardType="DC_AUCTION"
             cardHandler={cardHandler}
           />

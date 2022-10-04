@@ -12,8 +12,8 @@ import DomainCard from "components/DomainCard";
 
 const DomainDetails = () => {
   return (
-    <div className="flex flex-col gap-8">
-      <TopCollections />
+    <div className="flex flex-col gap-8 pt-4">
+      {/* <TopCollections /> */}
       <div className="flex flex-col bg-componentBg rounded-lg">
         <div className="flex items-center py-3 md:py-6 px-4 md:px-8 border-b border-white/20">
           <h4>{mockup.name}</h4>
@@ -124,11 +124,11 @@ const DomainDetails = () => {
 
 export default DomainDetails;
 
-const mockup: TYPE_DOMAIN = {
+const mockup = {
   tokenId: 10,
   name: "dota-2.tez",
   owner: "tz1d1c442",
-  lastSalePrice: 1.467,
+  lastSoldAmount: 1.467,
   price: 2.061,
   collection: "10k Club",
   tags: ["numbers"],
@@ -140,7 +140,7 @@ const mockup: TYPE_DOMAIN = {
 const detailList = [
   { label: "Collection", value: mockup.collection },
   { label: "Tags", value: mockup.tags.join(" ") },
-  { label: "Last Sale Price", value: `${mockup.lastSalePrice} ꜩ` },
+  { label: "Last Sale Price", value: `${mockup.lastSoldAmount} ꜩ` },
   { label: "TokenId", value: mockup.tokenId },
   { label: "Length", value: mockup.name.length - 4 },
   {
