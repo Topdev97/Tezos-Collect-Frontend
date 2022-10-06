@@ -89,7 +89,7 @@ export const NAME_REGISTRY_CONTRACT_ADDRESS =
 export const API_ENDPOINT =
   process.env.NODE_ENV === "development"
     ? "http://localhost:4000"
-    : "https://tezos-collect-staging.herokuapp.com/";
+    : "https://tezos-collect-staging.herokuapp.com";
 
 export const TOP_SALE_DURATIONS = [
   {
