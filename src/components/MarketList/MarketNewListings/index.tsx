@@ -53,7 +53,7 @@ const ExpiringDomains = () => {
             <span>Current Price</span>
             <span>Owners</span>
             <span>Last Sale</span>
-            <span>Registration</span>
+            {/* <span>Registration</span> */}
             <span>Expiration</span>
             <span className="text-center">Action</span>
           </div>
@@ -73,7 +73,7 @@ const ExpiringDomains = () => {
                 </div>
                 <div>{domain.owner} </div>
                 <div>{domain.lastSoldAmount} ꜩ</div>
-                <div>{domain.registeredAt?.toLocaleDateString()}</div>
+                {/* <div>{domain.registeredAt?.toLocaleDateString()}</div> */}
                 <div>
                   <span>PREMIUM PERIOD</span>
                   <br />

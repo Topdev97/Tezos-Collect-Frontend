@@ -39,7 +39,16 @@ export const fetchDomain = async (
 ): Promise<TYPE_DOMAIN | undefined> => {
   try {
     const response = await axios.get(`${API_ENDPOINT}/domains/find/${name}`);
-    return response.data;
+
+    return {
+      ...response.data,
+      auctionEndsAt: new Date(response.data.auctionEndsAt),
+      auctionStartedAt: new Date(response.data.auctionStartedAt),
+      expiresAt: new Date(response.data.expiresAt),
+      lastSoldAt: new Date(response.data.lastSoldAt),
+      saleStartedAt: new Date(response.data.saleStartedAt),
+      saleEndsAt: new Date(response.data.saleEndsAt),
+    };
   } catch (error) {
     console.log(error);
     return undefined;

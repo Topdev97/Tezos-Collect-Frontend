@@ -2,19 +2,13 @@ import { useState } from "react";
 import LinkWithSearchParams from "components/LinkWithSearchParams";
 import { FiSearch } from "react-icons/fi";
 import { AiFillStar } from "react-icons/ai";
-import { IoMdCart, IoMdHeart } from "react-icons/io";
-import { RiWallet3Line } from "react-icons/ri";
-import HoverMenu from "components/UI/HoverMenu";
-import { FaUserCircle } from "react-icons/fa";
-import { BiUser } from "react-icons/bi";
+import { IoMdCart } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 
 import { useTezosCollectStore } from "store";
 import ConnectWallet from "components/ConnectWallet";
 
 const Header = () => {
-  const navigate = useNavigate();
-
   const cartDrawerVisible = useTezosCollectStore(
     (state) => state.domainCart.cartDrawerVisible
   );
@@ -23,7 +17,7 @@ const Header = () => {
   );
 
   return (
-    <div className="flex fixed items-center justify-between border-b-2 border-b-white/10 w-full top-0 lg:px-24 px-4 z-10 transition-all duration-300">
+    <div className="flex items-center justify-between border-b-2 border-b-white/10 w-full top-0 lg:px-24 px-4 z-10 transition-all duration-300">
       <div className="backdrop-blur-12px absolute left-0 top-0 w-full h-full z-[-1]" />
       <LinkWithSearchParams
         to={{

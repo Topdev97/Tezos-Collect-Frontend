@@ -22,7 +22,7 @@ const HoverMenu = (props: {
   }, [ref]);
   return (
     <div
-      className="relative cursor-pointer font-medium "
+      className="relative cursor-pointer font-medium"
       onClick={() => {
         setDropdown((dropdown) => !dropdown);
       }}

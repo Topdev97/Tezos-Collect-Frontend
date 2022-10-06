@@ -33,7 +33,7 @@ const ComponentTable = (props: {
       >
         <div
           className={`flex bg-tezDarkBg  ${
-            textAlign === "center" ? "px-2" : "px-8"
+            textAlign === "center" ? "px-2" : "px-2 md:px-8"
           } py-4 mt-4 mb-1 rounded-lg`}
         >
           {header.map((item, index) => {
@@ -49,8 +49,8 @@ const ComponentTable = (props: {
             return (
               <div
                 key={index}
-                className={`flex ${
-                  textAlign === "center" ? "px-2" : "px-8"
+                className={`flex size-xs md:size-base ${
+                  textAlign === "center" ? "px-2" : "px-2 md:px-8"
                 } py-4 border-b border-b-itemBorder`}
               >
                 {rowData.map((item, cellIndex) => {

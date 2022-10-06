@@ -23,5 +23,5 @@ export const commafyFormatter = (number: number, decimals: number = 2) => {
 };
 
 export const beautifyAddress = (address: string, prefixCnt: number = 5) => {
-  return `${address.substr(0, 5)}...${address.substr(-5)}`;
+  return `${address.substr(0, prefixCnt)}...${address.substr(-prefixCnt)}`;
 };

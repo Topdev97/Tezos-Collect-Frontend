@@ -6,7 +6,7 @@ interface TYPE_DOMAIN {
   lastSoldAmount: number;
 
   isRegisterd: boolean;
-  registeredAt: Date;
+  // registeredAt: Date;
   expiresAt: Date;
 
   isForSale: boolean;
@@ -29,6 +29,8 @@ interface TYPE_DOMAIN {
 
   isFeatured: boolean;
   bookmarked: boolean;
+
+  includingOperator?: boolean;
 }
 
 interface TYPE_COLLECTION {
@@ -67,4 +69,43 @@ export type {
   TYPE_VIEWMODE,
   TYPE_DOMAIN_CARD,
   TYPE_TX_STATUS,
+};
+
+export const initializeDomain = (): TYPE_DOMAIN => {
+  let _domain: TYPE_DOMAIN = {
+    name: "",
+    owner: "",
+    tags: [],
+    lastSoldAt: new Date(0),
+    lastSoldAmount: 0,
+
+    isRegisterd: false,
+    // registeredAt: new Date(0),
+    expiresAt: new Date(0),
+
+    isForSale: false,
+    price: 0,
+    saleStartedAt: new Date(0),
+    saleEndsAt: new Date(0),
+
+    topOffer: 0,
+    topOfferer: "",
+
+    isForAuction: false,
+    auctionStartedAt: new Date(0),
+    auctionEndsAt: new Date(0),
+    topBid: 0,
+    topBidder: "",
+
+    tokenId: 0,
+
+    collectionId: "",
+
+    isFeatured: false,
+    bookmarked: false,
+
+    includingOperator: false,
+  };
+  _domain = JSON.parse(JSON.stringify(_domain));
+  return _domain;
 };

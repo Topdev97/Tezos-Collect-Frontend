@@ -6,10 +6,19 @@ import {
   fetchTopSaleDomains,
 } from "helper/api/domains.api";
 import {
+  DOMAIN_SUFFIX,
+  NAME_REGISTRY_CONTRACT_ADDRESS,
+  Tezos,
+} from "helper/constants";
+import {
+  initializeDomain,
   TYPE_COLLECTION,
   TYPE_DOMAIN,
   TYPE_TX_STATUS,
 } from "helper/interfaces";
+import TaquitoUtils, {
+  isIncludingOperator,
+} from "helper/taquito/marketplace-utils";
 import { getSignedRandomValue, getUnsignedRandomValue } from "helper/utils";
 import create from "zustand";
 
@@ -53,6 +62,10 @@ interface ITezosCollectState {
   fetchAuctionedDomains: { (): void };
 
   findDomainByName: { (name: string): Promise<TYPE_DOMAIN | undefined> };
+
+  fetchOnChainDomainDataByName: {
+    (name: string | undefined): Promise<TYPE_DOMAIN>;
+  };
 }
 
 export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
@@ -118,13 +131,16 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
 
   collectionStore: {
     loading: true,
-    collections: [],
+    collections: JSON.parse(localStorage.getItem("collections") || "[]") || [],
   },
 
   fetchCollections: async () => {
     set((state: any) => ({
       ...state,
-      collectionStore: { loading: true, collections: [] },
+      collectionStore: {
+        loading: true,
+        collections: get().collectionStore.collections,
+      },
     }));
     const collections = await fetchCollections();
     collections.forEach(
@@ -148,6 +164,7 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
     collections.forEach(
       (item) => (item.floorPriceChange = getSignedRandomValue())
     );
+    localStorage.setItem("collections", JSON.stringify(collections));
     set((state: any) => ({
       ...state,
       collectionStore: { loading: false, collections },
@@ -196,11 +213,53 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
     }));
   },
   findDomainByName: async (name: string) => {
-    let _domain = get().featuredAuctions.find((item) => item.name === name);
+    let _domain: TYPE_DOMAIN | undefined = get().featuredAuctions.find(
+      (item) => item.name === name
+    );
     if (_domain) return _domain;
     _domain = get().auctionedDomains.find((item) => item.name === name);
     if (_domain) return _domain;
     _domain = await fetchDomain(name);
     return _domain;
+  },
+
+  fetchOnChainDomainDataByName: async (
+    name: string | undefined
+  ): Promise<TYPE_DOMAIN> => {
+    const _initalizedDomain: TYPE_DOMAIN = {
+      ...initializeDomain(),
+      name: name || "",
+    };
+    try {
+      if (name === undefined) return _initalizedDomain;
+
+      const _nameRegistryContract = await Tezos.contract.at(
+        NAME_REGISTRY_CONTRACT_ADDRESS
+      );
+      const _nameRegistryStorage: any = await _nameRegistryContract.storage();
+
+      const [_record, expiresAt] = await Promise.all([
+        _nameRegistryStorage.store["records"].get(
+          TaquitoUtils.char2Bytes(`${name}${DOMAIN_SUFFIX}`)
+        ),
+        _nameRegistryStorage.store["expiry_map"].get(
+          TaquitoUtils.char2Bytes(`${name}${DOMAIN_SUFFIX}`)
+        ),
+      ]);
+
+      const _domain: TYPE_DOMAIN = {
+        ...initializeDomain(),
+        name,
+        owner: _record.owner,
+        isRegisterd: true,
+        tokenId: _record.tzip12_token_id.toNumber(),
+        expiresAt: new Date(expiresAt),
+        includingOperator: isIncludingOperator(
+          _record.internal_data.get("operators")
+        ),
+      };
+      return _domain;
+    } catch (error) {}
+    return _initalizedDomain;
   },
 }));

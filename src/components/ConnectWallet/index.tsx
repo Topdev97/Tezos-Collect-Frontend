@@ -8,7 +8,7 @@ import { IoMdHeart } from "react-icons/io";
 import { RiWallet3Line } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import offerPercentage from "assets/images/offer-percentage.svg";
-import { TEZOS_COLLECT_NETWORK, TEZOS_COLLECT_CLIENT } from "helper/constants";
+import { TEZOS_COLLECT_NETWORK, TEZOS_COLLECT_WALLET } from "helper/constants";
 import { beautifyAddress } from "helper/formatters";
 import { useTezosCollectStore } from "store";
 
@@ -20,28 +20,30 @@ const ConnectWallet = () => {
   );
 
   const onConnectWallet = async () => {
-    const permissions = await TEZOS_COLLECT_CLIENT.requestPermissions({
+    await TEZOS_COLLECT_WALLET.requestPermissions({
       network: TEZOS_COLLECT_NETWORK,
     });
-    setActiveAddress(permissions.address);
+    const _activeAddress = await TEZOS_COLLECT_WALLET.getPKH();
+    setActiveAddress(_activeAddress);
   };
 
   const onDisconnectWallet = async () => {
     setActiveAddress("");
-    await TEZOS_COLLECT_CLIENT.clearActiveAccount();
+    await TEZOS_COLLECT_WALLET.clearActiveAccount();
   };
 
   useEffect(() => {
     const getActiveAccounts = async () => {
-      const activeAccount = await TEZOS_COLLECT_CLIENT.getActiveAccount();
-      if (activeAccount) {
+      const _activeAddress =
+        await TEZOS_COLLECT_WALLET.client.getActiveAccount();
+      if (_activeAddress?.address) {
         // If defined, the user is connected to a wallet.
         // You can now do an operation request, sign request, or send another permission request to switch wallet
-        console.log("Already connected:", activeAccount.address);
+        // console.log("Already connected:", _activeAddress?.address);
 
         // You probably want to show the address in your UI somewhere.
-        setActiveAddress(activeAccount.address);
-        console.log(activeAddress);
+        setActiveAddress(_activeAddress?.address);
+        // console.log(activeAddress);
       }
     };
     getActiveAccounts();

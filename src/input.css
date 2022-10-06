@@ -261,7 +261,7 @@ body {
   }
 
   .main-container {
-    @apply lg:px-24 px-4 pt-16 md:pt-20 pb-4 md:pb-8 overflow-hidden relative;
+    @apply lg:px-24 px-4 pb-4 md:pb-8 overflow-hidden relative;
     min-height: calc(100vh - 140px);
   }
 
@@ -340,7 +340,7 @@ body {
   }
 
   .address-gr-br-box {
-    @apply gradient-border-box duration-100 hover:bg-componentBg/70 bg-componentBg cursor-pointer;
+    @apply md:gradient-border-box duration-100 hover:bg-componentBg/70 bg-componentBg cursor-pointer;
   }
 
   .gradient-border-box {
