@@ -10,16 +10,21 @@ import { useParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { TYPE_COLLECTION, TYPE_DOMAIN } from "helper/interfaces";
 import { useTezosCollectStore } from "store";
-import { beautifyAddress } from "helper/formatters";
+import { beautifyAddress, dateDifFromNow } from "helper/formatters";
 
 const DomainDetails = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const { domain: domainName } = useParams<{ domain: string }>();
   const {
+    setMakeOfferModal,
+    contractReady,
     activeAddress,
     findDomainByName,
+    updateCachedDomain,
     findCollectionById,
     fetchOnChainDomainDataByName,
+    sellOfferForOffer,
+    cancelOfferToDomain,
   } = useTezosCollectStore();
 
   const [domain, setDomain] = useState<TYPE_DOMAIN | undefined>(undefined);
@@ -68,23 +73,63 @@ const DomainDetails = () => {
     const _domain: TYPE_DOMAIN = {
       ..._onChainDomain,
       ..._cachedDomain,
+      tokenId: _onChainDomain.tokenId,
       owner: _onChainDomain.owner,
       expiresAt: _onChainDomain.expiresAt,
+      isRegistered: _onChainDomain.isRegistered,
+      offers: _onChainDomain.offers,
+      topOffer: _onChainDomain.topOffer,
+      includingOperator: _onChainDomain.includingOperator,
     };
 
     setLoading(false);
-    console.log("_domain", _domain);
     setDomain(_domain);
+    updateCachedDomain(_domain);
     if (_domain?.collectionId) {
       setCollection(findCollectionById(_domain?.collectionId));
     }
   };
 
   useEffect(() => {
-    if (domainName) {
+    if (domainName && contractReady) {
       updateDomain();
     }
-  }, [domainName]);
+  }, [domainName, contractReady]);
+
+  const onMakeOffer = async () => {
+    if (loading === true) return;
+    if ((domain?.tokenId || -1) > 0) {
+      setMakeOfferModal({
+        visible: true,
+        tokenId: domain?.tokenId || -1,
+        callback: updateDomain,
+      });
+      return;
+
+      // updateDomain();
+    }
+  };
+
+  const onCancelOffer = async () => {
+    if (loading === true) return;
+    console.log("onCancelOffer");
+    if ((domain?.tokenId || -1) > 0) {
+      await cancelOfferToDomain(domain?.tokenId || -1);
+      updateDomain();
+    }
+  };
+  const onSellForOffer = async (_offerer: string) => {
+    if (loading === true) return;
+    console.log("_offerer", _offerer);
+    if ((domain?.tokenId || -1) > 0) {
+      await sellOfferForOffer(
+        domain?.tokenId || -1,
+        _offerer,
+        domain?.includingOperator || false
+      );
+      updateDomain();
+    }
+  };
 
   const domainListings = {
     textAlign: "left",
@@ -101,20 +146,48 @@ const DomainDetails = () => {
     ],
   };
 
-  const domainOffers = {
-    textAlign: "left",
-    heading: "Offers (6)",
-    collapsible: true,
-    header: ["Price", "Valid From", "Valid Until", "From"],
-    tableData: [
-      ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
-      ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
-      ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
-      ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
-      ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
-      ["70.6 ꜩ", "7 hours ago", "4 weeks", "4 weeks"],
-    ],
-  };
+  const domainOffers = useMemo(() => {
+    return {
+      textAlign: "left",
+      heading: `Offers (${domain?.offers?.length})`,
+      collapsible: true,
+      header: [
+        "Price",
+        "Offer At",
+        "Valid Until",
+        "From",
+        <span className="mx-auto">Action</span>,
+      ],
+      tableData:
+        domain?.offers?.map((offer) => [
+          `${(offer.offer_amount / 10 ** 6).toFixed(2)} ꜩ`,
+          dateDifFromNow(offer.offer_made_at),
+          offer.offer_until < new Date()
+            ? "Expired"
+            : dateDifFromNow(offer.offer_until),
+          offer.offerer === activeAddress
+            ? "- YOU -"
+            : beautifyAddress(offer.offerer),
+          offer.offerer === activeAddress ? (
+            <button
+              className="tezSecGr-button size-sm px-2 py-1"
+              onClick={onCancelOffer}
+            >
+              Cancel
+            </button>
+          ) : isYourDomain ? (
+            <button
+              className="mx-auto tezSecGr-button py-1"
+              onClick={() => onSellForOffer(offer.offerer)}
+            >
+              Sell
+            </button>
+          ) : (
+            ""
+          ),
+        ]) || [],
+    };
+  }, [domain]);
 
   const domainActivities = {
     textAlign: "left",
@@ -272,25 +345,58 @@ const DomainDetails = () => {
               </div>
             )}
 
-            {isYourDomain ? (
-              <div className="flex items-center border-t-2 px-4 py-4 mt-auto border-itemBorder">
-                <button className="ml-auto tezGr-button px-6 py-3">
-                  List for Sale
-                </button>
-                <button className="ml-4 tezGr-button px-6 py-3">
-                  List for Auction
-                </button>
-              </div>
+            {domain?.isRegistered ? (
+              isYourDomain ? (
+                <div className="flex items-center border-t-2 px-4 py-4 mt-auto border-itemBorder">
+                  {(domain?.offers || []).length > 0 ? (
+                    <div className="flex flex-col font-semibold">
+                      <span className="text-grayText">Top Offer</span>
+                      {domain?.topOffer.toFixed(2)} ꜩ
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  <button className="ml-auto tezGr-button px-6 py-3">
+                    List for Sale
+                  </button>
+                  <button className="ml-4 tezGr-button px-6 py-3">
+                    List for Auction
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center border-t-2 px-4 py-4 mt-auto border-itemBorder">
+                  {domain?.topOffer !== 0 && (
+                    <div className="flex flex-col font-semibold">
+                      <span className="text-grayText">Top Offer</span>
+                      {domain?.topOffer.toFixed(2)} ꜩ
+                    </div>
+                  )}
+                  {domain?.offers?.find(
+                    (item) => item.offerer === activeAddress
+                  ) ? (
+                    <button
+                      className="ml-auto tezSecGr-button px-6 md:py-3"
+                      onClick={onCancelOffer}
+                    >
+                      Cancel Offer
+                    </button>
+                  ) : (
+                    <button
+                      className="ml-auto tezGr-button px-6 md:py-3"
+                      onClick={onMakeOffer}
+                    >
+                      Make Offer
+                    </button>
+                  )}
+                </div>
+              )
             ) : (
               <div className="flex items-center border-t-2 px-4 py-4 mt-auto border-itemBorder">
-                {domain?.topOffer !== 0 && (
-                  <div className="flex flex-col font-semibold">
-                    <span className="text-grayText">Top Offer</span>
-                    {domain?.topOffer.toFixed(2)} ꜩ
-                  </div>
-                )}
-                <button className="ml-auto tezGr-button px-6 md:py-3">
-                  Make Offer
+                <button
+                  className="ml-auto tezGr-button px-6 md:py-3"
+                  onClick={onMakeOffer}
+                >
+                  Register
                 </button>
               </div>
             )}

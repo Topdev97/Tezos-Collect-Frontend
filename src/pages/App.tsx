@@ -11,11 +11,13 @@ import Home from "./Home";
 import Market from "./Market";
 import Profile from "./Profile";
 import { useTezosCollectStore } from "store";
+import ModalsAndDrawers from "components/ModalsAndDrawers";
 
 const App = () => {
   const { pathname } = useLocation();
 
   const {
+    initializeContracts,
     fetchCollections,
     fetchTopSaleDomains,
     fetchAuctionedDomains,
@@ -27,6 +29,7 @@ const App = () => {
   }, [pathname]);
 
   useEffect(() => {
+    initializeContracts();
     fetchCollections();
     fetchTopSaleDomains();
     fetchAuctionedDomains();
@@ -37,8 +40,7 @@ const App = () => {
     <>
       <Header />
       <div className="main-container">
-        <TxModal />
-        <CartDrawer />
+        <ModalsAndDrawers />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/tokens" element={"tokens"} />

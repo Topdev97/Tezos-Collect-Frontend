@@ -1,12 +1,15 @@
+import { ContractAbstraction, ContractProvider } from "@taquito/taquito";
 import { fetchCollections } from "helper/api/collections.api";
 import {
   fetchAuctionedDomains,
   fetchDomain,
   fetchFeaturedAuctions,
   fetchTopSaleDomains,
+  updateDomain,
 } from "helper/api/domains.api";
 import {
   DOMAIN_SUFFIX,
+  MARKETPLACE_CONTRACT_ADDRESS,
   NAME_REGISTRY_CONTRACT_ADDRESS,
   Tezos,
 } from "helper/constants";
@@ -14,17 +17,24 @@ import {
   initializeDomain,
   TYPE_COLLECTION,
   TYPE_DOMAIN,
+  TYPE_DOMAIN_OFFER,
   TYPE_TX_STATUS,
 } from "helper/interfaces";
 import TaquitoUtils, {
   isIncludingOperator,
 } from "helper/taquito/marketplace-utils";
 import { getSignedRandomValue, getUnsignedRandomValue } from "helper/utils";
+
 import create from "zustand";
 
 interface ICurrentTransaction {
   txHash: string | undefined;
   txStatus: TYPE_TX_STATUS;
+}
+interface IMakeOfferModal {
+  visible: boolean;
+  tokenId: number;
+  callback: any;
 }
 interface IDomainCart {
   cartDrawerVisible: boolean;
@@ -66,6 +76,29 @@ interface ITezosCollectState {
   fetchOnChainDomainDataByName: {
     (name: string | undefined): Promise<TYPE_DOMAIN>;
   };
+
+  updateCachedDomain: { (_domain: TYPE_DOMAIN): void };
+
+  // interating with Tezos
+  contractReady: boolean;
+  nameRegistryContract: ContractAbstraction<ContractProvider> | null;
+  marketPlaceContract: ContractAbstraction<ContractProvider> | null;
+  initializeContracts: { (): void };
+  makeOfferToDomain: {
+    (tokenId: number, amount: number, durationId: number): Promise<boolean>;
+  };
+  cancelOfferToDomain: { (tokenId: number): Promise<boolean> };
+  sellOfferForOffer: {
+    (
+      tokenId: number,
+      offerer: string,
+      includingOperator: boolean
+    ): Promise<boolean>;
+  };
+
+  makeOfferModal: IMakeOfferModal;
+  setMakeOfferModal: { (_makeOfferModal: IMakeOfferModal): void };
+  setMakeOfferModalVisible: { (visible: boolean): void };
 }
 
 export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
@@ -233,10 +266,14 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
     try {
       if (name === undefined) return _initalizedDomain;
 
-      const _nameRegistryContract = await Tezos.contract.at(
-        NAME_REGISTRY_CONTRACT_ADDRESS
-      );
-      const _nameRegistryStorage: any = await _nameRegistryContract.storage();
+      const _nameRegistryContract = get().nameRegistryContract;
+      const _marketPlaceContract = get().marketPlaceContract;
+
+      const [_nameRegistryStorage, _marketPlaceStorage]: any[] =
+        await Promise.all([
+          _nameRegistryContract?.storage(),
+          _marketPlaceContract?.storage(),
+        ]);
 
       const [_record, expiresAt] = await Promise.all([
         _nameRegistryStorage.store["records"].get(
@@ -246,20 +283,182 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
           TaquitoUtils.char2Bytes(`${name}${DOMAIN_SUFFIX}`)
         ),
       ]);
+      console.log("_marketPlaceStorage", _marketPlaceStorage);
+      const offers_map = await _marketPlaceStorage?.offers_map.get(
+        _record.tzip12_token_id
+      );
+
+      const offers: TYPE_DOMAIN_OFFER[] = [];
+      let topOffer: number = 0;
+
+      if (offers_map)
+        for (let offerer of offers_map.keys()) {
+          const offer = offers_map.get(offerer);
+          offers.push({
+            offer_amount: offer.offer_amount.toNumber(),
+            offer_made_at: new Date(offer.offer_made_at),
+            offer_until: new Date(offer.offer_until),
+            offerer: offerer,
+          });
+          topOffer = Math.max(topOffer, offer.offer_amount / 10 ** 6);
+        }
 
       const _domain: TYPE_DOMAIN = {
         ...initializeDomain(),
         name,
         owner: _record.owner,
-        isRegisterd: true,
+        isRegistered: true,
         tokenId: _record.tzip12_token_id.toNumber(),
         expiresAt: new Date(expiresAt),
         includingOperator: isIncludingOperator(
           _record.internal_data.get("operators")
         ),
+        offers,
+        topOffer,
       };
       return _domain;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
     return _initalizedDomain;
+  },
+
+  updateCachedDomain: async (_domain: TYPE_DOMAIN) => {
+    updateDomain(_domain);
+  },
+
+  // Interacting with Tezs
+  contractReady: false,
+  nameRegistryContract: null,
+  marketPlaceContract: null,
+  initializeContracts: async () => {
+    const [_nameRegistryContract, _marketPlaceContract] = await Promise.all([
+      Tezos.wallet.at(NAME_REGISTRY_CONTRACT_ADDRESS),
+      Tezos.wallet.at(MARKETPLACE_CONTRACT_ADDRESS),
+    ]);
+
+    set((state: any) => ({
+      ...state,
+      contractReady: true,
+      nameRegistryContract: _nameRegistryContract,
+      marketPlaceContract: _marketPlaceContract,
+    }));
+  },
+  makeOfferModal: { tokenId: -1, visible: false, callback: null },
+  setMakeOfferModal: (_makeOfferModal: IMakeOfferModal) => {
+    set((state: any) => ({
+      ...state,
+      makeOfferModal: _makeOfferModal,
+    }));
+  },
+  setMakeOfferModalVisible: (_visible: boolean) => {
+    set((state: any) => ({
+      ...state,
+      makeOfferModal: {
+        ...state.makeOfferModal,
+        visible: _visible,
+      },
+    }));
+  },
+
+  makeOfferToDomain: async (
+    tokenId: number,
+    amount: number,
+    durationId: number
+  ) => {
+    // console.log(tokenId, amount, durationId);
+    if (get().activeAddress === "") {
+      alert("Need to connect wallet first!");
+      return false;
+    }
+    if (get().contractReady === false) return false;
+
+    const _marketPlaceContract = get().marketPlaceContract;
+    const _txOp: any = await _marketPlaceContract?.methods
+      .make_offer(durationId, tokenId)
+      .send({ amount });
+
+    get().setMakeOfferModalVisible(false);
+    get().setCurrentTransaction({
+      txHash: _txOp.opHash,
+      txStatus: "TX_SUBMIT",
+    });
+    await _txOp.confirmation(1);
+    get().setCurrentTransaction({
+      txHash: _txOp.opHash,
+      txStatus: "TX_SUCCESS",
+    });
+
+    return true;
+  },
+  cancelOfferToDomain: async (tokenId: number) => {
+    if (get().activeAddress === "") {
+      alert("Need to connect wallet first!");
+      return false;
+    }
+    if (get().contractReady === false) return false;
+
+    const _marketPlaceContract = get().marketPlaceContract;
+    const _txOp: any = await _marketPlaceContract?.methods
+      .cancel_offer(tokenId)
+      .send();
+    get().setCurrentTransaction({
+      txHash: _txOp.opHash,
+      txStatus: "TX_SUBMIT",
+    });
+    await _txOp.confirmation(1);
+    get().setCurrentTransaction({
+      txHash: _txOp.opHash,
+      txStatus: "TX_SUCCESS",
+    });
+    return true;
+  },
+  sellOfferForOffer: async (
+    tokenId: number,
+    offerer: string,
+    includingOperator: boolean
+  ) => {
+    if (get().activeAddress === "") {
+      alert("Need to connect wallet first!");
+      return false;
+    }
+    if (get().contractReady === false) return false;
+
+    const _marketPlaceContract = get().marketPlaceContract;
+    const _nameRegistryContract = get().nameRegistryContract;
+    let _txOp: any;
+
+    if (includingOperator === false) {
+      _txOp = await Tezos.wallet
+        .batch()
+        .withContractCall(
+          // @ts-ignore
+          _nameRegistryContract.methods.update_operators([
+            {
+              add_operator: {
+                owner: get().activeAddress,
+                operator: MARKETPLACE_CONTRACT_ADDRESS,
+                token_id: tokenId,
+              },
+            },
+          ])
+        )
+        // @ts-ignore
+        .withContractCall(_marketPlaceContract?.methods.sell(offerer, tokenId))
+        .send();
+    } else {
+      console.log("Sell");
+      _txOp = await _marketPlaceContract?.methods.sell(offerer, tokenId).send();
+    }
+    get().setCurrentTransaction({
+      txHash: _txOp.opHash,
+      txStatus: "TX_SUBMIT",
+    });
+    await _txOp.confirmation(1);
+    get().setCurrentTransaction({
+      txHash: _txOp.opHash,
+      txStatus: "TX_SUCCESS",
+    });
+    return true;
   },
 }));

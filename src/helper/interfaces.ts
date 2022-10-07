@@ -1,3 +1,9 @@
+interface TYPE_DOMAIN_OFFER {
+  offer_amount: number;
+  offer_made_at: Date;
+  offer_until: Date;
+  offerer: string;
+}
 interface TYPE_DOMAIN {
   name: string;
   owner: string;
@@ -5,7 +11,7 @@ interface TYPE_DOMAIN {
   lastSoldAt: Date;
   lastSoldAmount: number;
 
-  isRegisterd: boolean;
+  isRegistered: boolean;
   // registeredAt: Date;
   expiresAt: Date;
 
@@ -31,6 +37,8 @@ interface TYPE_DOMAIN {
   bookmarked: boolean;
 
   includingOperator?: boolean;
+
+  offers?: TYPE_DOMAIN_OFFER[];
 }
 
 interface TYPE_COLLECTION {
@@ -65,6 +73,7 @@ type TYPE_TX_STATUS = "TX_NONE" | "TX_SUBMIT" | "TX_FAILED" | "TX_SUCCESS";
 
 export type {
   TYPE_COLLECTION,
+  TYPE_DOMAIN_OFFER,
   TYPE_DOMAIN,
   TYPE_VIEWMODE,
   TYPE_DOMAIN_CARD,
@@ -79,7 +88,7 @@ export const initializeDomain = (): TYPE_DOMAIN => {
     lastSoldAt: new Date(0),
     lastSoldAmount: 0,
 
-    isRegisterd: false,
+    isRegistered: false,
     // registeredAt: new Date(0),
     expiresAt: new Date(0),
 
@@ -105,6 +114,7 @@ export const initializeDomain = (): TYPE_DOMAIN => {
     bookmarked: false,
 
     includingOperator: false,
+    offers: [],
   };
   _domain = JSON.parse(JSON.stringify(_domain));
   return _domain;

@@ -2,6 +2,7 @@ import { useState } from "react";
 import AceModal from "components/UI/AceModal";
 import txSubmittedImg from "assets/images/market/tx-submitted.png";
 import { useTezosCollectStore } from "store";
+import { TEZOS_COLLECT_NETWORK } from "helper/constants";
 
 const TxSubmitModal = () => {
   const currentTransaction = useTezosCollectStore(
@@ -13,10 +14,6 @@ const TxSubmitModal = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(true);
   const onCloseModal = () => {
     setModalVisible(false);
-    setCurrentTransaction({
-      txHash: currentTransaction.txHash,
-      txStatus: "TX_FAILED",
-    });
   };
   return (
     <AceModal
@@ -34,7 +31,7 @@ const TxSubmitModal = () => {
         <div className="flex  mt-4">
           <a
             className="button tezGr-button w-40"
-            href={`https://ghostnet.tzkt.io/${currentTransaction.txHash}`}
+            href={`https://${TEZOS_COLLECT_NETWORK.type}.tzkt.io/${currentTransaction.txHash}`}
             target="_blank"
           >
             Explore

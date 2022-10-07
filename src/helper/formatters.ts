@@ -25,3 +25,26 @@ export const commafyFormatter = (number: number, decimals: number = 2) => {
 export const beautifyAddress = (address: string, prefixCnt: number = 5) => {
   return `${address.substr(0, prefixCnt)}...${address.substr(-prefixCnt)}`;
 };
+
+export const dateDifFromNow = (_date: Date | string): string => {
+  let date: Date = new Date();
+  if (typeof _date === "object") date = _date;
+  else date = new Date(_date);
+  const difSeconds = Math.abs(new Date().getTime() - date.getTime()) / 1000;
+
+  let result = "";
+  if (difSeconds < 60) result = "a min";
+  else if (difSeconds < 60 * 60)
+    result = `${(difSeconds / 60).toFixed(0)} mins`;
+  else if (difSeconds < 60 * 60 * 24)
+    result = `${(difSeconds / 3600).toFixed(0)} hours`;
+  else if (difSeconds < 60 * 60 * 24 * 7)
+    result = `${(difSeconds / 87600).toFixed(0)} days`;
+  else if (difSeconds < 60 * 60 * 24 * 30)
+    result = `${(difSeconds / (60 * 60 * 24 * 7)).toFixed(0)} weeks`;
+  else result = `${(difSeconds / (60 * 60 * 24 * 30)).toFixed(0)} months`;
+
+  return new Date().getTime() - date.getTime() > 0
+    ? `${result} ago`
+    : `in ${result}`;
+};

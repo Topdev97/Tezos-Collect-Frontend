@@ -12,6 +12,8 @@ module.exports = {
       inputBorder: "#344451",
       componentFocus: "#FFFFFF55",
       tezDarkBg: "#161e24",
+      tezSecSt: "#ff85e7",
+      tezSecEd: "#d22e00",
       tezGrSt: "#00FBFB",
       tezGrMd: "#00A672",
       tezGrEd: "#0050EA",

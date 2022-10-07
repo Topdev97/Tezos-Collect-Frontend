@@ -2,6 +2,7 @@ import { useState } from "react";
 import AceModal from "components/UI/AceModal";
 import txSuccessImg from "assets/images/market/tx-success.png";
 import { useTezosCollectStore } from "store";
+import { TEZOS_COLLECT_NETWORK } from "helper/constants";
 
 const TxSuccessModal = () => {
   const currentTransaction = useTezosCollectStore(
@@ -29,13 +30,12 @@ const TxSuccessModal = () => {
         <img className="w-24 my-8" src={txSuccessImg} />
         <span className="font-semibold size-2">Transaction Success!</span>
         <span className="text-grayText size-sm text-center">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-          vulputate libero et velit interdum.
+          Your transaction is successfully included in Tezos blockchain.
         </span>
         <div className="flex  mt-4">
           <a
             className="button tezGr-button w-40"
-            href={`https://ghostnet.tzkt.io/${currentTransaction.txHash}`}
+            href={`https://${TEZOS_COLLECT_NETWORK.type}.tzkt.io/${currentTransaction.txHash}`}
             target="_blank"
           >
             Explore

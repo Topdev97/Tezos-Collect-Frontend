@@ -259,6 +259,10 @@ body {
     @apply flex duration-100 items-center justify-center px-8 text-white bg-[length:100%_100%] hover:bg-[length:120%_120%] hover:shadow-lg;
     background: linear-gradient(90deg, #00fbfb 0%, #0050ea 100%);
   }
+  .tezSecGr-button {
+    @apply flex duration-100 items-center justify-center px-8 text-white bg-[length:100%_100%] hover:bg-[length:120%_120%] hover:shadow-lg;
+    background: linear-gradient(90deg, #ff85e7 0%, #d22e00 100%);
+  }
 
   .main-container {
     @apply lg:px-24 px-4 pb-4 md:pb-8 overflow-hidden relative;
@@ -274,6 +278,9 @@ body {
 
   .bg-tezGr {
     background: linear-gradient(90deg, #00fbfb 0%, #0050ea 100%);
+  }
+  .bg-tezSecGr {
+    background: linear-gradient(90deg, #ff85e7 0%, #d22e00 100%);
   }
   .bg-tezLightGr {
     background: linear-gradient(90deg, #00fbfb 0%, #00a672 100%);

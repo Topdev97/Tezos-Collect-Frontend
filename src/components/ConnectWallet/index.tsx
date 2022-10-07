@@ -8,7 +8,11 @@ import { IoMdHeart } from "react-icons/io";
 import { RiWallet3Line } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import offerPercentage from "assets/images/offer-percentage.svg";
-import { TEZOS_COLLECT_NETWORK, TEZOS_COLLECT_WALLET } from "helper/constants";
+import {
+  Tezos,
+  TEZOS_COLLECT_NETWORK,
+  TEZOS_COLLECT_WALLET,
+} from "helper/constants";
 import { beautifyAddress } from "helper/formatters";
 import { useTezosCollectStore } from "store";
 
@@ -45,6 +49,7 @@ const ConnectWallet = () => {
         setActiveAddress(_activeAddress?.address);
         // console.log(activeAddress);
       }
+      Tezos.setWalletProvider(TEZOS_COLLECT_WALLET);
     };
     getActiveAccounts();
   }, []);

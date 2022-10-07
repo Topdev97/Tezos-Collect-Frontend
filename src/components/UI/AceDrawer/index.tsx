@@ -14,7 +14,7 @@ const AceDrawer = ({
   children,
 }: IProps) => {
   //   const { drawerVisible, setDrawerVisible, children } = props;
-  return (
+  return drawerVisible ? (
     <div className={`${drawerVisible ? "flex" : "hidden"} ace-drawer`}>
       <div
         className="ace-drawer-overlay"
@@ -28,6 +28,8 @@ const AceDrawer = ({
         {children}
       </div>
     </div>
+  ) : (
+    <></>
   );
 };
 export default AceDrawer;

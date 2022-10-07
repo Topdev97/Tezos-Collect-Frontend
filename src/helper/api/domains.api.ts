@@ -54,3 +54,11 @@ export const fetchDomain = async (
     return undefined;
   }
 };
+
+export const updateDomain = async (_domain: TYPE_DOMAIN) => {
+  try {
+    await axios.put(`${API_ENDPOINT}/domains/${_domain.name}`, _domain);
+  } catch (error) {
+    console.log(error);
+  }
+};

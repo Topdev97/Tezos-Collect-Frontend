@@ -16,7 +16,7 @@ const AceModal = ({
   children,
 }: IProps) => {
   //   const { modalVisible, setModalVisible, children } = props;
-  return (
+  return modalVisible ? (
     <div
       className={`${modalVisible ? "flex" : "hidden"} ace-modal`}
       style={{
@@ -35,6 +35,8 @@ const AceModal = ({
         {children}
       </div>
     </div>
+  ) : (
+    <></>
   );
 };
 export default AceModal;
