@@ -17,6 +17,7 @@ const DomainDetails = () => {
   const { domain: domainName } = useParams<{ domain: string }>();
   const {
     setMakeOfferModal,
+    setOpenAuctionModal,
     contractReady,
     activeAddress,
     findDomainByName,
@@ -25,6 +26,10 @@ const DomainDetails = () => {
     fetchOnChainDomainDataByName,
     sellOfferForOffer,
     cancelOfferToDomain,
+
+    setPlaceBidModal,
+
+    claimWinnedAuction,
   } = useTezosCollectStore();
 
   const [domain, setDomain] = useState<TYPE_DOMAIN | undefined>(undefined);
@@ -54,7 +59,7 @@ const DomainDetails = () => {
       // },
       {
         label: "Expiration Date",
-        value: domain?.expiresAt?.toLocaleString(),
+        value: domain?.expiresAt?.toLocaleString("en-us"),
       },
     ];
   }, [domain, collection]);
@@ -80,10 +85,20 @@ const DomainDetails = () => {
       offers: _onChainDomain.offers,
       topOffer: _onChainDomain.topOffer,
       includingOperator: _onChainDomain.includingOperator,
+      auctionEndsAt: _onChainDomain.auctionEndsAt,
+      auctionStartedAt: _onChainDomain.auctionStartedAt,
+      price: _onChainDomain.price,
+      isForAuction: _onChainDomain.isForAuction,
+      isForSale: _onChainDomain.isForSale,
+      topBid: _onChainDomain.topBid,
+      topBidder: _onChainDomain.topBidder,
+      ownerChanged: _onChainDomain.ownerChanged,
     };
+    console.log(_domain);
 
     setLoading(false);
     setDomain(_domain);
+
     updateCachedDomain(_domain);
     if (_domain?.collectionId) {
       setCollection(findCollectionById(_domain?.collectionId));
@@ -105,8 +120,6 @@ const DomainDetails = () => {
         callback: updateDomain,
       });
       return;
-
-      // updateDomain();
     }
   };
 
@@ -130,6 +143,41 @@ const DomainDetails = () => {
       updateDomain();
     }
   };
+  const onOpenAuction = async () => {
+    if (loading === true) return;
+
+    if ((domain?.tokenId || -1) > 0) {
+      setOpenAuctionModal({
+        visible: true,
+        tokenId: domain?.tokenId || -1,
+        includingOperator: domain?.includingOperator || false,
+        callback: updateDomain,
+      });
+      return;
+    }
+  };
+  const onPlaceBid = async () => {
+    if (loading === true) return;
+
+    if ((domain?.tokenId || -1) > 0) {
+      setPlaceBidModal({
+        visible: true,
+        tokenId: domain?.tokenId || -1,
+        topBid: Math.max(domain?.topBid || 0, domain?.price || 0),
+        callback: updateDomain,
+      });
+      return;
+    }
+  };
+
+  const onClaimWinnedAuction = async () => {
+    await claimWinnedAuction(
+      domain?.tokenId || -1,
+      updateDomain,
+      domain?.includingOperator || false,
+      isYourDomain
+    );
+  };
 
   const domainListings = {
     textAlign: "left",
@@ -150,6 +198,49 @@ const DomainDetails = () => {
     return {
       textAlign: "left",
       heading: `Offers (${domain?.offers?.length})`,
+      collapsible: true,
+      header: [
+        "Price",
+        "Offer At",
+        "Valid Until",
+        "From",
+        <span className="mx-auto">Action</span>,
+      ],
+      tableData:
+        domain?.offers?.map((offer) => [
+          `${(offer.offer_amount / 10 ** 6).toFixed(2)} ꜩ`,
+          dateDifFromNow(offer.offer_made_at),
+          offer.offer_until < new Date()
+            ? "Expired"
+            : dateDifFromNow(offer.offer_until),
+          offer.offerer === activeAddress
+            ? "- YOU -"
+            : beautifyAddress(offer.offerer),
+          offer.offerer === activeAddress ? (
+            <button
+              className="tezSecGr-button size-sm px-2 py-1"
+              onClick={onCancelOffer}
+            >
+              Cancel
+            </button>
+          ) : isYourDomain ? (
+            <button
+              className="mx-auto tezSecGr-button py-1"
+              onClick={() => onSellForOffer(offer.offerer)}
+            >
+              Sell
+            </button>
+          ) : (
+            ""
+          ),
+        ]) || [],
+    };
+  }, [domain]);
+
+  const domainBids = useMemo(() => {
+    return {
+      textAlign: "left",
+      heading: `Bids (${domain?.offers?.length})`,
       collapsible: true,
       header: [
         "Price",
@@ -253,6 +344,20 @@ const DomainDetails = () => {
     { name: "axis.tez", price: 107.56, bookmarked: true },
   ];
 
+  const topBidInfo = () => {
+    return (
+      <div className="flex flex-col font-semibold">
+        <span className="text-grayText">Top Bid</span>
+        {domain?.topBid.toFixed(2)} ꜩ<span className="text-grayText">From</span>
+        <div className="mt-4">
+          <span className="flex-1 address-gr-br-box p-2">
+            {beautifyAddress(domain?.topBidder || "")}
+          </span>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="flex flex-col gap-8 pt-4">
       {/* <TopCollections /> */}
@@ -260,8 +365,11 @@ const DomainDetails = () => {
         <div className="flex items-center py-3 md:py-6 px-4 md:px-8 border-b border-white/20">
           <h4>{domainName}.tez</h4>
           <span className="bg-tezGr rounded-full px-2 ml-4">
-            {domain?.isForSale === false && "Sale"}
-            {domain?.isForAuction && "Auction"}
+            {domain?.isForSale && "Sale"}
+            {domain?.isForAuction &&
+              (domain.auctionEndsAt < new Date()
+                ? "Auction Expired"
+                : "Auction")}
           </span>
 
           <div className="flex text-tezText ml-auto gap-2 md:gap-6">
@@ -320,12 +428,14 @@ const DomainDetails = () => {
               <div className="flex flex-col p-4">
                 <div className="flex justify-between">
                   <div>
-                    <span className="size-1 font-semibold">PRICE</span>
+                    <span className="size-1 font-semibold">Top Bid Amount</span>
                     <br />
                     <span className="text-grayText">
-                      Auction Ends
+                      {new Date() > domain.auctionEndsAt
+                        ? "Auction Expired"
+                        : "Auction Ends"}
                       <br />
-                      {domain?.auctionEndsAt?.toLocaleString()}
+                      {dateDifFromNow(domain?.auctionEndsAt?.toLocaleString())}
                     </span>
                   </div>
                   <span className="font-bold size-2 text-right">
@@ -334,9 +444,13 @@ const DomainDetails = () => {
                     ($3,673.15)
                   </span>
                 </div>
-                <div className="flex mt-2">
-                  <button className="tezGr-button px-4">Place a Bid</button>
-                </div>
+                {!isYourDomain && domain.topBidder !== activeAddress && (
+                  <div className="flex mt-2">
+                    <button className="tezGr-button px-4" onClick={onPlaceBid}>
+                      Place a Bid
+                    </button>
+                  </div>
+                )}
               </div>
             )}
             {domain?.isForAuction === false && domain.isForSale === false && (
@@ -356,38 +470,79 @@ const DomainDetails = () => {
                   ) : (
                     ""
                   )}
-                  <button className="ml-auto tezGr-button px-6 py-3">
-                    List for Sale
-                  </button>
-                  <button className="ml-4 tezGr-button px-6 py-3">
-                    List for Auction
-                  </button>
+
+                  {((domain.auctionEndsAt < new Date() && domain.topBid == 0) ||
+                    !domain.isForAuction) &&
+                    !domain.isForSale && (
+                      <>
+                        <button className="ml-auto tezGr-button px-6 py-3">
+                          List for Sale
+                        </button>
+                        <button
+                          className="ml-4 tezGr-button px-6 py-3"
+                          onClick={onOpenAuction}
+                        >
+                          List for Auction
+                        </button>
+                      </>
+                    )}
+
+                  {domain.isForAuction && domain.topBid > 0 && (
+                    <>
+                      {topBidInfo()}
+                      <button
+                        className="ml-auto tezSecGr-button px-6 md:py-3"
+                        onClick={onClaimWinnedAuction}
+                        disabled={new Date() < domain.auctionEndsAt}
+                      >
+                        End Auction
+                      </button>
+                    </>
+                  )}
                 </div>
               ) : (
                 <div className="flex items-center border-t-2 px-4 py-4 mt-auto border-itemBorder">
-                  {domain?.topOffer !== 0 && (
+                  {domain?.topBid > 0 && (
+                    <>
+                      {topBidInfo()}
+
+                      {(domain.topBidder === activeAddress ||
+                        domain.owner === activeAddress) && (
+                        <button
+                          className="ml-auto tezSecGr-button px-6 md:py-3"
+                          onClick={onClaimWinnedAuction}
+                          disabled={new Date() < domain.auctionEndsAt}
+                        >
+                          End Auction
+                        </button>
+                      )}
+                    </>
+                  )}
+                  {domain.isForSale && domain?.topOffer !== 0 && (
                     <div className="flex flex-col font-semibold">
                       <span className="text-grayText">Top Offer</span>
                       {domain?.topOffer.toFixed(2)} ꜩ
                     </div>
                   )}
-                  {domain?.offers?.find(
-                    (item) => item.offerer === activeAddress
-                  ) ? (
-                    <button
-                      className="ml-auto tezSecGr-button px-6 md:py-3"
-                      onClick={onCancelOffer}
-                    >
-                      Cancel Offer
-                    </button>
-                  ) : (
-                    <button
-                      className="ml-auto tezGr-button px-6 md:py-3"
-                      onClick={onMakeOffer}
-                    >
-                      Make Offer
-                    </button>
-                  )}
+                  {!domain.isForAuction &&
+                    !domain.isForSale &&
+                    (domain?.offers?.find(
+                      (item) => item.offerer === activeAddress
+                    ) ? (
+                      <button
+                        className="ml-auto tezSecGr-button px-6 md:py-3"
+                        onClick={onCancelOffer}
+                      >
+                        Cancel Offer
+                      </button>
+                    ) : (
+                      <button
+                        className="ml-auto tezGr-button px-6 md:py-3"
+                        onClick={onMakeOffer}
+                      >
+                        Make Offer
+                      </button>
+                    ))}
                 </div>
               )
             ) : (
@@ -421,7 +576,8 @@ const DomainDetails = () => {
         <div className="flex-grow">
           <ComponentTable {...domainListings} />
         </div>
-        <div className="flex-grow">
+        <div className="flex-grow gap-6 flex flex-col">
+          {domain?.isForAuction && <ComponentTable {...domainBids} />}
           <ComponentTable {...domainOffers} />
         </div>
       </div>

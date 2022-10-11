@@ -1,0 +1,66 @@
+<svg xml:space="preserve" viewBox="0 0 100 100" y="0" x="0" xmlns="http://www.w3.org/2000/svg" width="200px"
+    height="200px">
+    <g class="ldl-scale" style="transform-origin: 50% 50%; transform: rotate(0deg) scale(1, 1);">
+        <g class="ldl-ani">
+            <g class="ldl-layer">
+                <g class="ldl-ani"
+                    style="transform-origin: 50px 50px; opacity: 1; animation: 2.63158s linear -1.46199s infinite normal forwards running keyframe-blink;">
+                    <circle fill="#333" r="5.1" cy="15.1" cx="50.5" style="fill: rgb(0, 187, 197);"></circle>
+                </g>
+            </g>
+            <g class="ldl-layer">
+                <g class="ldl-ani"
+                    style="transform-origin: 50px 50px; opacity: 1; animation: 2.63158s linear -1.60819s infinite normal forwards running keyframe-blink;">
+                    <circle r="5.1" fill="#333" cy="25.7" cx="75.1" transform="rotate(-45.001 75.062 25.655)"
+                        style="fill: rgb(0, 187, 197);"></circle>
+                </g>
+            </g>
+            <g class="ldl-layer">
+                <g class="ldl-ani"
+                    style="transform-origin: 50px 50px; opacity: 1; animation: 2.63158s linear -1.75439s infinite normal forwards running keyframe-blink;">
+                    <circle fill="#333" r="5.1" cy="50.5" cx="84.9" style="fill: rgb(0, 187, 197);"></circle>
+                </g>
+            </g>
+            <g class="ldl-layer">
+                <g class="ldl-ani"
+                    style="transform-origin: 50px 50px; opacity: 1; animation: 2.63158s linear -1.90058s infinite normal forwards running keyframe-blink;">
+                    <circle r="5.1" fill="#333" cy="75.1" cx="74.3" transform="rotate(-45.001 74.345 75.063)"
+                        style="fill: rgb(0, 187, 197);"></circle>
+                </g>
+            </g>
+            <g class="ldl-layer">
+                <g class="ldl-ani"
+                    style="transform-origin: 50px 50px; opacity: 1; animation: 2.63158s linear -2.04678s infinite normal forwards running keyframe-blink;">
+                    <circle fill="#333" r="5.1" cy="84.9" cx="49.5" style="fill: rgb(0, 187, 197);"></circle>
+                </g>
+            </g>
+            <g class="ldl-layer">
+                <g class="ldl-ani"
+                    style="transform-origin: 50px 50px; opacity: 1; animation: 2.63158s linear -2.19298s infinite normal forwards running keyframe-blink;">
+                    <circle r="5.1" fill="#333" cy="74.3" cx="24.9" transform="rotate(-45.001 24.937 74.347)"
+                        style="fill: rgb(0, 187, 197);"></circle>
+                </g>
+            </g>
+            <g class="ldl-layer">
+                <g class="ldl-ani"
+                    style="transform-origin: 50px 50px; opacity: 1; animation: 2.63158s linear -2.33918s infinite normal forwards running keyframe-blink;">
+                    <circle fill="#333" r="5.1" cy="49.5" cx="15.1" style="fill: rgb(0, 187, 197);"></circle>
+                </g>
+            </g>
+            <g class="ldl-layer">
+                <g class="ldl-ani"
+                    style="transform-origin: 50px 50px; opacity: 1; animation: 2.63158s linear -2.48538s infinite normal forwards running keyframe-blink;">
+                    <circle r="5.1" fill="#333" cy="24.9" cx="25.7" transform="rotate(-45.001 25.654 24.938)"
+                        style="fill: rgb(0, 187, 197);"></circle>
+                </g>
+            </g>
+            <g class="ldl-layer">
+                <g class="ldl-ani" style="transform-origin: 50px 50px; opacity: 1;">
+                    <path fill="#666"
+                        d="M56.7 48.5c3-1.6 4.8-4.3 4.8-7.2v-3.1h1.9c1 0 1.8-.8 1.8-1.8s-.8-1.8-1.8-1.8H37.6c-1 0-1.8.8-1.8 1.8s.8 1.8 1.8 1.8h1.9v3.1c0 2.9 1.8 5.6 4.8 7.2.8.4 1.3 1.1 1.3 1.7v.6c0 .6-.5 1.3-1.3 1.7-3 1.6-4.8 4.3-4.8 7.2v3.1h-1.9c-1 0-1.8.8-1.8 1.8s.8 1.8 1.8 1.8h25.7c1 0 1.8-.8 1.8-1.8s-.8-1.8-1.8-1.8h-1.9v-3.1c0-2.9-1.8-5.6-4.8-7.2-.8-.4-1.3-1.1-1.3-1.7v-.6c.1-.6.5-1.3 1.4-1.7zM55 55.7c1.9 1 3 2.5 3 4.1v3.1H43v-3.1c0-1.6 1.1-3.1 3-4.1 2-1.1 3.2-2.9 3.2-4.8v-.6c0-2-1.2-3.8-3.2-4.8-1.9-1-3-2.5-3-4.1v-3.1h15v3.1c0 1.6-1.1 3.1-3 4.1-2 1.1-3.2 2.9-3.2 4.8v.6c0 1.9 1.2 3.7 3.2 4.8z"
+                        style="fill: rgb(0, 156, 255);"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

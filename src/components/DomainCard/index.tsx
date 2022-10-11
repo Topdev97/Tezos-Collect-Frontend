@@ -58,7 +58,7 @@ const DomainCard = (props: {
           <span className="font-semibold">
             <span className="size-sm text-grayText">Current Bid</span>
             <br />
-            <span className="text-tezLightGr">{price} ꜩ</span>
+            <span className="text-tezLightGr">{price.toFixed(2)} ꜩ</span>
           </span>
           <button
             className="ml-auto tezGr-button size-sm"
@@ -100,7 +100,7 @@ const DomainCard = (props: {
           <span className="font-semibold">
             <span className="size-sm text-grayText">Current Bid</span>
             <br />
-            <span className="text-tezLightGr">{price} ꜩ</span>
+            <span className="text-tezLightGr">{price.toFixed(2)} ꜩ</span>
           </span>
         </div>
       )}

@@ -5,7 +5,7 @@ import { TbHeart } from "react-icons/tb";
 
 import tezosCollectLogo from "assets/images/tezos-collect-logo.svg";
 import tezosPunk from "assets/images/tezos-punk.png";
-import PlaceBidModal from "components/PlaceBidModal";
+import { useTezosCollectStore } from "store";
 
 type IBidDrawerProps = {
   bidDrawerVisible: boolean;
@@ -22,19 +22,14 @@ const BidDrawer = ({
 }: IBidDrawerProps) => {
   const [activeTab, setActiveTab] = useState<T_TABID>("TAB_DETAILS");
 
-  const [placeBidModalVisible, setPlaceBidModalVisible] =
-    useState<boolean>(false);
+  const { setPlaceBidModalVisible } = useTezosCollectStore();
+
   const onPlaceBid = () => {
     setPlaceBidModalVisible(true);
   };
 
   return (
     <>
-      <PlaceBidModal
-        drawerDomain={drawerDomain}
-        placeBidModalVisible={placeBidModalVisible}
-        setplaceBidModalVisible={setPlaceBidModalVisible}
-      />
       <AceDrawer
         drawerVisible={bidDrawerVisible}
         setDrawerVisible={setBidDrawerVisible}
@@ -67,7 +62,9 @@ const BidDrawer = ({
           <div className="bg-tezDarkBg rounded-lg p-4 flex gap-8">
             <div className="flex flex-1 flex-col gap-2">
               <span className="text-grayText size-sm">Current Bid</span>
-              <span className="text-tezGr">{drawerDomain?.price} ꜩ</span>
+              <span className="text-tezGr">
+                {drawerDomain?.price.toFixed(2)} ꜩ
+              </span>
               <span className="size-sm">$ 1802.42</span>
             </div>
             <div className="border-r-2 border-r-itemBorder" />

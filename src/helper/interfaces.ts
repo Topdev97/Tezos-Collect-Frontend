@@ -4,6 +4,11 @@ interface TYPE_DOMAIN_OFFER {
   offer_until: Date;
   offerer: string;
 }
+interface TYPE_DOMAIN_BID {
+  bid_amount: number;
+  bid_made_at: Date;
+  bidder: string;
+}
 interface TYPE_DOMAIN {
   name: string;
   owner: string;
@@ -39,6 +44,9 @@ interface TYPE_DOMAIN {
   includingOperator?: boolean;
 
   offers?: TYPE_DOMAIN_OFFER[];
+  bids?: TYPE_DOMAIN_BID[];
+
+  ownerChanged: boolean;
 }
 
 interface TYPE_COLLECTION {
@@ -74,6 +82,7 @@ type TYPE_TX_STATUS = "TX_NONE" | "TX_SUBMIT" | "TX_FAILED" | "TX_SUCCESS";
 export type {
   TYPE_COLLECTION,
   TYPE_DOMAIN_OFFER,
+  TYPE_DOMAIN_BID,
   TYPE_DOMAIN,
   TYPE_VIEWMODE,
   TYPE_DOMAIN_CARD,
@@ -115,6 +124,9 @@ export const initializeDomain = (): TYPE_DOMAIN => {
 
     includingOperator: false,
     offers: [],
+    bids: [],
+
+    ownerChanged: true,
   };
   _domain = JSON.parse(JSON.stringify(_domain));
   return _domain;

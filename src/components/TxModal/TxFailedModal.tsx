@@ -26,7 +26,7 @@ const TxFailedModal = () => {
       zIndex={25}
     >
       <div className="p-8 flex flex-col items-center gap-4 w-[25rem]">
-        <img className="w-24 my-8" src={txFailedImg} />
+        <img className="w-24 h-24 my-8" src={txFailedImg} />
         <span className="font-semibold size-2">Transaction failed!</span>
         <span className="text-grayText size-sm text-center">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc

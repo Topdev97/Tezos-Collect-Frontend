@@ -27,7 +27,7 @@ const TxSuccessModal = () => {
       zIndex={25}
     >
       <div className="p-8 flex flex-col items-center gap-4 w-[25rem]">
-        <img className="w-24 my-8" src={txSuccessImg} />
+        <img className="w-24 h-24 my-8" src={txSuccessImg} />
         <span className="font-semibold size-2">Transaction Success!</span>
         <span className="text-grayText size-sm text-center">
           Your transaction is successfully included in Tezos blockchain.

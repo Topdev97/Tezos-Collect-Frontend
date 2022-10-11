@@ -239,6 +239,10 @@ body {
     @apply rounded-lg py-2 px-4 font-medium hover:bg-opacity-80;
   }
 
+  button:disabled {
+    @apply grayscale cursor-not-allowed;
+  }
+
   svg {
     @apply duration-100;
   }
@@ -398,6 +402,10 @@ body {
   .animation-slide-left {
     animation: slide-left 0.2s ease-out;
   }
+  .animation-blink {
+    animation: keyframe-blink 2.63158s linear -1.46199s infinite normal forwards
+      running;
+  }
 
   @keyframes enter {
     0% {
@@ -419,6 +427,23 @@ body {
 
     100% {
       transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  @keyframes keyframe-blink {
+    0% {
+      opacity: 1;
+    }
+    49.75% {
+      opacity: 1;
+    }
+    50.25% {
+      opacity: 0;
+    }
+    99.5% {
+      opacity: 0;
+    }
+    100% {
       opacity: 1;
     }
   }

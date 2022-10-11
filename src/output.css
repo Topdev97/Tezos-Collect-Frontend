@@ -615,6 +615,13 @@ select{
   --tw-bg-opacity: 0.8;
 }
 
+button:disabled{
+  cursor: not-allowed;
+  --tw-grayscale: grayscale(100%);
+  -webkit-filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+          filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
 svg{
   transition-duration: 100ms;
 }
@@ -881,6 +888,13 @@ svg{
   background-color: rgb(75 85 99 / var(--tw-bg-opacity));
 }
 
+.animation-blink {
+  -webkit-animation: keyframe-blink 2.63158s linear -1.46199s infinite normal forwards
+      running;
+          animation: keyframe-blink 2.63158s linear -1.46199s infinite normal forwards
+      running;
+}
+
 @-webkit-keyframes enter {
   0% {
     -webkit-transform: scale(0.9);
@@ -933,6 +947,50 @@ svg{
   100% {
     -webkit-transform: translateX(0);
             transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes keyframe-blink {
+  0% {
+    opacity: 1;
+  }
+
+  49.75% {
+    opacity: 1;
+  }
+
+  50.25% {
+    opacity: 0;
+  }
+
+  99.5% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes keyframe-blink {
+  0% {
+    opacity: 1;
+  }
+
+  49.75% {
+    opacity: 1;
+  }
+
+  50.25% {
+    opacity: 0;
+  }
+
+  99.5% {
+    opacity: 0;
+  }
+
+  100% {
     opacity: 1;
   }
 }
@@ -1138,10 +1196,6 @@ svg{
   z-index: 1;
 }
 
-.z-20{
-  z-index: 20;
-}
-
 .col-span-3{
   grid-column: span 3 / span 3;
 }
@@ -1229,12 +1283,16 @@ svg{
   margin-right: 0.5rem;
 }
 
-.mt-\[3px\]{
-  margin-top: 3px;
-}
-
 .mt-4{
   margin-top: 1rem;
+}
+
+.mb-4{
+  margin-bottom: 1rem;
+}
+
+.mt-\[3px\]{
+  margin-top: 3px;
 }
 
 .mb-1{
@@ -1259,10 +1317,6 @@ svg{
 
 .mt-6{
   margin-top: 1.5rem;
-}
-
-.mb-4{
-  margin-bottom: 1rem;
 }
 
 .flex{
@@ -1301,12 +1355,24 @@ svg{
   height: 3rem;
 }
 
+.h-\[1px\]{
+  height: 1px;
+}
+
 .h-8{
   height: 2rem;
 }
 
 .h-9{
   height: 2.25rem;
+}
+
+.h-24{
+  height: 6rem;
+}
+
+.h-36{
+  height: 9rem;
 }
 
 .h-6{
@@ -1323,10 +1389,6 @@ svg{
 
 .h-5{
   height: 1.25rem;
-}
-
-.h-\[1px\]{
-  height: 1px;
 }
 
 .max-h-0{
@@ -1395,6 +1457,10 @@ svg{
 
 .w-40{
   width: 10rem;
+}
+
+.w-36{
+  width: 9rem;
 }
 
 .w-6{
@@ -1528,16 +1594,16 @@ svg{
   gap: 1.25rem;
 }
 
+.gap-1{
+  gap: 0.25rem;
+}
+
 .gap-6{
   gap: 1.5rem;
 }
 
 .gap-12{
   gap: 3rem;
-}
-
-.gap-1{
-  gap: 0.25rem;
 }
 
 .gap-y-4{
@@ -1718,6 +1784,11 @@ svg{
   background-color: rgb(34 44 52 / var(--tw-bg-opacity));
 }
 
+.bg-grayText{
+  --tw-bg-opacity: 1;
+  background-color: rgb(106 123 137 / var(--tw-bg-opacity));
+}
+
 .bg-componentBorder{
   background-color: #FFFFFF14;
 }
@@ -1738,11 +1809,6 @@ svg{
 .bg-white{
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-.bg-grayText{
-  --tw-bg-opacity: 1;
-  background-color: rgb(106 123 137 / var(--tw-bg-opacity));
 }
 
 .fill-tezGrSt{

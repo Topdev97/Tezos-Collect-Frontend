@@ -1,77 +1,64 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { TYPE_DOMAIN } from "helper/interfaces";
 import AceModal from "components/UI/AceModal";
 import AceModalCloseButton from "components/UI/AceModal/AceModalCloseButton";
 import { useTezosCollectStore } from "store";
 
-type IPlaceBidModalProps = {
-  placeBidModalVisible: boolean;
-  setplaceBidModalVisible: any;
-  drawerDomain: TYPE_DOMAIN | undefined;
-};
+const PlaceBidModal = () => {
+  const { activeAddress, placeBidModal, placeBid, setPlaceBidModalVisible } =
+    useTezosCollectStore();
+  const bidAmountRef = useRef<HTMLInputElement>(null);
 
-const PlaceBidModal = ({
-  placeBidModalVisible,
-  setplaceBidModalVisible,
-  drawerDomain = undefined,
-}: IPlaceBidModalProps) => {
-  const currentTransaction = useTezosCollectStore(
-    (state) => state.currentTransaction
-  );
-  const setCurrentTransaction = useTezosCollectStore(
-    (state) => state.setCurrentTransaction
-  );
-  const onPlaceBidSubmit = () => {
-    setCurrentTransaction({
-      txHash: "onkCuDUWTp6yxnCYNuHc6u6yCNfjWKe1ZBkMkkjnxu5WKzNrLuo",
-      txStatus: "TX_SUBMIT",
-    });
+  const onPlaceBidSubmit = async () => {
+    await placeBid(
+      placeBidModal.tokenId,
+      parseFloat(bidAmountRef.current?.value || "0")
+    );
+    if (placeBidModal.callback) placeBidModal.callback();
   };
   return (
-    <div className="z-20">
-      <AceModal
-        modalVisible={placeBidModalVisible}
-        setModalVisible={setplaceBidModalVisible}
-        drawAlign="D_CENTER"
-      >
-        <div className="p-8 flex flex-col gap-4 w-[25rem]">
-          <div className="flex items-center">
-            <span className="size-1">Place a Bid</span>
-            <AceModalCloseButton setModalVisible={setplaceBidModalVisible} />
-          </div>
-          <span className="text-grayText">
-            You must bid at least{" "}
-            <span className="text-white">{drawerDomain?.price} ꜩ</span>
+    <AceModal
+      modalVisible={placeBidModal.visible}
+      setModalVisible={setPlaceBidModalVisible}
+      drawAlign="D_CENTER"
+      zIndex={25}
+    >
+      <div className="p-8 flex flex-col gap-4 w-[25rem]">
+        <div className="flex items-center">
+          <span className="size-1">Place a Bid</span>
+          <AceModalCloseButton setModalVisible={setPlaceBidModalVisible} />
+        </div>
+        <span className="text-grayText">
+          You must bid at least{" "}
+          <span className="text-white">
+            {(placeBidModal.topBid * 1.1).toFixed(2)} ꜩ
           </span>
-          <input
-            className="bg-tezDarkBg border-inputBorder"
-            placeholder="Enter Amount"
-          />
-          <div className="h-[2px] bg-componentBorder my-2" />
-          <div className="flex flex-col gap-2">
+        </span>
+        <input
+          className="bg-tezDarkBg border-inputBorder"
+          placeholder="Enter Amount"
+          ref={bidAmountRef}
+        />
+        <div className="h-[2px] bg-componentBorder my-2" />
+        {/* <div className="flex flex-col gap-2">
             <div className="flex justify-between">
               <span className="text-grayText">Your Balance</span>
               <span className="font-semibold">12.251 ꜩ</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-grayText">Service Fee</span>
-              <span className="font-semibold">0.05 ꜩ</span>
-            </div>
-            <div className="flex justify-between">
               <span className="text-grayText">Total bid amount</span>
               <span className="font-semibold">2.301 ꜩ</span>
             </div>
-          </div>
+          </div> */}
 
-          <button
-            className="tezGr-button py-3"
-            onClick={() => onPlaceBidSubmit()}
-          >
-            Place Bid
-          </button>
-        </div>
-      </AceModal>
-    </div>
+        <button
+          className="tezGr-button py-3"
+          onClick={() => onPlaceBidSubmit()}
+        >
+          Place Bid
+        </button>
+      </div>
+    </AceModal>
   );
 };
 export default PlaceBidModal;

@@ -36,6 +36,19 @@ interface IMakeOfferModal {
   tokenId: number;
   callback: any;
 }
+interface IOpenAuctionModal {
+  visible: boolean;
+  includingOperator: boolean;
+  tokenId: number;
+
+  callback: any;
+}
+interface IPlaceBidModal {
+  visible: boolean;
+  tokenId: number;
+  callback: any;
+  topBid: number;
+}
 interface IDomainCart {
   cartDrawerVisible: boolean;
   cartContents: TYPE_DOMAIN[];
@@ -99,6 +112,33 @@ interface ITezosCollectState {
   makeOfferModal: IMakeOfferModal;
   setMakeOfferModal: { (_makeOfferModal: IMakeOfferModal): void };
   setMakeOfferModalVisible: { (visible: boolean): void };
+
+  openAuctionModal: IOpenAuctionModal;
+  setOpenAuctionModal: { (_openAuctionModal: IOpenAuctionModal): void };
+  setOpenAuctionModalVisible: { (visible: boolean): void };
+  listForAuction: {
+    (
+      tokenId: number,
+      includingOperator: boolean,
+      defaultAmount: number,
+      durationId: number
+    ): Promise<boolean>;
+  };
+
+  // auction
+  placeBidModal: IPlaceBidModal;
+  setPlaceBidModal: { (_placeBidModal: IPlaceBidModal): void };
+  setPlaceBidModalVisible: { (visible: boolean): void };
+  placeBid: { (tokenId: number, bidAmount: number): void };
+
+  claimWinnedAuction: {
+    (
+      tokenId: number,
+      callback: any,
+      includingOperator: boolean,
+      isYourDomain: boolean
+    ): void;
+  };
 }
 
 export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
@@ -283,10 +323,12 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
           TaquitoUtils.char2Bytes(`${name}${DOMAIN_SUFFIX}`)
         ),
       ]);
-      console.log("_marketPlaceStorage", _marketPlaceStorage);
-      const offers_map = await _marketPlaceStorage?.offers_map.get(
-        _record.tzip12_token_id
-      );
+      const [offers_map, orders_map] = await Promise.all([
+        _marketPlaceStorage?.offers_map.get(_record.tzip12_token_id),
+        _marketPlaceStorage?.orders_map.get(_record.tzip12_token_id),
+      ]);
+      console.log("orders_map", orders_map);
+      console.log("offers_map", offers_map);
 
       const offers: TYPE_DOMAIN_OFFER[] = [];
       let topOffer: number = 0;
@@ -316,6 +358,17 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
         offers,
         topOffer,
       };
+
+      if (orders_map) {
+        _domain.auctionEndsAt = new Date(orders_map.auction_ends_at);
+        _domain.auctionStartedAt = new Date(orders_map.auction_started_at);
+        _domain.price = orders_map.default_amount.toNumber() / 10 ** 6;
+        _domain.isForAuction = orders_map.is_for_auction;
+        _domain.isForSale = orders_map.is_for_sale;
+        _domain.topBid = orders_map.last_bid_amount.toNumber() / 10 ** 6;
+        _domain.topBidder = orders_map.last_bidder;
+        _domain.ownerChanged = _record.owner != orders_map.owner;
+      }
       return _domain;
     } catch (error) {
       console.log(error);
@@ -459,6 +512,185 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       txHash: _txOp.opHash,
       txStatus: "TX_SUCCESS",
     });
+    return true;
+  },
+
+  openAuctionModal: {
+    tokenId: -1,
+    visible: false,
+    includingOperator: false,
+    callback: null,
+  },
+  setOpenAuctionModal: (_openAuctionModal: IOpenAuctionModal) => {
+    set((state: any) => ({
+      ...state,
+      openAuctionModal: _openAuctionModal,
+    }));
+  },
+  setOpenAuctionModalVisible: (_visible: boolean) => {
+    set((state: any) => ({
+      ...state,
+      openAuctionModal: {
+        ...state.openAuctionModal,
+        visible: _visible,
+      },
+    }));
+  },
+
+  listForAuction: async (
+    tokenId: number,
+    includingOperator: boolean,
+    defaultAmount: number,
+    durationId: number
+  ) => {
+    if (get().activeAddress === "") {
+      alert("Need to connect wallet first!");
+      return false;
+    }
+    if (get().contractReady === false) return false;
+
+    const _marketPlaceContract = get().marketPlaceContract;
+    const _nameRegistryContract = get().nameRegistryContract;
+    let _txOp: any;
+    if (!includingOperator) {
+      _txOp = await Tezos.wallet
+        .batch()
+        .withContractCall(
+          // @ts-ignore
+          _nameRegistryContract.methods.update_operators([
+            {
+              add_operator: {
+                owner: get().activeAddress,
+                operator: MARKETPLACE_CONTRACT_ADDRESS,
+                token_id: tokenId,
+              },
+            },
+          ])
+        )
+        .withContractCall(
+          // @ts-ignore
+          _marketPlaceContract?.methods.list_for_auction(
+            defaultAmount * 10 ** 6,
+            durationId,
+            tokenId
+          )
+        )
+        .send();
+    } else
+      _txOp = await _marketPlaceContract?.methods
+        .list_for_auction(defaultAmount * 10 ** 6, durationId, tokenId)
+        .send();
+
+    get().setOpenAuctionModalVisible(false);
+    get().setCurrentTransaction({
+      txHash: _txOp.opHash,
+      txStatus: "TX_SUBMIT",
+    });
+    await _txOp.confirmation(1);
+    get().setCurrentTransaction({
+      txHash: _txOp.opHash,
+      txStatus: "TX_SUCCESS",
+    });
+
+    return true;
+  },
+
+  placeBidModal: { tokenId: -1, visible: false, callback: null, topBid: 0 },
+  setPlaceBidModal: (_placeBidModal: IPlaceBidModal) => {
+    set((state: any) => ({
+      ...state,
+      placeBidModal: _placeBidModal,
+    }));
+  },
+  setPlaceBidModalVisible: (_visible: boolean) => {
+    set((state: any) => ({
+      ...state,
+      placeBidModal: {
+        ...state.placeBidModal,
+        visible: _visible,
+      },
+    }));
+  },
+
+  placeBid: async (tokenId: number, bidAmount: number) => {
+    if (get().activeAddress === "") {
+      alert("Need to connect wallet first!");
+      return false;
+    }
+    if (get().contractReady === false) return false;
+
+    const _marketPlaceContract = get().marketPlaceContract;
+    const _txOp: any = await _marketPlaceContract?.methods
+      .place_bid(tokenId)
+      .send({ amount: bidAmount });
+
+    get().setPlaceBidModalVisible(false);
+    get().setCurrentTransaction({
+      txHash: _txOp.opHash,
+      txStatus: "TX_SUBMIT",
+    });
+    await _txOp.confirmation(1);
+    get().setCurrentTransaction({
+      txHash: _txOp.opHash,
+      txStatus: "TX_SUCCESS",
+    });
+
+    return true;
+  },
+
+  claimWinnedAuction: async (
+    tokenId: number,
+    callback: any,
+    includingOperator: boolean,
+    isYourDomain: boolean
+  ) => {
+    console.log(includingOperator, isYourDomain);
+    if (get().activeAddress === "") {
+      alert("Need to connect wallet first!");
+      return false;
+    }
+    if (get().contractReady === false) return false;
+
+    const _marketPlaceContract = get().marketPlaceContract;
+    const _nameRegistryContract = get().nameRegistryContract;
+    let _txOp: any;
+    if (isYourDomain === true && includingOperator === false) {
+      _txOp = await Tezos.wallet
+        .batch()
+        .withContractCall(
+          // @ts-ignore
+          _nameRegistryContract.methods.update_operators([
+            {
+              add_operator: {
+                owner: get().activeAddress,
+                operator: MARKETPLACE_CONTRACT_ADDRESS,
+                token_id: tokenId,
+              },
+            },
+          ])
+        )
+        .withContractCall(
+          // @ts-ignore
+          _marketPlaceContract?.methods.claim_winned_auction(tokenId)
+        )
+        .send();
+    } else
+      _txOp = await _marketPlaceContract?.methods
+        .claim_winned_auction(tokenId)
+        .send();
+
+    get().setPlaceBidModalVisible(false);
+    get().setCurrentTransaction({
+      txHash: _txOp.opHash,
+      txStatus: "TX_SUBMIT",
+    });
+    await _txOp.confirmation(1);
+    get().setCurrentTransaction({
+      txHash: _txOp.opHash,
+      txStatus: "TX_SUCCESS",
+    });
+
+    if (callback) callback();
     return true;
   },
 }));
