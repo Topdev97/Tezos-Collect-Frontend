@@ -18,6 +18,9 @@ const DomainDetails = () => {
   const {
     setMakeOfferModal,
     setOpenAuctionModal,
+    setListForSaleModal,
+    cancelForSale,
+    buyForSale,
     contractReady,
     activeAddress,
     findDomainByName,
@@ -179,6 +182,36 @@ const DomainDetails = () => {
     );
   };
 
+  const onListForSale = async () => {
+    if (loading === true) return;
+
+    if ((domain?.tokenId || -1) > 0) {
+      setListForSaleModal({
+        visible: true,
+        tokenId: domain?.tokenId || -1,
+        name: domain?.name || "",
+        includingOperator: domain?.includingOperator || false,
+        callback: updateDomain,
+      });
+      return;
+    }
+  };
+  const onCancelListing = async () => {
+    if (loading === true) return;
+
+    if ((domain?.tokenId || -1) > 0) {
+      await cancelForSale(domain?.tokenId || -1);
+      updateDomain();
+    }
+  };
+  const onBuyForSale = async () => {
+    if (loading === true) return;
+
+    if ((domain?.tokenId || -1) > 0) {
+      await buyForSale(domain?.tokenId || -1, domain?.price || 0);
+      updateDomain();
+    }
+  };
   const domainListings = {
     textAlign: "left",
     heading: "Listings (6)",
@@ -404,24 +437,31 @@ const DomainDetails = () => {
                   <div>
                     <span className="size-1 font-semibold">PRICE</span>
                     <br />
-                    <span className="text-grayText">
-                      Sale Ends
+                    {/* <span className="text-grayText">
+                      Sale started at
                       <br />
-                      2022/10/12 02:05:45
-                    </span>
+                      {domain.saleStartedAt.toLocaleDateString()}
+                    </span> */}
                   </div>
                   <span className="font-bold size-2 text-right">
-                    2.28 ꜩ
+                    {domain?.price.toFixed(2)} ꜩ
                     <br />
                     ($3,673.15)
                   </span>
                 </div>
-                <div className="flex mt-2">
-                  <button className="tezGr-button px-4">Buy Now</button>
-                  <button className="ml-4 px-4 hover-bg-tezGr">
-                    Add to cart
-                  </button>
-                </div>
+                {!isYourDomain && (
+                  <div className="flex mt-2">
+                    <button
+                      className="tezGr-button px-4"
+                      onClick={onBuyForSale}
+                    >
+                      Buy Now
+                    </button>
+                    <button className="ml-4 px-4 hover-bg-tezGr">
+                      Add to cart
+                    </button>
+                  </div>
+                )}
               </div>
             )}
             {domain?.isForAuction && (
@@ -475,7 +515,10 @@ const DomainDetails = () => {
                     !domain.isForAuction) &&
                     !domain.isForSale && (
                       <>
-                        <button className="ml-auto tezGr-button px-6 py-3">
+                        <button
+                          className="ml-auto tezGr-button px-6 py-3"
+                          onClick={onListForSale}
+                        >
                           List for Sale
                         </button>
                         <button
@@ -486,6 +529,16 @@ const DomainDetails = () => {
                         </button>
                       </>
                     )}
+                  {domain.isForSale && (
+                    <>
+                      <button
+                        className="ml-auto tezSecGr-button px-6 md:py-3"
+                        onClick={onCancelListing}
+                      >
+                        Cancel Listing
+                      </button>
+                    </>
+                  )}
 
                   {domain.isForAuction && domain.topBid > 0 && (
                     <>

@@ -40,7 +40,6 @@ interface IOpenAuctionModal {
   visible: boolean;
   includingOperator: boolean;
   tokenId: number;
-
   callback: any;
 }
 interface IPlaceBidModal {
@@ -49,6 +48,15 @@ interface IPlaceBidModal {
   callback: any;
   topBid: number;
 }
+
+interface IListForSaleModal {
+  visible: boolean;
+  includingOperator: boolean;
+  tokenId: number;
+  name: string;
+  callback: any;
+}
+
 interface IDomainCart {
   cartDrawerVisible: boolean;
   cartContents: TYPE_DOMAIN[];
@@ -138,6 +146,26 @@ interface ITezosCollectState {
       includingOperator: boolean,
       isYourDomain: boolean
     ): void;
+  };
+
+  // List for Sale
+  listForSaleModal: IListForSaleModal;
+  setListForSaleModal: { (_listForSaleModal: IListForSaleModal): void };
+  setListForSaleModalVisible: { (visible: boolean): void };
+  listForSale: {
+    (
+      tokenId: number,
+      includingOperator: boolean,
+      defaultAmount: number
+      // durationId: number
+    ): Promise<boolean>;
+  };
+
+  cancelForSale: {
+    (tokenId: number): Promise<boolean>;
+  };
+  buyForSale: {
+    (tokenId: number, price: number): Promise<boolean>;
   };
 }
 
@@ -327,8 +355,6 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
         _marketPlaceStorage?.offers_map.get(_record.tzip12_token_id),
         _marketPlaceStorage?.orders_map.get(_record.tzip12_token_id),
       ]);
-      console.log("orders_map", orders_map);
-      console.log("offers_map", offers_map);
 
       const offers: TYPE_DOMAIN_OFFER[] = [];
       let topOffer: number = 0;
@@ -691,6 +717,143 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
     });
 
     if (callback) callback();
+    return true;
+  },
+
+  listForSaleModal: {
+    tokenId: -1,
+    name: "",
+    visible: false,
+    includingOperator: false,
+    callback: null,
+  },
+
+  setListForSaleModal: (_listForSaleModal: IListForSaleModal) => {
+    set((state: any) => ({
+      ...state,
+      listForSaleModal: _listForSaleModal,
+    }));
+  },
+  setListForSaleModalVisible: (_visible: boolean) => {
+    set((state: any) => ({
+      ...state,
+      listForSaleModal: {
+        ...state.listForSaleModal,
+        visible: _visible,
+      },
+    }));
+  },
+
+  listForSale: async (
+    tokenId: number,
+    includingOperator: boolean,
+    defaultAmount: number
+    // durationId: number
+  ) => {
+    if (get().activeAddress === "") {
+      alert("Need to connect wallet first!");
+      return false;
+    }
+    if (get().contractReady === false) return false;
+
+    const _marketPlaceContract = get().marketPlaceContract;
+    const _nameRegistryContract = get().nameRegistryContract;
+    let _txOp: any;
+    if (!includingOperator) {
+      _txOp = await Tezos.wallet
+        .batch()
+        .withContractCall(
+          // @ts-ignore
+          _nameRegistryContract.methods.update_operators([
+            {
+              add_operator: {
+                owner: get().activeAddress,
+                operator: MARKETPLACE_CONTRACT_ADDRESS,
+                token_id: tokenId,
+              },
+            },
+          ])
+        )
+        .withContractCall(
+          // @ts-ignore
+          _marketPlaceContract?.methods.list_for_sale(
+            defaultAmount * 10 ** 6,
+            // durationId,
+            tokenId
+          )
+        )
+        .send();
+    } else
+      _txOp = await _marketPlaceContract?.methods
+        .list_for_sale(defaultAmount * 10 ** 6, tokenId)
+        .send();
+
+    get().setListForSaleModalVisible(false);
+    get().setCurrentTransaction({
+      txHash: _txOp.opHash,
+      txStatus: "TX_SUBMIT",
+    });
+    await _txOp.confirmation(1);
+    get().setCurrentTransaction({
+      txHash: _txOp.opHash,
+      txStatus: "TX_SUCCESS",
+    });
+
+    return true;
+  },
+  cancelForSale: async (
+    tokenId: number
+    // durationId: number
+  ) => {
+    if (get().activeAddress === "") {
+      alert("Need to connect wallet first!");
+      return false;
+    }
+    if (get().contractReady === false) return false;
+
+    const _marketPlaceContract = get().marketPlaceContract;
+    const _txOp: any = await _marketPlaceContract?.methods
+      .cancel_for_sale(tokenId)
+      .send();
+
+    get().setCurrentTransaction({
+      txHash: _txOp.opHash,
+      txStatus: "TX_SUBMIT",
+    });
+    await _txOp.confirmation(1);
+    get().setCurrentTransaction({
+      txHash: _txOp.opHash,
+      txStatus: "TX_SUCCESS",
+    });
+
+    return true;
+  },
+  buyForSale: async (
+    tokenId: number,
+    price: number
+    // durationId: number
+  ) => {
+    if (get().activeAddress === "") {
+      alert("Need to connect wallet first!");
+      return false;
+    }
+    if (get().contractReady === false) return false;
+
+    const _marketPlaceContract = get().marketPlaceContract;
+    const _txOp: any = await _marketPlaceContract?.methods
+      .buy(tokenId)
+      .send({ amount: price });
+
+    get().setCurrentTransaction({
+      txHash: _txOp.opHash,
+      txStatus: "TX_SUBMIT",
+    });
+    await _txOp.confirmation(1);
+    get().setCurrentTransaction({
+      txHash: _txOp.opHash,
+      txStatus: "TX_SUCCESS",
+    });
+
     return true;
   },
 }));

@@ -3,11 +3,13 @@ import MakeOfferModal from "components/MakeOfferModal";
 import OpenAuctionModal from "components/OpenAuctionModal";
 import TxModal from "components/TxModal";
 import PlaceBidModal from "components/PlaceBidModal";
+import ListForSaleModal from "components/ListForSaleModal";
 const ModalsAndDrawers = () => {
   return (
     <>
       <MakeOfferModal />
       <OpenAuctionModal />
+      <ListForSaleModal />
       <PlaceBidModal />
       <TxModal />
       <CartDrawer />
