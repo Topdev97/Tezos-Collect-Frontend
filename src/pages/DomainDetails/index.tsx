@@ -88,8 +88,10 @@ const DomainDetails = () => {
       offers: _onChainDomain.offers,
       topOffer: _onChainDomain.topOffer,
       includingOperator: _onChainDomain.includingOperator,
-      auctionEndsAt: _onChainDomain.auctionEndsAt,
       auctionStartedAt: _onChainDomain.auctionStartedAt,
+      auctionEndsAt: _onChainDomain.auctionEndsAt,
+      saleEndsAt: _onChainDomain.saleEndsAt,
+      saleStartedAt: _onChainDomain.saleStartedAt,
       price: _onChainDomain.price,
       isForAuction: _onChainDomain.isForAuction,
       isForSale: _onChainDomain.isForSale,
@@ -437,11 +439,13 @@ const DomainDetails = () => {
                   <div>
                     <span className="size-1 font-semibold">PRICE</span>
                     <br />
-                    {/* <span className="text-grayText">
-                      Sale started at
+                    <span className="text-grayText">
+                      {new Date() < domain.saleEndsAt
+                        ? "Sale active until"
+                        : "Sale expired at"}
                       <br />
-                      {domain.saleStartedAt.toLocaleDateString()}
-                    </span> */}
+                      {domain.saleEndsAt.toLocaleString()}
+                    </span>
                   </div>
                   <span className="font-bold size-2 text-right">
                     {domain?.price.toFixed(2)} ꜩ
@@ -454,10 +458,14 @@ const DomainDetails = () => {
                     <button
                       className="tezGr-button px-4"
                       onClick={onBuyForSale}
+                      disabled={new Date() > domain.saleEndsAt}
                     >
                       Buy Now
                     </button>
-                    <button className="ml-4 px-4 hover-bg-tezGr">
+                    <button
+                      className="ml-4 px-4 hover-bg-tezGr"
+                      disabled={new Date() > domain.saleEndsAt}
+                    >
                       Add to cart
                     </button>
                   </div>
@@ -566,7 +574,7 @@ const DomainDetails = () => {
                           onClick={onClaimWinnedAuction}
                           disabled={new Date() < domain.auctionEndsAt}
                         >
-                          End Auction
+                          Claim {domain.name}.tez
                         </button>
                       )}
                     </>

@@ -156,8 +156,8 @@ interface ITezosCollectState {
     (
       tokenId: number,
       includingOperator: boolean,
-      defaultAmount: number
-      // durationId: number
+      defaultAmount: number,
+      durationId: number
     ): Promise<boolean>;
   };
 
@@ -386,14 +386,21 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       };
 
       if (orders_map) {
-        _domain.auctionEndsAt = new Date(orders_map.auction_ends_at);
-        _domain.auctionStartedAt = new Date(orders_map.auction_started_at);
         _domain.price = orders_map.default_amount.toNumber() / 10 ** 6;
         _domain.isForAuction = orders_map.is_for_auction;
         _domain.isForSale = orders_map.is_for_sale;
         _domain.topBid = orders_map.last_bid_amount.toNumber() / 10 ** 6;
         _domain.topBidder = orders_map.last_bidder;
         _domain.ownerChanged = _record.owner != orders_map.owner;
+        if (orders_map.is_for_auction) {
+          _domain.auctionEndsAt = new Date(orders_map.auction_ends_at);
+          _domain.auctionStartedAt = new Date(orders_map.auction_started_at);
+        }
+        if (orders_map.is_for_sale) {
+          console.log(orders_map);
+          _domain.saleEndsAt = new Date(orders_map.auction_ends_at);
+          _domain.saleStartedAt = new Date(orders_map.auction_started_at);
+        }
       }
       return _domain;
     } catch (error) {
@@ -747,8 +754,8 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
   listForSale: async (
     tokenId: number,
     includingOperator: boolean,
-    defaultAmount: number
-    // durationId: number
+    defaultAmount: number,
+    durationId: number
   ) => {
     if (get().activeAddress === "") {
       alert("Need to connect wallet first!");
@@ -778,14 +785,14 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
           // @ts-ignore
           _marketPlaceContract?.methods.list_for_sale(
             defaultAmount * 10 ** 6,
-            // durationId,
+            durationId,
             tokenId
           )
         )
         .send();
     } else
       _txOp = await _marketPlaceContract?.methods
-        .list_for_sale(defaultAmount * 10 ** 6, tokenId)
+        .list_for_sale(defaultAmount * 10 ** 6, durationId, tokenId)
         .send();
 
     get().setListForSaleModalVisible(false);

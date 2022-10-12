@@ -45,7 +45,7 @@ export const DOMAIN_SUFFIX = {
 }[TEZOS_COLLECT_NETWORK.type];
 
 const MARKETPLACE_ADDRESSES = {
-  ghostnet: "KT1FY28GhbZ5uDbSRsgmiEQvUN7QfFsDDzzz",
+  ghostnet: "KT1Qri3feHkLo23ttBSdnmxMuKNNmjfvx1vb",
   kathmandunet: "KT1MoWntSgh7c6mVeja7wjNLavRkni4JyNgp",
   mainnet: "KT1Q4nCfd87KnBWmbgBiBchyysEhavf7qt5i",
   mondaynet: "",
