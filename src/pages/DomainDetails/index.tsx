@@ -8,7 +8,12 @@ import PriceHistory from "components/PriceHistory";
 import DomainCard from "components/DomainCard";
 import { useParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
-import { TYPE_COLLECTION, TYPE_DOMAIN } from "helper/interfaces";
+import {
+  DOMAIN_ACTIVITY_LABEL,
+  I_DOMAIN_ACTIVITY,
+  TYPE_COLLECTION,
+  TYPE_DOMAIN,
+} from "helper/interfaces";
 import { useTezosCollectStore } from "store";
 import { beautifyAddress, dateDifFromNow } from "helper/formatters";
 
@@ -33,9 +38,11 @@ const DomainDetails = () => {
     setPlaceBidModal,
 
     claimWinnedAuction,
+    getDomainActivityByName,
   } = useTezosCollectStore();
 
   const [domain, setDomain] = useState<TYPE_DOMAIN | undefined>(undefined);
+  const [domainActivity, setDomainActivity] = useState<I_DOMAIN_ACTIVITY[]>([]);
   const [collection, setCollection] = useState<TYPE_COLLECTION>();
 
   const detailList = useMemo(() => {
@@ -107,6 +114,11 @@ const DomainDetails = () => {
     updateCachedDomain(_domain);
     if (_domain?.collectionId) {
       setCollection(findCollectionById(_domain?.collectionId));
+    }
+
+    if (_domain.name.length) {
+      const _domainActivity = await getDomainActivityByName(domain?.name || "");
+      setDomainActivity(_domainActivity);
     }
   };
 
@@ -214,20 +226,26 @@ const DomainDetails = () => {
       updateDomain();
     }
   };
-  const domainListings = {
-    textAlign: "left",
-    heading: "Listings (6)",
-    collapsible: true,
-    header: ["Price", "Valid From", "Valid Until"],
-    tableData: [
-      ["70.6 ꜩ", "7 hours ago", "4 weeks"],
-      ["70.6 ꜩ", "7 hours ago", "4 weeks"],
-      ["70.6 ꜩ", "7 hours ago", "4 weeks"],
-      ["70.6 ꜩ", "7 hours ago", "4 weeks"],
-      ["70.6 ꜩ", "7 hours ago", "4 weeks"],
-      ["70.6 ꜩ", "7 hours ago", "4 weeks"],
-    ],
-  };
+  const domainListings = useMemo(() => {
+    return {
+      textAlign: "left",
+      heading: "Listings",
+      collapsible: true,
+      header: ["Price", "Seller", "Date"],
+      tableData:
+        domainActivity.length === 0
+          ? []
+          : domainActivity
+              .filter((item) => item.type === "LIST_FOR_SALE")
+              .map((item) => [
+                `${item.amount} ꜩ`,
+                <span className="address-gr-br-box p-2">
+                  {beautifyAddress(item.from)}
+                </span>,
+                dateDifFromNow(item.timestamp),
+              ]),
+    };
+  }, [domainActivity]);
 
   const domainOffers = useMemo(() => {
     return {
@@ -253,14 +271,14 @@ const DomainDetails = () => {
             : beautifyAddress(offer.offerer),
           offer.offerer === activeAddress ? (
             <button
-              className="tezSecGr-button size-sm px-2 py-1"
+              className="mx-auto tezSecGr-button size-sm px-2 py-1"
               onClick={onCancelOffer}
             >
               Cancel
             </button>
           ) : isYourDomain ? (
             <button
-              className="mx-auto tezSecGr-button py-1"
+              className="mx-auto tezSecGr-button size-sm px-2 py-1"
               onClick={() => onSellForOffer(offer.offerer)}
             >
               Sell
@@ -315,62 +333,29 @@ const DomainDetails = () => {
     };
   }, [domain]);
 
-  const domainActivities = {
-    textAlign: "left",
-    heading: "Activity",
-    collapsible: true,
-    header: ["Event", "Price", "From", "To", "TX", "Date"],
-    tableData: [
-      [
-        "Sale",
-        "70.6 ꜩ",
-        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-        "tz1aSjTFe...",
-        "3 weeks ago",
-      ],
-      [
-        "Sale",
-        "70.6 ꜩ",
-        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-        "tz1aSjTFe...",
-        "3 weeks ago",
-      ],
-      [
-        "Sale",
-        "70.6 ꜩ",
-        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-        "tz1aSjTFe...",
-        "3 weeks ago",
-      ],
-      [
-        "Sale",
-        "70.6 ꜩ",
-        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-        "tz1aSjTFe...",
-        "3 weeks ago",
-      ],
-      [
-        "Sale",
-        "70.6 ꜩ",
-        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-        "tz1aSjTFe...",
-        "3 weeks ago",
-      ],
-      [
-        "Sale",
-        "70.6 ꜩ",
-        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-        <span className="address-gr-br-box p-2">tz1aSjTFe</span>,
-        "tz1aSjTFe...",
-        "3 weeks ago",
-      ],
-    ],
-  };
+  const domainActivities = useMemo(() => {
+    return {
+      textAlign: "left",
+      heading: "Activity",
+      collapsible: true,
+      header: ["Event", "Amount", "From", "To", "TX", "Date"],
+      tableData:
+        domainActivity.length === 0
+          ? []
+          : domainActivity.map((item) => [
+              DOMAIN_ACTIVITY_LABEL[item.type],
+              `${item.amount} ꜩ`,
+              <span className="address-gr-br-box p-2">
+                {beautifyAddress(item.from)}
+              </span>,
+              <span className="address-gr-br-box p-2">
+                {beautifyAddress(item.to)}
+              </span>,
+              beautifyAddress(item.txHash),
+              dateDifFromNow(item.timestamp),
+            ]),
+    };
+  }, [domainActivity]);
 
   const relatedDomains = [
     { name: "5471.tez", price: 27.86, bookmarked: true },

@@ -41,7 +41,7 @@ const MakeOfferModal = () => {
             placeholder="0.0"
             ref={offerAmountRef}
           />
-          <span>Bid Duration</span>
+          <span>Offer Duration</span>
           <select className="border bg-componentBg" ref={offerDurationRef}>
             {MARKETPLACE_AUCTION_DURATIONS.map((item, index) => (
               <option key={index} value={index}>

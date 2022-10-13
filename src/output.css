@@ -1483,6 +1483,18 @@ svg{
   width: 2.5rem;
 }
 
+.min-w-\[35rem\]{
+  min-width: 35rem;
+}
+
+.min-w-\[10rem\]{
+  min-width: 10rem;
+}
+
+.min-w-\[5rem\]{
+  min-width: 5rem;
+}
+
 .flex-1{
   flex: 1 1 0%;
 }
@@ -1621,6 +1633,14 @@ svg{
 
 .overflow-x-auto{
   overflow-x: auto;
+}
+
+.overflow-x-scroll{
+  overflow-x: scroll;
+}
+
+.overflow-y-scroll{
+  overflow-y: scroll;
 }
 
 .whitespace-nowrap{

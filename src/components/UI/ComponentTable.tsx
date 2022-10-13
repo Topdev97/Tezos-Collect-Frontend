@@ -34,11 +34,16 @@ const ComponentTable = (props: {
         <div
           className={`flex bg-tezDarkBg  ${
             textAlign === "center" ? "px-2" : "px-2 md:px-8"
-          } py-4 mt-4 mb-1 rounded-lg`}
+          } py-4 mt-4 mb-1 rounded-lg overflow-x-scroll`}
         >
           {header.map((item, index) => {
             return (
-              <span className={`flex-1 flex text-${textAlign}`} key={index}>
+              <span
+                className={`${
+                  header.length > 4 ? "min-w-[5rem]" : ""
+                } flex-1 flex text-${textAlign}`}
+                key={index}
+              >
                 {item}
               </span>
             );
@@ -51,12 +56,14 @@ const ComponentTable = (props: {
                 key={index}
                 className={`flex size-xs md:size-base ${
                   textAlign === "center" ? "px-2" : "px-2 md:px-8"
-                } py-4 border-b border-b-itemBorder`}
+                } py-4 border-b border-b-itemBorder overflow-x-scroll`}
               >
                 {rowData.map((item, cellIndex) => {
                   return (
                     <span
-                      className={`flex-1 text-${textAlign}`}
+                      className={`flex-1 text-${textAlign} ${
+                        header.length > 4 ? "min-w-[5rem]" : ""
+                      }`}
                       key={cellIndex}
                     >
                       {item}

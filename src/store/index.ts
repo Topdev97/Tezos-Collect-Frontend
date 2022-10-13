@@ -8,6 +8,10 @@ import {
   updateDomain,
 } from "helper/api/domains.api";
 import {
+  createDomainActivity,
+  fetchDomainActivityByName,
+} from "helper/api/domain_activity.api";
+import {
   DOMAIN_SUFFIX,
   MARKETPLACE_CONTRACT_ADDRESS,
   NAME_REGISTRY_CONTRACT_ADDRESS,
@@ -15,6 +19,8 @@ import {
 } from "helper/constants";
 import {
   initializeDomain,
+  initializeDomainActivity,
+  I_DOMAIN_ACTIVITY,
   TYPE_COLLECTION,
   TYPE_DOMAIN,
   TYPE_DOMAIN_OFFER,
@@ -34,6 +40,7 @@ interface ICurrentTransaction {
 interface IMakeOfferModal {
   visible: boolean;
   tokenId: number;
+  name?: "";
   callback: any;
 }
 interface IOpenAuctionModal {
@@ -83,6 +90,11 @@ interface ITezosCollectState {
   fetchCollections: { (): void };
   findCollectionById: { (_collectionId: string): TYPE_COLLECTION | undefined };
 
+  cachedDomains: TYPE_DOMAIN[];
+  cacheDomain: { (_domain: TYPE_DOMAIN): void };
+  updateCachedDomain: { (_domain: TYPE_DOMAIN): void };
+  getDomainActivityByName: { (name: string): Promise<I_DOMAIN_ACTIVITY[]> };
+
   topSaleDomains: TYPE_DOMAIN[][];
   fetchTopSaleDomains: { (): void };
 
@@ -93,12 +105,11 @@ interface ITezosCollectState {
   fetchAuctionedDomains: { (): void };
 
   findDomainByName: { (name: string): Promise<TYPE_DOMAIN | undefined> };
+  findDomainByTokenId: { (token_id: number): TYPE_DOMAIN | undefined };
 
   fetchOnChainDomainDataByName: {
     (name: string | undefined): Promise<TYPE_DOMAIN>;
   };
-
-  updateCachedDomain: { (_domain: TYPE_DOMAIN): void };
 
   // interating with Tezos
   contractReady: boolean;
@@ -277,9 +288,31 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
     );
   },
 
+  cachedDomains: [],
+  cacheDomain: (_domain: TYPE_DOMAIN) => {
+    const index = get().cachedDomains.findIndex(
+      (item) => item.name === _domain.name
+    );
+    if (index !== -1) get().cachedDomains.splice(index, 1);
+    get().cachedDomains.push(_domain);
+  },
+  updateCachedDomain: async (_domain: TYPE_DOMAIN) => {
+    get().cacheDomain(_domain);
+    updateDomain(_domain);
+  },
+
+  getDomainActivityByName: async (name: string) => {
+    const result: I_DOMAIN_ACTIVITY[] = await fetchDomainActivityByName(name);
+    result.forEach((item) => (item.timestamp = new Date(item.timestamp)));
+    return result.sort((b, a) => a.timestamp.getTime() - b.timestamp.getTime());
+  },
+
   topSaleDomains: [],
   fetchTopSaleDomains: async () => {
     const _topSaleDomains = await fetchTopSaleDomains();
+    _topSaleDomains.forEach((itemArr) => {
+      itemArr.forEach((item) => get().cacheDomain(item));
+    });
     set((state: any) => ({
       ...state,
       topSaleDomains: _topSaleDomains,
@@ -293,6 +326,7 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       item.auctionEndsAt = new Date(item.auctionEndsAt);
       item.auctionStartedAt = new Date(item.auctionStartedAt);
       item.lastSoldAt = new Date(item.lastSoldAt);
+      get().cacheDomain(item);
     });
     set((state: any) => ({
       ...state,
@@ -307,20 +341,29 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       item.auctionEndsAt = new Date(item.auctionEndsAt);
       item.auctionStartedAt = new Date(item.auctionStartedAt);
       item.lastSoldAt = new Date(item.lastSoldAt);
+      get().cacheDomain(item);
     });
+
     set((state: any) => ({
       ...state,
       auctionedDomains: _auctionedDomains,
     }));
   },
   findDomainByName: async (name: string) => {
-    let _domain: TYPE_DOMAIN | undefined = get().featuredAuctions.find(
+    let _domain: TYPE_DOMAIN | undefined = get().cachedDomains.find(
       (item) => item.name === name
     );
     if (_domain) return _domain;
-    _domain = get().auctionedDomains.find((item) => item.name === name);
-    if (_domain) return _domain;
     _domain = await fetchDomain(name);
+    if (_domain) get().cacheDomain(_domain);
+    return _domain;
+  },
+
+  findDomainByTokenId: (tokenId: number) => {
+    let _domain: TYPE_DOMAIN | undefined = get().cachedDomains.find(
+      (item) => item.tokenId === tokenId
+    );
+    if (_domain) return _domain;
     return _domain;
   },
 
@@ -409,10 +452,6 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
     return _initalizedDomain;
   },
 
-  updateCachedDomain: async (_domain: TYPE_DOMAIN) => {
-    updateDomain(_domain);
-  },
-
   // Interacting with Tezs
   contractReady: false,
   nameRegistryContract: null,
@@ -430,7 +469,7 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       marketPlaceContract: _marketPlaceContract,
     }));
   },
-  makeOfferModal: { tokenId: -1, visible: false, callback: null },
+  makeOfferModal: { tokenId: -1, name: "", visible: false, callback: null },
   setMakeOfferModal: (_makeOfferModal: IMakeOfferModal) => {
     set((state: any) => ({
       ...state,
@@ -470,6 +509,17 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       txStatus: "TX_SUBMIT",
     });
     await _txOp.confirmation(1);
+
+    const _domain = get().findDomainByTokenId(tokenId);
+    createDomainActivity({
+      ...initializeDomainActivity(),
+      name: _domain?.name || "",
+      type: "NEW_OFFER",
+      txHash: _txOp.opHash,
+      amount,
+      from: get().activeAddress,
+      to: _domain?.owner || "",
+    });
     get().setCurrentTransaction({
       txHash: _txOp.opHash,
       txStatus: "TX_SUCCESS",
@@ -493,6 +543,17 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       txStatus: "TX_SUBMIT",
     });
     await _txOp.confirmation(1);
+
+    const _domain = get().findDomainByTokenId(tokenId);
+    createDomainActivity({
+      ...initializeDomainActivity(),
+      name: _domain?.name || "",
+      type: "CANCEL_OFFER",
+      txHash: _txOp.opHash,
+      amount: 0,
+      from: get().activeAddress,
+      to: _domain?.owner || "",
+    });
     get().setCurrentTransaction({
       txHash: _txOp.opHash,
       txStatus: "TX_SUCCESS",
@@ -541,6 +602,17 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       txStatus: "TX_SUBMIT",
     });
     await _txOp.confirmation(1);
+
+    const _domain = get().findDomainByTokenId(tokenId);
+    createDomainActivity({
+      ...initializeDomainActivity(),
+      name: _domain?.name || "",
+      type: "SELL_ON_OFFER",
+      txHash: _txOp.opHash,
+      amount: _domain?.price || 0,
+      from: get().activeAddress,
+      to: _domain?.owner || "",
+    });
     get().setCurrentTransaction({
       txHash: _txOp.opHash,
       txStatus: "TX_SUCCESS",
@@ -620,6 +692,17 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       txStatus: "TX_SUBMIT",
     });
     await _txOp.confirmation(1);
+
+    const _domain = get().findDomainByTokenId(tokenId);
+    createDomainActivity({
+      ...initializeDomainActivity(),
+      name: _domain?.name || "",
+      type: "LIST_FOR_AUCTION",
+      txHash: _txOp.opHash,
+      amount: defaultAmount,
+      from: get().activeAddress,
+      to: _domain?.owner || "",
+    });
     get().setCurrentTransaction({
       txHash: _txOp.opHash,
       txStatus: "TX_SUCCESS",
@@ -663,6 +746,18 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       txStatus: "TX_SUBMIT",
     });
     await _txOp.confirmation(1);
+
+    const _domain = get().findDomainByTokenId(tokenId);
+    createDomainActivity({
+      ...initializeDomainActivity(),
+      name: _domain?.name || "",
+      type: "PLACE_BID",
+      txHash: _txOp.opHash,
+      amount: bidAmount,
+      from: get().activeAddress,
+      to: _domain?.owner || "",
+    });
+
     get().setCurrentTransaction({
       txHash: _txOp.opHash,
       txStatus: "TX_SUCCESS",
@@ -718,6 +813,18 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       txStatus: "TX_SUBMIT",
     });
     await _txOp.confirmation(1);
+
+    const _domain = get().findDomainByTokenId(tokenId);
+    createDomainActivity({
+      ...initializeDomainActivity(),
+      name: _domain?.name || "",
+      type: "COMPLETE_AUCTION",
+      txHash: _txOp.opHash,
+      amount: _domain?.topBid || 0,
+      from: get().activeAddress,
+      to: _domain?.owner || "",
+    });
+
     get().setCurrentTransaction({
       txHash: _txOp.opHash,
       txStatus: "TX_SUCCESS",
@@ -801,6 +908,18 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       txStatus: "TX_SUBMIT",
     });
     await _txOp.confirmation(1);
+
+    const _domain = get().findDomainByTokenId(tokenId);
+    createDomainActivity({
+      ...initializeDomainActivity(),
+      name: _domain?.name || "",
+      type: "LIST_FOR_SALE",
+      txHash: _txOp.opHash,
+      amount: defaultAmount,
+      from: get().activeAddress,
+      to: _domain?.owner || "",
+    });
+
     get().setCurrentTransaction({
       txHash: _txOp.opHash,
       txStatus: "TX_SUCCESS",
@@ -828,6 +947,17 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       txStatus: "TX_SUBMIT",
     });
     await _txOp.confirmation(1);
+
+    const _domain = get().findDomainByTokenId(tokenId);
+    createDomainActivity({
+      ...initializeDomainActivity(),
+      name: _domain?.name || "",
+      type: "DELIST_FOR_SALE",
+      txHash: _txOp.opHash,
+      amount: _domain?.price || 0,
+      from: get().activeAddress,
+      to: _domain?.owner || "",
+    });
     get().setCurrentTransaction({
       txHash: _txOp.opHash,
       txStatus: "TX_SUCCESS",
@@ -856,6 +986,18 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       txStatus: "TX_SUBMIT",
     });
     await _txOp.confirmation(1);
+
+    const _domain = get().findDomainByTokenId(tokenId);
+    createDomainActivity({
+      ...initializeDomainActivity(),
+      name: _domain?.name || "",
+      type: "BUY_FROM_SALE",
+      txHash: _txOp.opHash,
+      amount: price,
+      from: get().activeAddress,
+      to: _domain?.owner || "",
+    });
+
     get().setCurrentTransaction({
       txHash: _txOp.opHash,
       txStatus: "TX_SUCCESS",
