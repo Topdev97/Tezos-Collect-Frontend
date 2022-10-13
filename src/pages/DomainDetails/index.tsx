@@ -85,6 +85,7 @@ const DomainDetails = () => {
       fetchOnChainDomainDataByName(domainName),
       findDomainByName(domainName || ""),
     ]);
+    console.log(_cachedDomain);
     const _domain: TYPE_DOMAIN = {
       ..._onChainDomain,
       ..._cachedDomain,
@@ -293,43 +294,29 @@ const DomainDetails = () => {
   const domainBids = useMemo(() => {
     return {
       textAlign: "left",
-      heading: `Bids (${domain?.offers?.length})`,
+      heading: `Bids (${
+        domainActivity.filter(
+          (item) =>
+            item.type === "PLACE_BID" &&
+            item.timestamp > (domain?.auctionStartedAt || new Date())
+        ).length
+      })`,
       collapsible: true,
-      header: [
-        "Price",
-        "Offer At",
-        "Valid Until",
-        "From",
-        <span className="mx-auto">Action</span>,
-      ],
+      header: ["Price", "Bid At", "From"],
       tableData:
-        domain?.offers?.map((offer) => [
-          `${(offer.offer_amount / 10 ** 6).toFixed(2)} ꜩ`,
-          dateDifFromNow(offer.offer_made_at),
-          offer.offer_until < new Date()
-            ? "Expired"
-            : dateDifFromNow(offer.offer_until),
-          offer.offerer === activeAddress
-            ? "- YOU -"
-            : beautifyAddress(offer.offerer),
-          offer.offerer === activeAddress ? (
-            <button
-              className="tezSecGr-button size-sm px-2 py-1"
-              onClick={onCancelOffer}
-            >
-              Cancel
-            </button>
-          ) : isYourDomain ? (
-            <button
-              className="mx-auto tezSecGr-button py-1"
-              onClick={() => onSellForOffer(offer.offerer)}
-            >
-              Sell
-            </button>
-          ) : (
-            ""
-          ),
-        ]) || [],
+        domainActivity
+          .filter(
+            (item) =>
+              item.type === "PLACE_BID" &&
+              item.timestamp > (domain?.auctionStartedAt || new Date())
+          )
+          .map((item) => [
+            `${item.amount.toFixed(2)} ꜩ`,
+            dateDifFromNow(item.timestamp),
+            <span className="address-gr-br-box p-2">
+              {beautifyAddress(item.from)}
+            </span>,
+          ]) || [],
     };
   }, [domain]);
 
@@ -407,7 +394,7 @@ const DomainDetails = () => {
         <div className="flex flex-col md:flex-row p-6">
           <div className="bg-tezDarkBg border-2 border-itemBorder rounded-lg px-20 aspect-square flex flex-col justify-center items-center">
             <img src={tezosCollectLogo} className="w-32 mb-6" />
-            <h4>{domain?.name}.tez</h4>
+            <h4>{domainName}.tez</h4>
           </div>
           <div className="md:ml-8 mt-4 md:mt-0 bg-tezDarkBg border-2 border-itemBorder rounded-lg flex-grow flex flex-col">
             <div className="flex border-b-2 px-4 py-4 border-itemBorder font-semibold">
