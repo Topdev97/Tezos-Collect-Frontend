@@ -27,8 +27,8 @@ const ComponentTable = (props: {
         )}
       </div>
       <div
-        className={`overflow-hidden duration-300 ${
-          collapsed ? "max-h-0" : "max-h-[1000px]"
+        className={`overflow-y-scroll duration-300 ${
+          collapsed ? "max-h-0" : "max-h-[600px]"
         } `}
       >
         <div

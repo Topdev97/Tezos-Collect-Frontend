@@ -2,7 +2,9 @@ import TezosCollectCard from "assets/images/landing/tezos-collect-card.png";
 import RecommendedSales from "components/RecommendedSales";
 import TopCategories from "components/LandingTopCategories";
 import { FiSearch } from "react-icons/fi";
+import { useTezosCollectStore } from "store";
 const Home = () => {
+  const { collectionStore } = useTezosCollectStore();
   return (
     <div className="flex flex-col gap-12">
       <div className="flex flex-col-reverse md:flex-row">
@@ -29,13 +31,9 @@ const Home = () => {
               <span>Categories</span>
               <select id="states" className="select-light w-full mt-4 p-3">
                 <option>All types</option>
-                <option value="CA">California</option>
-                <option value="TX">Texas</option>
-                <option value="WH">Washinghton</option>
-                <option value="FL">Florida</option>
-                <option value="VG">Virginia</option>
-                <option value="GE">Georgia</option>
-                <option value="MI">Michigan</option>
+                {collectionStore.collections.map((item, index) => (
+                  <option key={index}>{item.slug}</option>
+                ))}
               </select>
             </div>
             <button className="tezGr-button p-3">

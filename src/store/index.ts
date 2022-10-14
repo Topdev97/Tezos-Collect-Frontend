@@ -255,9 +255,9 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       },
     }));
     const collections = await fetchCollections();
-    collections.forEach(
-      (item) => (item.totalVolume = getUnsignedRandomValue(1000) + 500)
-    );
+    // collections.forEach(
+    //   (item) => (item.totalVolume = getUnsignedRandomValue(1000) + 500)
+    // );
     collections.forEach(
       (item) =>
         (item.numberOfOwners =
@@ -269,9 +269,9 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
           getUnsignedRandomValue(10000).toFixed(0)
         ))
     );
-    collections.forEach(
-      (item) => (item.floorPrice = getUnsignedRandomValue(300))
-    );
+    // collections.forEach(
+    //   (item) => (item.floorPrice = getUnsignedRandomValue(300))
+    // );
     collections.forEach((item) => (item.volumeChange = getSignedRandomValue()));
     collections.forEach(
       (item) => (item.floorPriceChange = getSignedRandomValue())

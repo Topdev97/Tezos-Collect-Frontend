@@ -9,7 +9,7 @@ const RecommendedSales = () => {
   const { collectionStore, topSaleDomains, featuredAuctions } =
     useTezosCollectStore();
   const recommendedSales = collectionStore.collections
-    .sort((itemA, itemB) => itemA.totalVolume - itemB.totalVolume)
+    .sort((itemB, itemA) => itemA.totalVolume - itemB.totalVolume)
     .slice(0, 5);
 
   const [currentDuration, setCurrentDuration] = useState<number>(0);

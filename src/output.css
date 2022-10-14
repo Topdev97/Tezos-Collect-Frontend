@@ -1228,11 +1228,6 @@ svg{
   margin-bottom: 0.5rem;
 }
 
-.my-12{
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-}
-
 .mx-auto{
   margin-left: auto;
   margin-right: auto;
@@ -1399,6 +1394,10 @@ svg{
   max-height: 1000px;
 }
 
+.max-h-\[600px\]{
+  max-height: 600px;
+}
+
 .w-96{
   width: 24rem;
 }
@@ -1481,14 +1480,6 @@ svg{
 
 .w-10{
   width: 2.5rem;
-}
-
-.min-w-\[35rem\]{
-  min-width: 35rem;
-}
-
-.min-w-\[10rem\]{
-  min-width: 10rem;
 }
 
 .min-w-\[5rem\]{
@@ -2288,6 +2279,11 @@ body {
     left: 1.25rem;
   }
 
+  .md\:my-12{
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
+
   .md\:ml-0{
     margin-left: 0px;
   }
@@ -2310,6 +2306,10 @@ body {
 
   .md\:hidden{
     display: none;
+  }
+
+  .md\:w-1\/4{
+    width: 25%;
   }
 
   .md\:w-80{

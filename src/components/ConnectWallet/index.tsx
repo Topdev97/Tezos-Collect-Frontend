@@ -94,7 +94,11 @@ const ConnectWallet = () => {
         },
       ]}
       icon={<BiUser size={20} className="mx-2" />}
-      text={<span className="mr-4">{beautifyAddress(activeAddress)}</span>}
+      text={
+        <span className="mr-4 hidden md:block">
+          {beautifyAddress(activeAddress)}
+        </span>
+      }
     />
   );
 };
