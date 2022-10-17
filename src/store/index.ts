@@ -5,6 +5,7 @@ import {
   fetchDomain,
   fetchFeaturedAuctions,
   fetchTopSaleDomains,
+  queryDomain,
   updateDomain,
 } from "helper/api/domains.api";
 import {
@@ -21,9 +22,12 @@ import {
   initializeDomain,
   initializeDomainActivity,
   I_DOMAIN_ACTIVITY,
+  I_DOMAIN_SEARCH_VALUE,
   TYPE_COLLECTION,
   TYPE_DOMAIN,
   TYPE_DOMAIN_OFFER,
+  TYPE_MARKET_ADVANCED_FILTER_VALUE,
+  TYPE_MARKET_SORT_VALUE,
   TYPE_TX_STATUS,
 } from "helper/interfaces";
 import TaquitoUtils, {
@@ -90,10 +94,20 @@ interface ITezosCollectState {
   fetchCollections: { (): void };
   findCollectionById: { (_collectionId: string): TYPE_COLLECTION | undefined };
 
+  bookmarkedIds: string[];
+  toggleBookmark: { (_name: string): void };
+
   cachedDomains: TYPE_DOMAIN[];
   cacheDomain: { (_domain: TYPE_DOMAIN): void };
   updateCachedDomain: { (_domain: TYPE_DOMAIN): void };
   getDomainActivityByName: { (name: string): Promise<I_DOMAIN_ACTIVITY[]> };
+  queryDomain: {
+    (
+      _searchOptions: I_DOMAIN_SEARCH_VALUE,
+      _advancedFilterValues: TYPE_MARKET_ADVANCED_FILTER_VALUE[],
+      sortOption: TYPE_MARKET_SORT_VALUE
+    ): Promise<{ domains: TYPE_DOMAIN[]; count: number }>;
+  };
 
   topSaleDomains: TYPE_DOMAIN[][];
   fetchTopSaleDomains: { (): void };
@@ -288,6 +302,20 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
     );
   },
 
+  bookmarkedIds: JSON.parse(localStorage.getItem("bookmarkedIds") || "[]"),
+  toggleBookmark: (_name: string) => {
+    const indexOf = get().bookmarkedIds.indexOf(_name);
+    if (indexOf >= 0) {
+      get().bookmarkedIds.splice(indexOf, 1);
+    } else get().bookmarkedIds.push(_name);
+
+    set((state: any) => ({
+      ...state,
+      bookmarkedIds: get().bookmarkedIds,
+    }));
+    localStorage.setItem("bookmarkedIds", JSON.stringify(get().bookmarkedIds));
+  },
+
   cachedDomains: [],
   cacheDomain: (_domain: TYPE_DOMAIN) => {
     const index = get().cachedDomains.findIndex(
@@ -307,6 +335,18 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
     return result.sort((b, a) => a.timestamp.getTime() - b.timestamp.getTime());
   },
 
+  queryDomain: async (
+    _searchOptions: I_DOMAIN_SEARCH_VALUE,
+    _advancedFilterValues: TYPE_MARKET_ADVANCED_FILTER_VALUE[],
+    _sortOption: TYPE_MARKET_SORT_VALUE
+  ) => {
+    const result = await queryDomain(
+      _searchOptions,
+      _advancedFilterValues,
+      _sortOption
+    );
+    return result;
+  },
   topSaleDomains: [],
   fetchTopSaleDomains: async () => {
     const _topSaleDomains = await fetchTopSaleDomains();

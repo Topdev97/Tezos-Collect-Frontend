@@ -70,6 +70,7 @@ interface TYPE_COLLECTION {
 
 type TYPE_VIEWMODE = "VM_LIST" | "VM_COMPACT" | "VM_MASS";
 type TYPE_DOMAIN_CARD =
+  | "DC_COMPACT"
   | "DC_AUCTION"
   | "DC_CART"
   | "DC_PREMIUM"
@@ -114,6 +115,35 @@ interface I_DOMAIN_ACTIVITY {
   type: T_DOMAIN_ACTIVITY_TYPE;
   uuid: string;
   signature?: string;
+}
+
+type TYPE_MARKET_ADVANCED_FILTER_VALUE =
+  | "LETTERS_YES"
+  | "LETTERS_NO"
+  | "NUMBERS_YES"
+  | "NUMBERS_NO"
+  | "PALINDROMES_YES"
+  | "PALINDROMES_NO"
+  | "HYPEN_YES"
+  | "HYPEN_NO"
+  | "";
+
+interface I_DOMAIN_SEARCH_VALUE {
+  domainListed?: boolean;
+  showType?:
+    | "SHOW_ALL"
+    | "SHOW_REGISTERED"
+    | "SHOW_AVAILABLE"
+    | "SHOW_FEATURED";
+  pageSize?: number;
+  offset?: number;
+  startWith?: string;
+  endWith?: string;
+  minLength?: number;
+  maxLength?: number;
+  minPrice?: number;
+  maxPrice?: number;
+  contains?: string;
 }
 
 export const initializeDomainActivity = (): I_DOMAIN_ACTIVITY => {
@@ -173,6 +203,18 @@ export const initializeDomain = (): TYPE_DOMAIN => {
   return _domain;
 };
 
+type TYPE_MARKET_SORT_VALUE =
+  | "PRICE_ASC"
+  | "PRICE_DESC"
+  | "NAME_ASC"
+  | "NAME_DESC"
+  | "LASTSOLDAMOUNT_ASC"
+  | "LASTSOLDAMOUNT_DESC"
+  | "TOKENID_ASC"
+  | "TOKENID_DESC"
+  | "EXPIRESAT_ASC"
+  | "EXPIRESAT_DESC";
+
 export type {
   TYPE_COLLECTION,
   TYPE_DOMAIN_OFFER,
@@ -183,4 +225,7 @@ export type {
   TYPE_TX_STATUS,
   T_DOMAIN_ACTIVITY_TYPE,
   I_DOMAIN_ACTIVITY,
+  I_DOMAIN_SEARCH_VALUE,
+  TYPE_MARKET_SORT_VALUE,
+  TYPE_MARKET_ADVANCED_FILTER_VALUE,
 };

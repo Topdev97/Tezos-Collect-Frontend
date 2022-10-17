@@ -7,7 +7,7 @@ import DomainCard from "components/DomainCard";
 import Pagination from "components/UI/Pagination";
 
 const TopLastSales = () => {
-  const [currentPage, setCurrentPage] = useState<number>(7);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   return (
     <div className="flex flex-col gap-6">
       <div className="flex gap-6">
@@ -28,8 +28,7 @@ const TopLastSales = () => {
           <option>All</option>
         </select>
       </div>
-      <div className="grid grid-cols-4 gap-5">
-        <Filter />
+      <div className="grid grid-cols-6 gap-5">
         {allDomains.slice(0, 9).map((domain, index) => {
           return (
             <div key={index}>
@@ -40,7 +39,7 @@ const TopLastSales = () => {
         <div className="col-span-3 col-start-2 flex justify-center">
           <Pagination
             currentPage={currentPage}
-            pageSize={48}
+            totalPage={48}
             visibleNumber={5}
             onPageChange={setCurrentPage}
           />

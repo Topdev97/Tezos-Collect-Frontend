@@ -1,11 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 import AllListings from "./AllListings";
 import ExpiredDomains from "./ExpiredDomains";
-import MarketNewListings from "./ExpiringDomains";
+
 import ExpiringDomains from "./ExpiringDomains";
 import MarketLastSale from "./MarketLastSale";
 import NewRegistrations from "./MarketLastSale/NewRegistrations";
 import MarketNewBids from "./MarketNewBids";
+import MarketNewListings from "./MarketNewListings";
 import MarketTopBids from "./MarketTopBids";
 import MarketTopCategories from "./MarketTopCategories";
 import TopLastSales from "./TopLastSales";

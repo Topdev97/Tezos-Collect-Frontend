@@ -11,7 +11,7 @@ import DomainCard from "components/DomainCard";
 import DomainWideCard from "components/DomainWideCard";
 import { useTezosCollectStore } from "store";
 
-const MarketNewListings = () => {
+const ExpiringDomains = () => {
   const { auctionedDomains } = useTezosCollectStore();
   const [viewMode, setViewMode] = useState<TYPE_VIEWMODE>("VM_LIST");
 
@@ -116,4 +116,4 @@ const MarketNewListings = () => {
     </div>
   );
 };
-export default MarketNewListings;
+export default ExpiringDomains;

@@ -2,14 +2,14 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const Pagination = (props: {
   currentPage: number;
-  pageSize: number;
+  totalPage: number;
   visibleNumber: number;
   onPageChange: Function;
 }) => {
-  const { currentPage, pageSize, visibleNumber, onPageChange } = props;
+  const { currentPage, totalPage, visibleNumber, onPageChange } = props;
   const visibleArray = Array.from(Array(visibleNumber).keys())
     .map((item) => item + currentPage - ((currentPage - 1) % visibleNumber))
-    .filter((item) => item <= pageSize);
+    .filter((item) => item <= totalPage);
   return (
     <div className="flex gap-3 items-center">
       <button
@@ -33,7 +33,7 @@ const Pagination = (props: {
       })}
       <button
         className="tezGr-button p-2"
-        onClick={() => onPageChange(Math.min(pageSize, currentPage + 5))}
+        onClick={() => onPageChange(Math.min(totalPage, currentPage + 5))}
       >
         <FiChevronRight size={20} />
       </button>

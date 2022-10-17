@@ -24,7 +24,7 @@ const Auctions = () => {
     setBidDrawerVisible(true);
   };
   return (
-    <div className="flex flex-col gap-8 mb-8">
+    <div className="flex flex-col gap-2 md:gap-6 my-8">
       <BidDrawer
         bidDrawerVisible={bidDrawerVisible}
         setBidDrawerVisible={setBidDrawerVisible}
@@ -50,7 +50,7 @@ const Auctions = () => {
         </select>
       </div>
 
-      <div className="grid grid-cols-4 gap-5">
+      <div className="grid grid-cols-5 gap-4">
         {auctionedDomains.map((domain, index) => (
           <DomainCard
             key={index}

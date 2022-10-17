@@ -118,7 +118,7 @@ const DomainDetails = () => {
     }
 
     if (_domain.name.length) {
-      const _domainActivity = await getDomainActivityByName(domain?.name || "");
+      const _domainActivity = await getDomainActivityByName(domainName || "");
       setDomainActivity(_domainActivity);
     }
   };

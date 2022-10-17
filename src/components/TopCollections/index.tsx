@@ -1,19 +1,21 @@
 import LinkWithSearchParams from "components/LinkWithSearchParams";
 import { FiExternalLink } from "react-icons/fi";
+import { useTezosCollectStore } from "store";
 
 const TopCollections = () => {
+  const { collectionStore } = useTezosCollectStore();
   return (
-    <div className="hidden md:flex gap-4">
-      {topCollectionData.map((collection, index) => {
+    <div className="hidden md:flex justify-between">
+      {collectionStore.collections.map((collection, index) => {
         return (
           <LinkWithSearchParams
             key={index}
-            className="button hover-bg-tezGr flex-grow text-center tracking-wide font-semibold"
+            className="button hover-bg-tezGr text-center tracking-wide font-semibold"
             to={{
-              pathname: `/collection${collection.link}`,
+              pathname: `/collection${collection.slug}`,
             }}
           >
-            {collection.name}
+            {collection.label}
           </LinkWithSearchParams>
         );
       })}
@@ -22,51 +24,3 @@ const TopCollections = () => {
 };
 
 export default TopCollections;
-
-export const topCollectionData = [
-  {
-    name: "10k Club",
-    link: "/10k-club",
-  },
-  {
-    name: "100k Club",
-    link: "/100k-club",
-  },
-  {
-    name: "999 Club",
-    link: "/999-club",
-  },
-  {
-    name: "3 letters",
-    link: "/3-letters",
-  },
-  {
-    name: "4 letters ",
-    link: "/4-letters",
-  },
-  {
-    name: "5+ letters",
-    link: "/5-letters",
-  },
-  {
-    name: "Countries",
-    link: "/countries",
-  },
-  {
-    name: "Hyphens",
-    link: "/hypens",
-  },
-  {
-    name: "Pokémon Generations 1",
-    link: "/pokemon-generation-1",
-  },
-  {
-    name: (
-      <span className="flex items-center gap-2">
-        More
-        <FiExternalLink />
-      </span>
-    ),
-    link: "/more",
-  },
-];

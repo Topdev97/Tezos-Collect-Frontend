@@ -1,42 +1,74 @@
 import { TbHeart } from "react-icons/tb";
 import tezosCollectLogo from "assets/images/tezos-collect-logo.svg";
 import { IoMdCart } from "react-icons/io";
-import { TYPE_DOMAIN_CARD } from "helper/interfaces";
+import { TYPE_DOMAIN, TYPE_DOMAIN_CARD } from "helper/interfaces";
 import { convertNum2DateString } from "helper/formatters";
+import { NavLink } from "react-router-dom";
+import { RiTimerFlashLine } from "react-icons/ri";
+import { useTezosCollectStore } from "store";
+import { domain } from "process";
 
-const DomainCard = (props: {
-  name: string;
-  price: number;
+const DomainMarketCard = (props: {
+  domain: TYPE_DOMAIN;
   bookmarked: boolean;
-  auctionEndsAt?: Date;
   cardType?: TYPE_DOMAIN_CARD;
   cardHandler?: any;
 }) => {
-  let { name, price, bookmarked, auctionEndsAt, cardType, cardHandler } = props;
+  const { name, price, auctionEndsAt, isForAuction, isForSale, isRegistered } =
+    props.domain;
+  let { cardType, cardHandler } = props;
   cardType = cardType || "DC_CART";
+
+  const { bookmarkedIds, toggleBookmark } = useTezosCollectStore();
 
   if (cardType === "DC_COMPACT") {
     return (
       <div className="flex p-3 bg-componentBg rounded-lg">
-        <div className="bg-tezDarkBg rounded-lg flex justify-center aspect-square">
-          <img src={tezosCollectLogo} className="w-3/5" />
+        <div className="bg-tezDarkBg rounded-lg flex justify-center w-24 aspect-square">
+          <img src={tezosCollectLogo} className="w-16" />
         </div>
         <div className="flex flex-col justify-between flex-1 ml-4">
           <div className="flex">
-            <span>{name}.tez</span>
+            <NavLink
+              to={{ pathname: `/domain/${name}` }}
+              className="hover:opacity-80"
+            >
+              {name}.tez
+            </NavLink>
             <TbHeart
+              onClick={() => toggleBookmark(name)}
               className={`size-2 ml-auto cursor-pointer duration-150 hover:stroke-tezGrSt mr-0.5 ${
-                bookmarked ? "stroke-tezGrSt fill-tezGrSt" : ""
+                bookmarkedIds.includes(name)
+                  ? "stroke-tezGrSt fill-tezGrSt"
+                  : ""
               }`}
             />
           </div>
           <div className="flex">
-            <span>{name}.tez</span>
-            <TbHeart
-              className={`size-2 ml-auto cursor-pointer duration-150 hover:stroke-tezGrSt mr-0.5 ${
-                bookmarked ? "stroke-tezGrSt fill-tezGrSt" : ""
-              }`}
-            />
+            {!isRegistered && (
+              <button className="text-tezLightGr p-0">Register</button>
+            )}
+            {(isForAuction || isForSale) && (
+              <span className="text-tezLightGr flex items-center">
+                {price} ꜩ
+              </span>
+            )}
+            {isForSale && (
+              <div className="ml-auto cursor-pointer">
+                <IoMdCart
+                  size={20}
+                  className="text-tezGrSt hover:text-tezGrMd"
+                />
+              </div>
+            )}
+            {isForAuction && (
+              <div className="ml-auto cursor-pointer">
+                <RiTimerFlashLine
+                  size={24}
+                  className="text-tezGrSt hover:text-tezGrMd"
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -47,11 +79,11 @@ const DomainCard = (props: {
       <div className="bg-tezDarkBg rounded-lg p-4 flex flex-col items-center">
         <TbHeart
           className={`size-2 ml-auto cursor-pointer duration-150 hover:stroke-tezGrSt mr-0.5 ${
-            bookmarked ? "stroke-tezGrSt fill-tezGrSt" : ""
+            bookmarkedIds.includes(name) ? "stroke-tezGrSt fill-tezGrSt" : ""
           }`}
         />
         <img src={tezosCollectLogo} className="w-2/5" />
-        <span className="size-2 my-6">{name}.tez</span>
+        <span className="size-2 my-6">{name}.tez 1</span>
       </div>
       <div className="flex items-center my-4">
         <span className="font-semibold">{name}.tez</span>
@@ -134,4 +166,4 @@ const DomainCard = (props: {
     </div>
   );
 };
-export default DomainCard;
+export default DomainMarketCard;

@@ -1,6 +1,10 @@
 import { ColorMode, Network, NetworkType } from "@airgap/beacon-sdk";
 import { BeaconWallet } from "@taquito/beacon-wallet";
 import { TezosToolkit } from "@taquito/taquito";
+import {
+  TYPE_MARKET_ADVANCED_FILTER_VALUE,
+  TYPE_MARKET_SORT_VALUE,
+} from "./interfaces";
 
 // Set the network (Mainnet is default)
 export const TEZOS_COLLECT_NETWORK: Network = {
@@ -112,4 +116,88 @@ export const MARKETPLACE_AUCTION_DURATIONS = [
   { id: 3, label: "1 week", seconds: 604800 },
   { id: 4, label: "2 weeks", seconds: 1296000 },
   { id: 5, label: "1 month", seconds: 2592000 },
+];
+
+export const domainMarketFilters: {
+  label: string;
+  options: { label: string; value: TYPE_MARKET_ADVANCED_FILTER_VALUE }[];
+}[] = [
+  {
+    label: "Letters",
+    options: [
+      { label: "---", value: "" },
+      { label: "Yes", value: "LETTERS_YES" },
+      { label: "No", value: "LETTERS_NO" },
+    ],
+  },
+  {
+    label: "Numbers",
+    options: [
+      { label: "---", value: "" },
+      { label: "Yes", value: "NUMBERS_YES" },
+      { label: "No", value: "NUMBERS_NO" },
+    ],
+  },
+  {
+    label: "Palindromes",
+    options: [
+      { label: "---", value: "" },
+      { label: "Yes", value: "PALINDROMES_YES" },
+      { label: "No", value: "PALINDROMES_NO" },
+    ],
+  },
+  {
+    label: "Hypen",
+    options: [
+      { label: "---", value: "" },
+      { label: "Yes", value: "HYPEN_YES" },
+      { label: "No", value: "HYPEN_NO" },
+    ],
+  },
+];
+
+export const marketSortOptions: {
+  label: string;
+  value: TYPE_MARKET_SORT_VALUE;
+}[] = [
+  {
+    label: "Sort: Price Low to high",
+    value: "PRICE_ASC",
+  },
+  {
+    label: "Sort: Price High to low",
+    value: "PRICE_DESC",
+  },
+  {
+    label: "Sort: Name asc",
+    value: "NAME_ASC",
+  },
+  {
+    label: "Sort: Name desc",
+    value: "NAME_DESC",
+  },
+  {
+    label: "Sort: Last Sale High to Low",
+    value: "LASTSOLDAMOUNT_DESC",
+  },
+  {
+    label: "Sort: Last Sale Low to High",
+    value: "LASTSOLDAMOUNT_ASC",
+  },
+  {
+    label: "Sort: Registration Date desc",
+    value: "TOKENID_DESC",
+  },
+  {
+    label: "Sort: Registration Date asc",
+    value: "TOKENID_ASC",
+  },
+  {
+    label: "Sort: Expiration Date desc",
+    value: "EXPIRESAT_DESC",
+  },
+  {
+    label: "Sort: Expiration Date asc",
+    value: "EXPIRESAT_ASC",
+  },
 ];
