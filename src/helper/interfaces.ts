@@ -149,6 +149,21 @@ interface I_DOMAIN_SEARCH_VALUE {
   contains?: string;
 }
 
+interface I_DOMAIN_ACTIVITY_SEARCH_OPTION {
+  type?: T_DOMAIN_ACTIVITY_TYPE | "";
+  offset?: number;
+  pageSize?: number;
+  name?: string;
+  from?: string;
+  to?: string;
+}
+
+type TYPE_ACTIVITY_SORT_VALUE =
+  | "AMOUNT_ASC"
+  | "AMOUNT_DESC"
+  | "TIMESTAMP_ASC"
+  | "TIMESTAMP_DESC";
+
 export const initializeDomainActivity = (): I_DOMAIN_ACTIVITY => {
   return {
     uuid: uuidv4(),
@@ -231,4 +246,6 @@ export type {
   I_DOMAIN_SEARCH_VALUE,
   TYPE_MARKET_SORT_VALUE,
   TYPE_MARKET_ADVANCED_FILTER_VALUE,
+  I_DOMAIN_ACTIVITY_SEARCH_OPTION,
+  TYPE_ACTIVITY_SORT_VALUE,
 };

@@ -10,7 +10,6 @@ import { domain } from "process";
 
 const DomainMarketCard = (props: {
   domain: TYPE_DOMAIN;
-  bookmarked: boolean;
   cardType?: TYPE_DOMAIN_CARD;
   cardHandler?: any;
 }) => {

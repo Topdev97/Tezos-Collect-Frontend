@@ -11,6 +11,7 @@ import {
 import {
   createDomainActivity,
   fetchDomainActivityByName,
+  queryDomainActivity,
 } from "helper/api/domain_activity.api";
 import {
   DOMAIN_SUFFIX,
@@ -22,7 +23,9 @@ import {
   initializeDomain,
   initializeDomainActivity,
   I_DOMAIN_ACTIVITY,
+  I_DOMAIN_ACTIVITY_SEARCH_OPTION,
   I_DOMAIN_SEARCH_VALUE,
+  TYPE_ACTIVITY_SORT_VALUE,
   TYPE_COLLECTION,
   TYPE_DOMAIN,
   TYPE_DOMAIN_OFFER,
@@ -101,6 +104,13 @@ interface ITezosCollectState {
   cacheDomain: { (_domain: TYPE_DOMAIN): void };
   updateCachedDomain: { (_domain: TYPE_DOMAIN): void };
   getDomainActivityByName: { (name: string): Promise<I_DOMAIN_ACTIVITY[]> };
+  queryDomainActivity: {
+    (
+      _searchOptions: I_DOMAIN_ACTIVITY_SEARCH_OPTION,
+      _sortOption: TYPE_ACTIVITY_SORT_VALUE
+    ): Promise<{ domainActivities: I_DOMAIN_ACTIVITY[]; count: number }>;
+  };
+
   queryDomain: {
     (
       _searchOptions: I_DOMAIN_SEARCH_VALUE,
@@ -333,6 +343,14 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
     const result: I_DOMAIN_ACTIVITY[] = await fetchDomainActivityByName(name);
     result.forEach((item) => (item.timestamp = new Date(item.timestamp)));
     return result.sort((b, a) => a.timestamp.getTime() - b.timestamp.getTime());
+  },
+
+  queryDomainActivity: async (
+    _searchOptions: I_DOMAIN_ACTIVITY_SEARCH_OPTION,
+    _sortOption: TYPE_ACTIVITY_SORT_VALUE
+  ) => {
+    const result = await queryDomainActivity(_searchOptions, _sortOption);
+    return result;
   },
 
   queryDomain: async (

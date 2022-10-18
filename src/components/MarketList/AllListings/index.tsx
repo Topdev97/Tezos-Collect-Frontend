@@ -109,7 +109,6 @@ const AllListings = () => {
               <DomainMarketCard
                 key={index}
                 domain={domain}
-                bookmarked={true}
                 cardType="DC_COMPACT"
               />
             );

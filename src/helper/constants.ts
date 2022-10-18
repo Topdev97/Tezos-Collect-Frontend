@@ -201,3 +201,5 @@ export const marketSortOptions: {
     value: "EXPIRESAT_ASC",
   },
 ];
+
+export const DEFAULT_PAGE_SIZE = 40;

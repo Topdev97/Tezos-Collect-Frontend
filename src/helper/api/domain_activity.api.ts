@@ -1,4 +1,9 @@
-import { I_DOMAIN_ACTIVITY, TYPE_DOMAIN } from "helper/interfaces";
+import {
+  I_DOMAIN_ACTIVITY,
+  I_DOMAIN_ACTIVITY_SEARCH_OPTION,
+  TYPE_ACTIVITY_SORT_VALUE,
+  TYPE_DOMAIN,
+} from "helper/interfaces";
 import axios from "axios";
 import { API_ENDPOINT, TEZOS_COLLECT_SECRET } from "helper/constants";
 import { encryptAnyWithAES } from "helper/text-crypt";
@@ -32,4 +37,25 @@ export const fetchDomainActivityByName = async (_name: string) => {
     console.log(error);
     return [];
   }
+};
+
+export const queryDomainActivity = async (
+  searchOptions: I_DOMAIN_ACTIVITY_SEARCH_OPTION,
+  sortOption: TYPE_ACTIVITY_SORT_VALUE
+): Promise<{ domainActivities: I_DOMAIN_ACTIVITY[]; count: number }> => {
+  try {
+    const response = await axios.post(`${API_ENDPOINT}/domain-activity/query`, {
+      searchOptions,
+      sortOption,
+    });
+    converStringToDate(response.data.domainActivities);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return { domainActivities: [], count: 0 };
+  }
+};
+
+export const converStringToDate = (_activity: I_DOMAIN_ACTIVITY) => {
+  _activity.timestamp = new Date(_activity.timestamp);
 };
