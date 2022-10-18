@@ -345,10 +345,10 @@ const DomainDetails = () => {
   }, [domainActivity]);
 
   const relatedDomains = [
-    { name: "5471.tez", price: 27.86, bookmarked: true },
-    { name: "5480.tez", price: 40.86, bookmarked: false },
-    { name: "1358.tez", price: 96.1, bookmarked: false },
-    { name: "axis.tez", price: 107.56, bookmarked: true },
+    { name: "5471", price: 27.86, bookmarked: true },
+    { name: "5480", price: 40.86, bookmarked: false },
+    { name: "1358", price: 96.1, bookmarked: false },
+    { name: "axis", price: 107.56, bookmarked: true },
   ];
 
   const topBidInfo = () => {

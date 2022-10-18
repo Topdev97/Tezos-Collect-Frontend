@@ -272,24 +272,24 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
     // collections.forEach(
     //   (item) => (item.totalVolume = getUnsignedRandomValue(1000) + 500)
     // );
-    collections.forEach(
-      (item) =>
-        (item.numberOfOwners =
-          parseInt(getUnsignedRandomValue(1000).toFixed(0)) + 1000)
-    );
-    collections.forEach(
-      (item) =>
-        (item.numberOfItems = parseInt(
-          getUnsignedRandomValue(10000).toFixed(0)
-        ))
-    );
+    // collections.forEach(
+    //   (item) =>
+    //     (item.numberOfOwners =
+    //       parseInt(getUnsignedRandomValue(1000).toFixed(0)) + 1000)
+    // );
+    // collections.forEach(
+    //   (item) =>
+    //     (item.numberOfItems = parseInt(
+    //       getUnsignedRandomValue(10000).toFixed(0)
+    //     ))
+    // );
     // collections.forEach(
     //   (item) => (item.floorPrice = getUnsignedRandomValue(300))
     // );
-    collections.forEach((item) => (item.volumeChange = getSignedRandomValue()));
-    collections.forEach(
-      (item) => (item.floorPriceChange = getSignedRandomValue())
-    );
+    // collections.forEach((item) => (item.volumeDayChange = getSignedRandomValue()));
+    // collections.forEach(
+    //   (item) => (item.floorPriceChange = getSignedRandomValue())
+    // );
     localStorage.setItem("collections", JSON.stringify(collections));
     set((state: any) => ({
       ...state,

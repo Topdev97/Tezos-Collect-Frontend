@@ -58,13 +58,16 @@ interface TYPE_COLLECTION {
   label: string;
   description: string;
   discordLink: string;
+  numberOfMinted: number;
   numberOfItems: number;
   numberOfOwners: number;
   totalVolume: number;
   topSale: number;
   floorPrice: number;
   volumeDay: number;
-  volumeChange: number;
+  volumeMonth: number;
+  volumeDayChange: number;
+  volumeMonthChange: number;
   floorPriceChange: number;
 }
 
