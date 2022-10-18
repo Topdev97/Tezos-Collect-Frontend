@@ -12,7 +12,7 @@ const TopCollections = () => {
             key={index}
             className="button hover-bg-tezGr text-center tracking-wide font-semibold"
             to={{
-              pathname: `/collection${collection.slug}`,
+              pathname: `/collection/${collection.slug}`,
             }}
           >
             {collection.label}

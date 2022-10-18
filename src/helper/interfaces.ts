@@ -133,6 +133,8 @@ type TYPE_MARKET_ADVANCED_FILTER_VALUE =
 
 interface I_DOMAIN_SEARCH_VALUE {
   domainListed?: boolean;
+  isRegistered?: boolean;
+  isExpiring?: boolean; // isExpiring or isExpired
   showType?:
     | "SHOW_ALL"
     | "SHOW_REGISTERED"
@@ -231,7 +233,15 @@ type TYPE_MARKET_SORT_VALUE =
   | "TOKENID_ASC"
   | "TOKENID_DESC"
   | "EXPIRESAT_ASC"
-  | "EXPIRESAT_DESC";
+  | "EXPIRESAT_DESC"
+  | "SALESTARTEDAT_ASC"
+  | "SALESTARTEDAT_DESC"
+  | "SALEENDSAT_ASC"
+  | "SALEENDSAT_DESC"
+  | "AUCTIONSTARTEDAT_ASC"
+  | "AUCTIONSTARTEDAT_DESC"
+  | "AUCTIONENDSAT_ASC"
+  | "AUCTIONENDSAT_DESC";
 
 export type {
   TYPE_COLLECTION,

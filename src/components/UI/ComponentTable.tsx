@@ -54,7 +54,7 @@ const ComponentTable = (props: {
             return (
               <div
                 key={index}
-                className={`flex size-xs md:size-base ${
+                className={`flex size-xs items-center md:size-base ${
                   textAlign === "center" ? "px-2" : "px-2 md:px-8"
                 } py-4 border-b border-b-itemBorder overflow-x-scroll`}
               >

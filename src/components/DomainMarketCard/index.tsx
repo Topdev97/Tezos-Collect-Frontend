@@ -13,8 +13,15 @@ const DomainMarketCard = (props: {
   cardType?: TYPE_DOMAIN_CARD;
   cardHandler?: any;
 }) => {
-  const { name, price, auctionEndsAt, isForAuction, isForSale, isRegistered } =
-    props.domain;
+  const {
+    name,
+    price,
+    topBid,
+    auctionEndsAt,
+    isForAuction,
+    isForSale,
+    isRegistered,
+  } = props.domain;
   let { cardType, cardHandler } = props;
   cardType = cardType || "DC_CART";
 
@@ -49,7 +56,7 @@ const DomainMarketCard = (props: {
             )}
             {(isForAuction || isForSale) && (
               <span className="text-tezLightGr flex items-center">
-                {price} ꜩ
+                {Math.max(price, topBid)} ꜩ
               </span>
             )}
             {isForSale && (

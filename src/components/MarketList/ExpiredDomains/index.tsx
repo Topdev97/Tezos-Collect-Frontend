@@ -1,22 +1,97 @@
-import { FiSearch } from "react-icons/fi";
+import { useEffect, useMemo, useState } from "react";
 import { HiOutlineRefresh } from "react-icons/hi";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import CSVSvg from "assets/images/market/csv.svg";
-import { useState } from "react";
-import { TYPE_VIEWMODE } from "helper/interfaces";
-import ViewModeControl from "components/UI/ViewModeControl";
-import HoverMenu from "components/UI/HoverMenu";
-import { MdReport } from "react-icons/md";
-import DomainCard from "components/DomainCard";
-import DomainWideCard from "components/DomainWideCard";
+import { FiSearch } from "react-icons/fi";
+import Pagination from "components/UI/Pagination";
+import { TYPE_DOMAIN } from "helper/interfaces";
 import { useTezosCollectStore } from "store";
+import { DEFAULT_PAGE_SIZE } from "helper/constants";
+import DomainBox from "components/UI/DomainBox";
+import AddressBox from "components/UI/AddressBox";
+import tezosCollectLogo from "assets/images/tezos-collect-logo.svg";
+import { dateDifFromNow } from "helper/formatters";
+import ComponentTable from "components/UI/ComponentTable";
+import LinkWithSearchParams from "components/LinkWithSearchParams";
 
 const ExpiredDomains = () => {
-  const { auctionedDomains } = useTezosCollectStore();
-  const [viewMode, setViewMode] = useState<TYPE_VIEWMODE>("VM_LIST");
+  const { queryDomain, findCollectionById } = useTezosCollectStore();
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPage, setTotalPage] = useState<number>(1);
+  const [domains, setDomains] = useState<TYPE_DOMAIN[]>([]);
+
+  const [containStr, setContainStr] = useState<string>("");
+
+  useEffect(() => {
+    onUpdateFilter(1);
+  }, []);
+
+  const onUpdateFilter = async (_currentPage: number) => {
+    const { domains: _domains, count } = await queryDomain(
+      {
+        offset: _currentPage - 1,
+        pageSize: DEFAULT_PAGE_SIZE,
+        isRegistered: true,
+        isExpiring: false,
+      },
+      [],
+      "EXPIRESAT_DESC"
+    );
+    setDomains(_domains);
+
+    const _totalPage = Math.ceil(count / DEFAULT_PAGE_SIZE);
+    setTotalPage(_totalPage);
+    if (_currentPage > _totalPage) setCurrentPage(1);
+  };
+
+  const updateCurrentPage = (_currentPage: number) => {
+    setCurrentPage(_currentPage);
+    onUpdateFilter(_currentPage);
+  };
+
+  const marketNewRegistrationData = useMemo(() => {
+    return {
+      textAlign: "left",
+      heading: "Expired Domains",
+      collapsible: true,
+      header: ["Event", "Name", "Collection", "Cost", "Owner", "Expiry Date"],
+      tableData:
+        domains.length === 0
+          ? []
+          : domains
+              .filter((domain) => domain.name.includes(containStr))
+              .map((domain) => [
+                <div className="flex items-center gap-2">
+                  <div className="rounded-full p-2 bg-white/10 flex items-center justify-center tracking-tight font-oswald">
+                    <img src={tezosCollectLogo} className="w-4" />
+                  </div>
+                  Expiring
+                </div>,
+                <DomainBox name={domain.name} />,
+
+                <LinkWithSearchParams
+                  className="button hover-bg-tezGr text-center tracking-wide font-semibold"
+                  to={{
+                    pathname: `/collection/${
+                      findCollectionById(domain.collectionId)?.slug
+                    }`,
+                  }}
+                >
+                  {findCollectionById(domain.collectionId)?.slug}
+                </LinkWithSearchParams>,
+                `${
+                  domain.name.length >= 5
+                    ? 1
+                    : domain.name.length === 4
+                    ? 25
+                    : 100
+                } ꜩ per year`,
+                <AddressBox address={domain.owner} />,
+                dateDifFromNow(domain.expiresAt),
+              ]),
+    };
+  }, [domains, containStr]);
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       <div className="flex gap-6">
         <button className="p-2 bg-white rounded-lg text-tezDarkBg">
           <HiOutlineRefresh
@@ -29,90 +104,20 @@ const ExpiredDomains = () => {
           <input
             className="input-light w-full pl-10"
             placeholder="Type your perfect domain"
+            onChange={(e) => setContainStr(e.target.value)}
           />
         </div>
-        <select className="select-light w-32 lg:w-64">
-          <option>Expiring</option>
-        </select>
       </div>
-      <div className="flex">
-        <button className="tezGr-button px-3 py-2.5">
-          <img src={CSVSvg} />
-        </button>
-        <div className="ml-auto">
-          <ViewModeControl viewMode={viewMode} setViewMode={setViewMode} />
-        </div>
+
+      <div className="flex mx-auto">
+        <Pagination
+          currentPage={currentPage}
+          totalPage={totalPage}
+          visibleNumber={10}
+          onPageChange={updateCurrentPage}
+        />
       </div>
-      {viewMode === "VM_LIST" ? (
-        <div className="p-5 rounded-lg bg-componentBg">
-          <div className="flex">
-            <h4 className="font-playfair">Expiring</h4>
-          </div>
-          <div className="bg-tezDarkBg py-4 rounded-lg grid grid-cols-[15%_16%_13%_14%_16%_19%_7%] mt-4">
-            <span className="pl-8">Name</span>
-            <span>Current Price</span>
-            <span>Owners</span>
-            <span>Last Sale</span>
-            {/* <span>Registration</span> */}
-            <span>Expiration</span>
-            <span className="text-center">Action</span>
-          </div>
-          <div className="flex flex-col">
-            {auctionedDomains.map((domain, index) => (
-              <div
-                key={index}
-                className="grid grid-cols-[15%_16%_13%_14%_16%_19%_7%] items-center mt-4 cursor-pointer py-2 border-b border-b-inputBorder"
-              >
-                <div className="pl-8">{domain.name}</div>
-                <div>
-                  <span>PREMIUM</span>
-                  <br />
-                  <span className="size-sm text-tezSuccess font-normal">
-                    $ {domain.lastSoldAmount}
-                  </span>
-                </div>
-                <div>{domain.owner} </div>
-                <div>{domain.lastSoldAmount} ꜩ</div>
-                {/* <div>{domain.registeredAt?.toLocaleDateString()}</div> */}
-                <div>
-                  <span>PREMIUM PERIOD</span>
-                  <br />
-                  <span className="size-sm text-tezSuccess font-normal">
-                    {domain.expiresAt?.toLocaleDateString()}
-                  </span>
-                </div>
-                <div className="flex justify-center">
-                  <HoverMenu
-                    options={[
-                      {
-                        icon: <MdReport size={20} />,
-                        text: "Report",
-                        handler: () => {
-                          alert("report");
-                        },
-                      },
-                    ]}
-                    icon={<BsThreeDotsVertical size={20} />}
-                    text=""
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : viewMode === "VM_COMPACT" ? (
-        <div className="grid grid-cols-4 gap-5">
-          {auctionedDomains.map((domain, index) => (
-            <DomainCard key={index} {...domain} />
-          ))}
-        </div>
-      ) : (
-        <div className="grid grid-cols-4 gap-5">
-          {auctionedDomains.map((domain, index) => (
-            <DomainWideCard key={index} {...domain} />
-          ))}
-        </div>
-      )}
+      <ComponentTable {...marketNewRegistrationData} />
     </div>
   );
 };

@@ -10,6 +10,7 @@ import ComponentTable from "components/UI/ComponentTable";
 import { dateDifFromNow } from "helper/formatters";
 import AddressBox from "components/UI/AddressBox";
 import TxBox from "components/UI/TxBox";
+import DomainBox from "components/UI/DomainBox";
 
 const TopLastSales = () => {
   const { queryDomainActivity } = useTezosCollectStore();
@@ -43,7 +44,7 @@ const TopLastSales = () => {
                   </div>
                   {DOMAIN_ACTIVITY_LABEL[activity.type]}
                 </div>,
-                `${activity.name}.tez`,
+                <DomainBox name={activity.name} />,
                 `${activity.amount} ꜩ`,
                 <AddressBox address={activity.from} />,
                 <AddressBox address={activity.to} />,
