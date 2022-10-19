@@ -21,7 +21,7 @@ const AceDrawer = ({
         onClick={() => setDrawerVisible(false)}
       />
       <div
-        className={`ace-drawer-main ${
+        className={`ace-drawer-main overflow-y-scroll ${
           drawAlign === "D_LEFT" ? "mr-auto" : "ml-auto"
         }`}
       >

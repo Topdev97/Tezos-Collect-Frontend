@@ -38,6 +38,9 @@ const DomainDetails = () => {
     setPlaceBidModal,
 
     claimWinnedAuction,
+
+    bookmarkedNames,
+    toggleBookmark,
     getDomainActivityByName,
   } = useTezosCollectStore();
 
@@ -85,7 +88,7 @@ const DomainDetails = () => {
       fetchOnChainDomainDataByName(domainName),
       findDomainByName(domainName || ""),
     ]);
-    console.log(_cachedDomain);
+    // console.log(_cachedDomain);
     const _domain: TYPE_DOMAIN = {
       ..._onChainDomain,
       ..._cachedDomain,
@@ -107,7 +110,7 @@ const DomainDetails = () => {
       topBidder: _onChainDomain.topBidder,
       ownerChanged: _onChainDomain.ownerChanged,
     };
-    console.log(_domain);
+    // console.log(_domain);
 
     setLoading(false);
     setDomain(_domain);
@@ -388,7 +391,14 @@ const DomainDetails = () => {
               onClick={updateDomain}
             />
             <HiMenu className="size-1 md:size-3 hover:text-tezGrSt cursor-pointer duration-50" />
-            <AiFillHeart className="size-1 md:size-3 hover:text-tezGrSt cursor-pointer duration-50" />
+            <AiFillHeart
+              onClick={() => toggleBookmark(domain?.name || "")}
+              className={`size-1 md:size-3 hover:text-tezGrSt cursor-pointer duration-50 ${
+                bookmarkedNames.includes(domain?.name || "")
+                  ? "text-tezGrSt"
+                  : "text-tezText"
+              }`}
+            />
           </div>
         </div>
         <div className="flex flex-col md:flex-row p-6">

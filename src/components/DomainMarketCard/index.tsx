@@ -2,11 +2,11 @@ import { TbHeart } from "react-icons/tb";
 import tezosCollectLogo from "assets/images/tezos-collect-logo.svg";
 import { IoMdCart } from "react-icons/io";
 import { TYPE_DOMAIN, TYPE_DOMAIN_CARD } from "helper/interfaces";
-import { convertNum2DateString } from "helper/formatters";
+import { timerDifFromNow } from "helper/formatters";
 import { NavLink } from "react-router-dom";
 import { RiTimerFlashLine } from "react-icons/ri";
 import { useTezosCollectStore } from "store";
-import { domain } from "process";
+import TezosTimer from "components/UI/TezosTimer";
 
 const DomainMarketCard = (props: {
   domain: TYPE_DOMAIN;
@@ -23,9 +23,8 @@ const DomainMarketCard = (props: {
     isRegistered,
   } = props.domain;
   let { cardType, cardHandler } = props;
-  cardType = cardType || "DC_CART";
 
-  const { bookmarkedIds, toggleBookmark } = useTezosCollectStore();
+  const { bookmarkedNames, toggleBookmark } = useTezosCollectStore();
 
   if (cardType === "DC_COMPACT") {
     return (
@@ -44,7 +43,7 @@ const DomainMarketCard = (props: {
             <TbHeart
               onClick={() => toggleBookmark(name)}
               className={`size-2 ml-auto cursor-pointer duration-150 hover:stroke-tezGrSt mr-0.5 ${
-                bookmarkedIds.includes(name)
+                bookmarkedNames.includes(name)
                   ? "stroke-tezGrSt fill-tezGrSt"
                   : ""
               }`}
@@ -85,7 +84,7 @@ const DomainMarketCard = (props: {
       <div className="bg-tezDarkBg rounded-lg p-4 flex flex-col items-center">
         <TbHeart
           className={`size-2 ml-auto cursor-pointer duration-150 hover:stroke-tezGrSt mr-0.5 ${
-            bookmarkedIds.includes(name) ? "stroke-tezGrSt fill-tezGrSt" : ""
+            bookmarkedNames.includes(name) ? "stroke-tezGrSt fill-tezGrSt" : ""
           }`}
         />
         <img src={tezosCollectLogo} className="w-2/5" />
@@ -93,11 +92,9 @@ const DomainMarketCard = (props: {
       </div>
       <div className="flex items-center my-4">
         <span className="font-semibold">{name}.tez</span>
-        {cardType === "DC_AUCTION" && auctionEndsAt && (
-          <span className="ml-auto">
-            {convertNum2DateString(
-              (auctionEndsAt?.getTime() - new Date().getTime()) / 1000
-            )}
+        {isForAuction && auctionEndsAt && (
+          <span className="ml-auto text-tezLightGr">
+            <TezosTimer to={auctionEndsAt} formatter={timerDifFromNow} />
           </span>
         )}
         {cardType === "DC_SOLD" && auctionEndsAt && (
@@ -118,12 +115,14 @@ const DomainMarketCard = (props: {
           </div>
         </div>
       )}
-      {cardType === "DC_AUCTION" && (
+      {isForAuction && (
         <div className="flex items-center">
           <span className="font-semibold">
             <span className="size-sm text-grayText">Current Bid</span>
             <br />
-            <span className="text-tezLightGr">{price.toFixed(2)} ꜩ</span>
+            <span className="text-tezLightGr">
+              {Math.max(topBid, price).toFixed(2)} ꜩ
+            </span>
           </span>
           <button
             className="ml-auto tezGr-button size-sm"

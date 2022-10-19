@@ -97,7 +97,7 @@ interface ITezosCollectState {
   fetchCollections: { (): void };
   findCollectionById: { (_collectionId: string): TYPE_COLLECTION | undefined };
 
-  bookmarkedIds: string[];
+  bookmarkedNames: string[];
   toggleBookmark: { (_name: string): void };
 
   cachedDomains: TYPE_DOMAIN[];
@@ -312,18 +312,21 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
     );
   },
 
-  bookmarkedIds: JSON.parse(localStorage.getItem("bookmarkedIds") || "[]"),
+  bookmarkedNames: JSON.parse(localStorage.getItem("bookmarkedNames") || "[]"),
   toggleBookmark: (_name: string) => {
-    const indexOf = get().bookmarkedIds.indexOf(_name);
+    const indexOf = get().bookmarkedNames.indexOf(_name);
     if (indexOf >= 0) {
-      get().bookmarkedIds.splice(indexOf, 1);
-    } else get().bookmarkedIds.push(_name);
+      get().bookmarkedNames.splice(indexOf, 1);
+    } else get().bookmarkedNames.push(_name);
 
     set((state: any) => ({
       ...state,
-      bookmarkedIds: get().bookmarkedIds,
+      bookmarkedNames: get().bookmarkedNames,
     }));
-    localStorage.setItem("bookmarkedIds", JSON.stringify(get().bookmarkedIds));
+    localStorage.setItem(
+      "bookmarkedNames",
+      JSON.stringify(get().bookmarkedNames)
+    );
   },
 
   cachedDomains: [],

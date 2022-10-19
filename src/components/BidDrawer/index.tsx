@@ -6,6 +6,8 @@ import { TbHeart } from "react-icons/tb";
 import tezosCollectLogo from "assets/images/tezos-collect-logo.svg";
 import tezosPunk from "assets/images/tezos-punk.png";
 import { useTezosCollectStore } from "store";
+import { beautifyAddress, timerDifFromNow } from "helper/formatters";
+import TezosTimer from "components/UI/TezosTimer";
 
 type IBidDrawerProps = {
   bidDrawerVisible: boolean;
@@ -22,10 +24,16 @@ const BidDrawer = ({
 }: IBidDrawerProps) => {
   const [activeTab, setActiveTab] = useState<T_TABID>("TAB_DETAILS");
 
-  const { setPlaceBidModalVisible } = useTezosCollectStore();
+  const { setPlaceBidModal, bookmarkedNames, toggleBookmark } =
+    useTezosCollectStore();
 
   const onPlaceBid = () => {
-    setPlaceBidModalVisible(true);
+    setPlaceBidModal({
+      visible: true,
+      tokenId: drawerDomain?.tokenId || 0,
+      topBid: Math.max(drawerDomain?.topBid || 0, drawerDomain?.price || 0),
+      callback: null,
+    });
   };
 
   return (
@@ -38,40 +46,48 @@ const BidDrawer = ({
         <div className="flex flex-col p-6 gap-4 w-96">
           <div className="bg-tezDarkBg rounded-lg p-4 flex flex-col items-center aspect-[4/3]">
             <TbHeart
+              onClick={() => toggleBookmark(drawerDomain?.name || "")}
               className={`size-2 ml-auto cursor-pointer duration-150 hover:stroke-tezGrSt mr-0.5 ${
-                drawerDomain?.bookmarked ? "stroke-tezGrSt fill-tezGrSt" : ""
+                bookmarkedNames.includes(drawerDomain?.name || "")
+                  ? "stroke-tezGrSt fill-tezGrSt"
+                  : ""
               }`}
             />
             <img src={tezosCollectLogo} className="w-32 my-4" />
-            <span className="size-2 mb-6">{drawerDomain?.name}</span>
+            <span className="size-2 mb-6">{drawerDomain?.name}.tez</span>
           </div>
-          <h4>{drawerDomain?.name}</h4>
+          <h4>{drawerDomain?.name}.tez</h4>
           <div className="flex flex-col gap-2">
             <span className="text-grayText size-sm">Owner</span>
             <div className="flex gap-3">
               <img src={tezosPunk} className="w-12 rounded-full" />
               <div>
-                <span>{drawerDomain?.owner}</span>
+                <span>{beautifyAddress(drawerDomain?.owner || "")}</span>
                 <br />
                 <span className="text-grayText size-sm">
-                  {drawerDomain?.owner}
+                  {beautifyAddress(drawerDomain?.owner || "")}
                 </span>
               </div>
             </div>
           </div>
-          <div className="bg-tezDarkBg rounded-lg p-4 flex gap-8">
-            <div className="flex flex-1 flex-col gap-2">
+          <div className="bg-tezDarkBg rounded-lg p-4 flex">
+            <div className="flex flex-1 flex-col gap-2 items-center">
               <span className="text-grayText size-sm">Current Bid</span>
-              <span className="text-tezGr">
-                {drawerDomain?.price.toFixed(2)} ꜩ
+              <span className="text-tezLightGr">
+                {drawerDomain?.topBid.toFixed(2)} ꜩ
               </span>
               <span className="size-sm">$ 1802.42</span>
             </div>
             <div className="border-r-2 border-r-itemBorder" />
             <div className="flex flex-1 flex-col gap-2 items-center">
-              <span className="text-grayText size-sm"> Ending in</span>
-              <span className="text-tezLightGr">01 : 44 : 33</span>
-              <span className="size-sm">Hrs Mins Secs</span>
+              <span className="text-grayText size-sm">Ending in</span>
+              <span className="text-tezLightGr">
+                <TezosTimer
+                  to={drawerDomain?.auctionEndsAt || new Date()}
+                  formatter={timerDifFromNow}
+                />
+              </span>
+              <span className="size-sm">Day H:M:S</span>
             </div>
           </div>
           <div className="flex">
@@ -104,11 +120,27 @@ const BidDrawer = ({
           <div className="flex justify-between border-y-2 border-y-componentBorder py-4">
             <div className="flex flex-col gap-2">
               <span className="text-grayText size-sm">Minimum Bid</span>
-              <span className="text-tezLightGr">{drawerDomain?.price} ꜩ</span>
+              <span className="text-tezLightGr">
+                {(
+                  Math.max(
+                    drawerDomain?.topBid || 0,
+                    drawerDomain?.price || 0
+                  ) * 1.1
+                ).toFixed(2)}{" "}
+                ꜩ
+              </span>
             </div>
             <div className="flex flex-col gap-2">
               <span className="text-grayText size-sm">Minimum Increment</span>
-              <span className="text-tezLightGr">{drawerDomain?.price} ꜩ</span>
+              <span className="text-tezLightGr">
+                {(
+                  Math.max(
+                    drawerDomain?.topBid || 0,
+                    drawerDomain?.price || 0
+                  ) * 0.1
+                ).toFixed(2)}{" "}
+                ꜩ
+              </span>
             </div>
           </div>
 

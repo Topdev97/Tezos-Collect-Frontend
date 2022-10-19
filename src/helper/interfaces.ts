@@ -135,6 +135,8 @@ interface I_DOMAIN_SEARCH_VALUE {
   domainListed?: boolean;
   isRegistered?: boolean;
   isExpiring?: boolean; // isExpiring or isExpired
+  isForAuction?: boolean;
+  isForSale?: boolean;
   showType?:
     | "SHOW_ALL"
     | "SHOW_REGISTERED"

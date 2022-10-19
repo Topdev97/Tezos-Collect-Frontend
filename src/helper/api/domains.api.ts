@@ -75,7 +75,9 @@ export const queryDomain = async (
       advancedFilterValues,
       sortOption,
     });
-    converStringToDate(response.data.domains);
+    response.data.domains.forEach((item: TYPE_DOMAIN) =>
+      converStringToDate(item)
+    );
     return response.data;
   } catch (error) {
     console.log(error);
