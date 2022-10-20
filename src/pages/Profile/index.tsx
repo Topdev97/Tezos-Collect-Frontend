@@ -5,10 +5,10 @@ import ProfileTabs from "components/ProfileTabs";
 
 const Profile = () => {
   return (
-    <div className="flex flex-col gap-8 mb-8">
+    <div className="flex flex-col gap-8 py-8">
       <ProfileCard />
       <div className="flex flex-col">
-        <div className="flex">
+        <div className="flex md:w-1/2">
           {TAB_LIST.map((link, index) => (
             <LinkWithSearchParams
               key={index}
@@ -38,33 +38,21 @@ export default Profile;
 
 const TAB_LIST = [
   {
+    path: "/profile/holdings",
+    text: "Domains",
+  },
+  {
     path: "/profile/activity",
     text: "Activity",
-  },
-  {
-    path: "/profile/holdings",
-    text: "Owned",
-  },
-  {
-    path: "/profile/history",
-    text: "History",
   },
   {
     path: "/profile/offers",
     text: "Offers",
   },
-  {
-    path: "/profile/listings",
-    text: "Listings",
-  },
-  {
-    path: "/profile/auctions",
-    text: "Auctions",
-  },
-  {
-    path: "/profile/notifications",
-    text: "Notifications",
-  },
+  // {
+  //   path: "/profile/notifications",
+  //   text: "Notifications",
+  // },
   {
     path: "/profile/favourites",
     text: "Favorites",

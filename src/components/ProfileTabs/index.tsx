@@ -1,22 +1,17 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import ProfileActivity from "./ProfileActivity";
-import ProfileAuctions from "./ProfileAuctions";
-import ProfileFavourties from "./ProfileFavourties";
-import ProfileHistory from "./ProfileHistory";
-import ProfileListings from "./ProfileListings";
+import ProfileDomains from "./ProfileDomains";
+import ProfileFavorites from "./ProfileFavorites";
 import ProfileOffers from "./ProfileOffers";
 const ProfileTabs = () => {
   return (
     <Routes>
-      <Route path="" element={<ProfileActivity />} />
+      <Route path="*" element={<Navigate to="holdings" replace />} />
+      <Route path="holdings" element={<ProfileDomains />} />
       <Route path="activity" element={<ProfileActivity />} />
-      <Route path="holdings" element={<ProfileActivity />} />
-      <Route path="history" element={<ProfileHistory />} />
       <Route path="offers" element={<ProfileOffers />} />
-      <Route path="listings" element={<ProfileListings />} />
-      <Route path="auctions" element={<ProfileAuctions />} />
-      <Route path="notifications" element={<ProfileActivity />} />
-      <Route path="favourites" element={<ProfileFavourties />} />
+      {/* <Route path="notifications" element={<ProfileActivity />} /> */}
+      <Route path="favourites" element={<ProfileFavorites />} />
     </Routes>
   );
 };

@@ -1,10 +1,8 @@
 import { useEffect } from "react";
 import { Route, Router, Routes, useLocation } from "react-router-dom";
 
-import CartDrawer from "components/CartDrawer";
 import Footer from "components/Footer";
 import Header from "components/Header";
-import TxModal from "components/TxModal";
 import Auctions from "./Auctions";
 import DomainDetails from "./DomainDetails";
 import Home from "./Home";
@@ -22,6 +20,9 @@ const App = () => {
     fetchTopSaleDomains,
     fetchAuctionedDomains,
     fetchFeaturedAuctions,
+    activeAddress,
+    contractReady,
+    fetchProfile,
   } = useTezosCollectStore();
 
   useEffect(() => {
@@ -35,6 +36,11 @@ const App = () => {
     fetchAuctionedDomains();
     fetchFeaturedAuctions();
   }, []);
+  useEffect(() => {
+    if (activeAddress && contractReady) {
+      fetchProfile(activeAddress);
+    }
+  }, [activeAddress, contractReady]);
 
   return (
     <>

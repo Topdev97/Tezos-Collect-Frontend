@@ -30,7 +30,18 @@ export const createDomainActivity = async (
 export const fetchDomainActivityByName = async (_name: string) => {
   try {
     const response = await axios.get(
-      `${API_ENDPOINT}/domain-activity/${_name}`
+      `${API_ENDPOINT}/domain-activity/domain/${_name}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+export const getDomainActivityByAddress = async (address: string) => {
+  try {
+    const response = await axios.get(
+      `${API_ENDPOINT}/domain-activity/address/${address}`
     );
     return response.data;
   } catch (error) {
@@ -48,7 +59,10 @@ export const queryDomainActivity = async (
       searchOptions,
       sortOption,
     });
-    converStringToDate(response.data.domainActivities);
+    response.data.domainActivities.forEach((item: I_DOMAIN_ACTIVITY) =>
+      converStringToDate(item)
+    );
+
     return response.data;
   } catch (error) {
     console.log(error);

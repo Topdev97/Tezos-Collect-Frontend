@@ -20,6 +20,7 @@
     "crypto-js": "^4.1.1",
     "qrcode-generator": "^1.4.4",
     "react": "^17.0.1",
+    "react-datetime-picker": "^4.0.1",
     "react-dom": "^17.0.1",
     "react-icons": "^4.4.0",
     "react-router-dom": "^6.4.1",

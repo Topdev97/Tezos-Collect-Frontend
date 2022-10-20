@@ -7,6 +7,7 @@ import { NavLink } from "react-router-dom";
 import { RiTimerFlashLine } from "react-icons/ri";
 import { useTezosCollectStore } from "store";
 import TezosTimer from "components/UI/TezosTimer";
+import LinkWithSearchParams from "components/LinkWithSearchParams";
 
 const DomainMarketCard = (props: {
   domain: TYPE_DOMAIN;
@@ -83,18 +84,34 @@ const DomainMarketCard = (props: {
     <div className="flex flex-col rounded-lg bg-componentBg p-5 pb-4">
       <div className="bg-tezDarkBg rounded-lg p-4 flex flex-col items-center">
         <TbHeart
+          onClick={() => toggleBookmark(name)}
           className={`size-2 ml-auto cursor-pointer duration-150 hover:stroke-tezGrSt mr-0.5 ${
             bookmarkedNames.includes(name) ? "stroke-tezGrSt fill-tezGrSt" : ""
           }`}
         />
         <img src={tezosCollectLogo} className="w-2/5" />
-        <span className="size-2 my-6">{name}.tez 1</span>
+        <LinkWithSearchParams
+          to={{ pathname: `/domain/${name}` }}
+          className="size-2 my-6 hover:opacity-80"
+        >
+          {name}.tez
+        </LinkWithSearchParams>
       </div>
       <div className="flex items-center my-4">
-        <span className="font-semibold">{name}.tez</span>
+        <LinkWithSearchParams
+          to={{ pathname: `/domain/${name}` }}
+          className="font-semibold hover:opacity-80"
+        >
+          {name}.tez
+        </LinkWithSearchParams>
         {isForAuction && auctionEndsAt && (
-          <span className="ml-auto text-tezLightGr">
+          <span className="ml-auto text-tezLightGr flex items-center">
             <TezosTimer to={auctionEndsAt} formatter={timerDifFromNow} />
+
+            <RiTimerFlashLine
+              size={24}
+              className="text-tezGrSt hover:text-tezGrMd"
+            />
           </span>
         )}
         {cardType === "DC_SOLD" && auctionEndsAt && (

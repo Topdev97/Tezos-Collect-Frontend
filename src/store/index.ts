@@ -11,8 +11,10 @@ import {
 import {
   createDomainActivity,
   fetchDomainActivityByName,
+  getDomainActivityByAddress,
   queryDomainActivity,
 } from "helper/api/domain_activity.api";
+import { fetchProfile } from "helper/api/profile.api";
 import {
   DOMAIN_SUFFIX,
   MARKETPLACE_CONTRACT_ADDRESS,
@@ -25,6 +27,7 @@ import {
   I_DOMAIN_ACTIVITY,
   I_DOMAIN_ACTIVITY_SEARCH_OPTION,
   I_DOMAIN_SEARCH_VALUE,
+  I_PROFILE,
   TYPE_ACTIVITY_SORT_VALUE,
   TYPE_COLLECTION,
   TYPE_DOMAIN,
@@ -36,7 +39,6 @@ import {
 import TaquitoUtils, {
   isIncludingOperator,
 } from "helper/taquito/marketplace-utils";
-import { getSignedRandomValue, getUnsignedRandomValue } from "helper/utils";
 
 import create from "zustand";
 
@@ -104,6 +106,9 @@ interface ITezosCollectState {
   cacheDomain: { (_domain: TYPE_DOMAIN): void };
   updateCachedDomain: { (_domain: TYPE_DOMAIN): void };
   getDomainActivityByName: { (name: string): Promise<I_DOMAIN_ACTIVITY[]> };
+  getDomainActivityByAddress: {
+    (address: string): Promise<I_DOMAIN_ACTIVITY[]>;
+  };
   queryDomainActivity: {
     (
       _searchOptions: I_DOMAIN_ACTIVITY_SEARCH_OPTION,
@@ -134,6 +139,9 @@ interface ITezosCollectState {
   fetchOnChainDomainDataByName: {
     (name: string | undefined): Promise<TYPE_DOMAIN>;
   };
+  fetchOnChainReverseRecord: {
+    (name: string): Promise<string>;
+  };
 
   // interating with Tezos
   contractReady: boolean;
@@ -148,6 +156,7 @@ interface ITezosCollectState {
     (
       tokenId: number,
       offerer: string,
+      amoumt: number,
       includingOperator: boolean
     ): Promise<boolean>;
   };
@@ -201,6 +210,11 @@ interface ITezosCollectState {
   };
   buyForSale: {
     (tokenId: number, price: number): Promise<boolean>;
+  };
+
+  profile: I_PROFILE;
+  fetchProfile: {
+    (address: string): Promise<I_PROFILE>;
   };
 }
 
@@ -344,6 +358,13 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
 
   getDomainActivityByName: async (name: string) => {
     const result: I_DOMAIN_ACTIVITY[] = await fetchDomainActivityByName(name);
+    result.forEach((item) => (item.timestamp = new Date(item.timestamp)));
+    return result.sort((b, a) => a.timestamp.getTime() - b.timestamp.getTime());
+  },
+  getDomainActivityByAddress: async (address: string) => {
+    const result: I_DOMAIN_ACTIVITY[] = await getDomainActivityByAddress(
+      address
+    );
     result.forEach((item) => (item.timestamp = new Date(item.timestamp)));
     return result.sort((b, a) => a.timestamp.getTime() - b.timestamp.getTime());
   },
@@ -513,6 +534,19 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
     return _initalizedDomain;
   },
 
+  fetchOnChainReverseRecord: async (address: string) => {
+    try {
+      const _nameRegistryContract = get().nameRegistryContract;
+      const _nameRegistryStorage: any = await _nameRegistryContract?.storage();
+      const obj = await _nameRegistryStorage.store["reverse_records"].get(
+        address
+      );
+      return TaquitoUtils.bytes2Char(obj.name);
+    } catch (error) {
+      return address.substring(0, 8);
+    }
+  },
+
   // Interacting with Tezs
   contractReady: false,
   nameRegistryContract: null,
@@ -624,6 +658,7 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
   sellOfferForOffer: async (
     tokenId: number,
     offerer: string,
+    amount: number,
     includingOperator: boolean
   ) => {
     if (get().activeAddress === "") {
@@ -670,9 +705,9 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       name: _domain?.name || "",
       type: "SELL_ON_OFFER",
       txHash: _txOp.opHash,
-      amount: _domain?.price || 0,
+      amount: amount,
       from: get().activeAddress,
-      to: _domain?.owner || "",
+      to: offerer,
     });
     get().setCurrentTransaction({
       txHash: _txOp.opHash,
@@ -1065,5 +1100,33 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
     });
 
     return true;
+  },
+
+  profile: {
+    address: "",
+    holding: 0,
+    totalVolume: 0,
+    avatarLink: "",
+  },
+  fetchProfile: async (_address: string) => {
+    let reversedName: string;
+    let profile: I_PROFILE;
+    [reversedName, profile] = await Promise.all([
+      get().fetchOnChainReverseRecord(_address),
+      fetchProfile(_address),
+    ]);
+    profile = {
+      ...profile,
+      reversedName,
+    };
+
+    if (profile.address === _address) {
+      set((state: any) => ({
+        ...state,
+        profile,
+      }));
+    }
+
+    return profile;
   },
 }));

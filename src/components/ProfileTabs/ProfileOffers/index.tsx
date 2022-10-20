@@ -1,187 +1,84 @@
+import { useEffect, useState, useMemo } from "react";
+import { useTezosCollectStore } from "store";
+import { DOMAIN_ACTIVITY_LABEL, I_DOMAIN_ACTIVITY } from "helper/interfaces";
+import { beautifyAddress, dateDifFromNow } from "helper/formatters";
 import ComponentTable from "components/UI/ComponentTable";
 import tezosCollectLogo from "assets/images/tezos-collect-logo.svg";
-import HoverMenu from "components/UI/HoverMenu";
-import { MdReport } from "react-icons/md";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import DomainBox from "components/UI/DomainBox";
+import AddressBox from "components/UI/AddressBox";
+import TxBox from "components/UI/TxBox";
 
 const ProfileOffers = () => {
-  return <ComponentTable {...offerTableData} />;
+  const { activeAddress, queryDomainActivity } = useTezosCollectStore();
+  const [domainActivities, setDomainActivities] = useState<I_DOMAIN_ACTIVITY[]>(
+    []
+  );
+
+  useEffect(() => {
+    if (activeAddress) {
+      fetchDomainActivites();
+    }
+  }, [activeAddress]);
+
+  const fetchDomainActivites = async () => {
+    const [offersMade, offersReceived] = await Promise.all([
+      queryDomainActivity(
+        { from: activeAddress, type: "NEW_OFFER" },
+        "TIMESTAMP_DESC"
+      ),
+      queryDomainActivity(
+        { to: activeAddress, type: "NEW_OFFER" },
+        "TIMESTAMP_DESC"
+      ),
+    ]);
+
+    setDomainActivities(
+      offersMade.domainActivities.concat(offersReceived.domainActivities)
+    );
+  };
+
+  const domainActivitiesData = useMemo(() => {
+    return {
+      textAlign: "left",
+      heading: `${domainActivities.length} Offers - Made (${
+        domainActivities.filter((item) => item.from === activeAddress).length
+      }) - Recevied (${
+        domainActivities.filter((item) => item.to === activeAddress).length
+      })`,
+      collapsible: true,
+      header: ["Event", "Name", "Amount", "From", "To", "TX", "Date"],
+      tableData:
+        domainActivities.length === 0
+          ? []
+          : domainActivities
+              .sort(
+                (itemB, itemA) =>
+                  itemA.timestamp.getTime() - itemB.timestamp.getTime()
+              )
+              .map((activity) => [
+                <div className="flex items-center gap-2">
+                  <div className="rounded-full p-2 bg-white/10 flex items-center justify-center tracking-tight font-oswald">
+                    <img src={tezosCollectLogo} className="w-4" />
+                  </div>
+                  {activity.from === activeAddress
+                    ? "Made Offer"
+                    : "Received Offer"}
+                </div>,
+                <DomainBox name={activity.name} />,
+                `${activity.amount} ꜩ`,
+                <AddressBox address={activity.from} />,
+                <AddressBox address={activity.to} />,
+                <TxBox tx={activity.txHash} />,
+                dateDifFromNow(activity.timestamp),
+              ]),
+    };
+  }, [domainActivities]);
+
+  return (
+    <div className="flex flex-col gap-6">
+      <h3 className="font-playfair">Offers Made and Received</h3>
+      <ComponentTable {...domainActivitiesData} />
+    </div>
+  );
 };
 export default ProfileOffers;
-
-const offerTableData = {
-  textAlign: "left",
-  heading: "History",
-  collapsible: true,
-  header: [
-    "Name",
-    "Price",
-    "Owner",
-    "Date",
-    <span className="mx-auto">Action</span>,
-  ],
-  tableData: [
-    [
-      <div className="flex items-center gap-2">
-        <div className="rounded-full p-2 bg-white/10 flex items-center justify-center tracking-tight font-oswald">
-          <img src={tezosCollectLogo} className="w-4" />
-        </div>
-        080.tez
-      </div>,
-
-      "70.6 ꜩ",
-      "tz1aSjTFe...",
-      "3 weeks ago",
-      <div className="flex justify-around">
-        <HoverMenu
-          options={[
-            {
-              icon: <MdReport size={20} />,
-              text: "Report",
-              handler: () => {
-                alert("report");
-              },
-            },
-          ]}
-          icon={<BsThreeDotsVertical size={20} />}
-          text=""
-        />
-      </div>,
-    ],
-    [
-      <div className="flex items-center gap-2">
-        <div className="rounded-full p-2 bg-white/10 flex items-center justify-center tracking-tight font-oswald">
-          <img src={tezosCollectLogo} className="w-4" />
-        </div>
-        080.tez
-      </div>,
-
-      "70.6 ꜩ",
-      "tz1aSjTFe...",
-      "3 weeks ago",
-      <div className="flex justify-around">
-        <HoverMenu
-          options={[
-            {
-              icon: <MdReport size={20} />,
-              text: "Report",
-              handler: () => {
-                alert("report");
-              },
-            },
-          ]}
-          icon={<BsThreeDotsVertical size={20} />}
-          text=""
-        />
-      </div>,
-    ],
-    [
-      <div className="flex items-center gap-2">
-        <div className="rounded-full p-2 bg-white/10 flex items-center justify-center tracking-tight font-oswald">
-          <img src={tezosCollectLogo} className="w-4" />
-        </div>
-        080.tez
-      </div>,
-
-      "70.6 ꜩ",
-      "tz1aSjTFe...",
-      "3 weeks ago",
-      <div className="flex justify-around">
-        <HoverMenu
-          options={[
-            {
-              icon: <MdReport size={20} />,
-              text: "Report",
-              handler: () => {
-                alert("report");
-              },
-            },
-          ]}
-          icon={<BsThreeDotsVertical size={20} />}
-          text=""
-        />
-      </div>,
-    ],
-    [
-      <div className="flex items-center gap-2">
-        <div className="rounded-full p-2 bg-white/10 flex items-center justify-center tracking-tight font-oswald">
-          <img src={tezosCollectLogo} className="w-4" />
-        </div>
-        080.tez
-      </div>,
-
-      "70.6 ꜩ",
-      "tz1aSjTFe...",
-      "3 weeks ago",
-      <div className="flex justify-around">
-        <HoverMenu
-          options={[
-            {
-              icon: <MdReport size={20} />,
-              text: "Report",
-              handler: () => {
-                alert("report");
-              },
-            },
-          ]}
-          icon={<BsThreeDotsVertical size={20} />}
-          text=""
-        />
-      </div>,
-    ],
-    [
-      <div className="flex items-center gap-2">
-        <div className="rounded-full p-2 bg-white/10 flex items-center justify-center tracking-tight font-oswald">
-          <img src={tezosCollectLogo} className="w-4" />
-        </div>
-        080.tez
-      </div>,
-
-      "70.6 ꜩ",
-      "tz1aSjTFe...",
-      "3 weeks ago",
-      <div className="flex justify-around">
-        <HoverMenu
-          options={[
-            {
-              icon: <MdReport size={20} />,
-              text: "Report",
-              handler: () => {
-                alert("report");
-              },
-            },
-          ]}
-          icon={<BsThreeDotsVertical size={20} />}
-          text=""
-        />
-      </div>,
-    ],
-    [
-      <div className="flex items-center gap-2">
-        <div className="rounded-full p-2 bg-white/10 flex items-center justify-center tracking-tight font-oswald">
-          <img src={tezosCollectLogo} className="w-4" />
-        </div>
-        080.tez
-      </div>,
-
-      "70.6 ꜩ",
-      "tz1aSjTFe...",
-      "3 weeks ago",
-      <div className="flex justify-around">
-        <HoverMenu
-          options={[
-            {
-              icon: <MdReport size={20} />,
-              text: "Report",
-              handler: () => {
-                alert("report");
-              },
-            },
-          ]}
-          icon={<BsThreeDotsVertical size={20} />}
-          text=""
-        />
-      </div>,
-    ],
-  ],
-};

@@ -1,34 +1,56 @@
-import DomainCard from "components/DomainCard";
+import { useEffect, useState, useMemo } from "react";
 import { useTezosCollectStore } from "store";
+import { DOMAIN_ACTIVITY_LABEL, I_DOMAIN_ACTIVITY } from "helper/interfaces";
+import { beautifyAddress, dateDifFromNow } from "helper/formatters";
+import ComponentTable from "components/UI/ComponentTable";
+import tezosCollectLogo from "assets/images/tezos-collect-logo.svg";
+import DomainBox from "components/UI/DomainBox";
+import AddressBox from "components/UI/AddressBox";
+import TxBox from "components/UI/TxBox";
 
 const ProfileActivity = () => {
-  const { auctionedDomains } = useTezosCollectStore();
+  const { activeAddress, getDomainActivityByAddress } = useTezosCollectStore();
+  const [domainActivities, setDomainActivities] = useState<I_DOMAIN_ACTIVITY[]>(
+    []
+  );
+  useEffect(() => {
+    if (activeAddress) {
+      getDomainActivityByAddress(activeAddress).then((_domainActivities) => {
+        setDomainActivities(_domainActivities);
+      });
+    }
+  }, [activeAddress]);
+
+  const domainActivitiesData = useMemo(() => {
+    return {
+      textAlign: "left",
+      heading: "Activity",
+      collapsible: true,
+      header: ["Event", "Name", "Amount", "From", "To", "TX", "Date"],
+      tableData:
+        domainActivities.length === 0
+          ? []
+          : domainActivities.map((activity) => [
+              <div className="flex items-center gap-2">
+                <div className="rounded-full p-2 bg-white/10 flex items-center justify-center tracking-tight font-oswald">
+                  <img src={tezosCollectLogo} className="w-4" />
+                </div>
+                {DOMAIN_ACTIVITY_LABEL[activity.type]}
+              </div>,
+              <DomainBox name={activity.name} />,
+              `${activity.amount} ꜩ`,
+              <AddressBox address={activity.from} />,
+              <AddressBox address={activity.to} />,
+              <TxBox tx={activity.txHash} />,
+              dateDifFromNow(activity.timestamp),
+            ]),
+    };
+  }, [domainActivities]);
+
   return (
     <div className="flex flex-col gap-6">
-      <h3 className="font-playfair">Recent sales from user(2)</h3>
-      <div className="grid grid-cols-4 gap-5">
-        {auctionedDomains.slice(0, 2).map((domain, index) => {
-          return <DomainCard key={index} {...domain} cardType="DC_SOLD" />;
-        })}
-      </div>
-      <h3 className="font-playfair mt-6">Recent Purchases (6)</h3>
-      <div className="grid grid-cols-4 gap-5">
-        {auctionedDomains.slice(0, 6).map((domain, index) => {
-          return <DomainCard key={index} {...domain} cardType="DC_PURCHASE" />;
-        })}
-      </div>
-      <h3 className="font-playfair mt-6">Recent Listings (3)</h3>
-      <div className="grid grid-cols-4 gap-5">
-        {auctionedDomains.slice(0, 3).map((domain, index) => {
-          return <DomainCard key={index} {...domain} cardType="DC_LISTING" />;
-        })}
-      </div>
-      <h3 className="font-playfair mt-6">Recent Offers (3)</h3>
-      <div className="grid grid-cols-4 gap-5">
-        {auctionedDomains.slice(0, 3).map((domain, index) => {
-          return <DomainCard key={index} {...domain} cardType="DC_OFFER" />;
-        })}
-      </div>
+      <h3 className="font-playfair">Recent Activities</h3>
+      <ComponentTable {...domainActivitiesData} />
     </div>
   );
 };

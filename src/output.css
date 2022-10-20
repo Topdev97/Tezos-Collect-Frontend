@@ -1520,6 +1520,14 @@ svg{
   width: 2.5rem;
 }
 
+.w-80{
+  width: 20rem;
+}
+
+.w-72{
+  width: 18rem;
+}
+
 .min-w-\[5rem\]{
   min-width: 5rem;
 }
@@ -1563,6 +1571,27 @@ svg{
           animation: spin 1s linear infinite;
 }
 
+@-webkit-keyframes ping{
+  75%, 100%{
+    -webkit-transform: scale(2);
+            transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes ping{
+  75%, 100%{
+    -webkit-transform: scale(2);
+            transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-ping{
+  -webkit-animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+          animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
 .cursor-pointer{
   cursor: pointer;
 }
@@ -1581,6 +1610,10 @@ svg{
 
 .grid-cols-\[30\%_12\%_17\%_14\%_13\%_14\%\]{
   grid-template-columns: 30% 12% 17% 14% 13% 14%;
+}
+
+.grid-cols-6{
+  grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 
 .flex-row{
@@ -2381,6 +2414,10 @@ body {
 
   .md\:w-64{
     width: 16rem;
+  }
+
+  .md\:w-1\/2{
+    width: 50%;
   }
 
   .md\:-translate-x-1\/2{
