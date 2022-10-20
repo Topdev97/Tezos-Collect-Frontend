@@ -7,29 +7,28 @@ import tezosCollectLogo from "assets/images/tezos-collect-logo.svg";
 import DomainBox from "components/UI/DomainBox";
 import AddressBox from "components/UI/AddressBox";
 import TxBox from "components/UI/TxBox";
+import { useParams } from "react-router-dom";
 
 const ProfileOffers = () => {
-  const { activeAddress, queryDomainActivity } = useTezosCollectStore();
+  const { address } = useParams();
+  const { queryDomainActivity } = useTezosCollectStore();
   const [domainActivities, setDomainActivities] = useState<I_DOMAIN_ACTIVITY[]>(
     []
   );
 
   useEffect(() => {
-    if (activeAddress) {
+    if (address) {
       fetchDomainActivites();
     }
-  }, [activeAddress]);
+  }, [address]);
 
   const fetchDomainActivites = async () => {
     const [offersMade, offersReceived] = await Promise.all([
       queryDomainActivity(
-        { from: activeAddress, type: "NEW_OFFER" },
+        { from: address, type: "NEW_OFFER" },
         "TIMESTAMP_DESC"
       ),
-      queryDomainActivity(
-        { to: activeAddress, type: "NEW_OFFER" },
-        "TIMESTAMP_DESC"
-      ),
+      queryDomainActivity({ to: address, type: "NEW_OFFER" }, "TIMESTAMP_DESC"),
     ]);
 
     setDomainActivities(
@@ -41,9 +40,9 @@ const ProfileOffers = () => {
     return {
       textAlign: "left",
       heading: `${domainActivities.length} Offers - Made (${
-        domainActivities.filter((item) => item.from === activeAddress).length
+        domainActivities.filter((item) => item.from === address).length
       }) - Recevied (${
-        domainActivities.filter((item) => item.to === activeAddress).length
+        domainActivities.filter((item) => item.to === address).length
       })`,
       collapsible: true,
       header: ["Event", "Name", "Amount", "From", "To", "TX", "Date"],
@@ -60,9 +59,7 @@ const ProfileOffers = () => {
                   <div className="rounded-full p-2 bg-white/10 flex items-center justify-center tracking-tight font-oswald">
                     <img src={tezosCollectLogo} className="w-4" />
                   </div>
-                  {activity.from === activeAddress
-                    ? "Made Offer"
-                    : "Received Offer"}
+                  {activity.from === address ? "Made Offer" : "Received Offer"}
                 </div>,
                 <DomainBox name={activity.name} />,
                 `${activity.amount} ꜩ`,

@@ -3,8 +3,33 @@ import tezosPunk from "assets/images/tezos-punk.png";
 import TextCopier from "components/UI/TextCopier";
 import { AiOutlineEdit } from "react-icons/ai";
 import { useTezosCollectStore } from "store";
+import { useParams } from "react-router-dom";
+import { I_PROFILE } from "helper/interfaces";
 const ProfileCard = () => {
-  const { profile } = useTezosCollectStore();
+  const {
+    profile: myProfile,
+    activeAddress,
+    fetchProfile,
+    contractReady,
+  } = useTezosCollectStore();
+  const { address } = useParams();
+  const [profile, setProfile] = useState<I_PROFILE>({
+    address: "",
+    avatarLink: "",
+    holding: 0,
+    totalVolume: 0,
+    bookmarkedNames: [],
+  });
+  useEffect(() => {
+    if (contractReady === false) return;
+    if (address && address !== activeAddress) {
+      fetchProfile(address).then((_profile) => setProfile(_profile));
+    }
+    if (address === activeAddress && myProfile.address === address) {
+      setProfile(myProfile);
+    }
+  }, [myProfile, address, activeAddress, contractReady]);
+
   return (
     <div className="rounded-lg flex flex-col md:flex-row gap-8 items-center p-6 bg-componentBg">
       <img src={tezosPunk} className="w-32" />
@@ -29,10 +54,12 @@ const ProfileCard = () => {
           <span className="text-grayText">Trading Volume</span>
         </div>
       </div>
-      <button className="flex gap-2 items-center border-2 hover:bg-white/5">
-        <AiOutlineEdit size={24} />
-        Edit Profile
-      </button>
+      {address === activeAddress && (
+        <button className="flex gap-2 items-center border-2 hover:bg-white/5">
+          <AiOutlineEdit size={24} />
+          Edit Profile
+        </button>
+      )}
     </div>
   );
 };

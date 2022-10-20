@@ -2,19 +2,21 @@ import DomainMarketCard from "components/DomainMarketCard";
 import { DEFAULT_PAGE_SIZE } from "helper/constants";
 import { TYPE_DOMAIN } from "helper/interfaces";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useTezosCollectStore } from "store";
 
 const ProfileDomains = () => {
-  const { queryDomain, activeAddress } = useTezosCollectStore();
+  const { address } = useParams();
+  const { queryDomain } = useTezosCollectStore();
   const [domains, setDomains] = useState<TYPE_DOMAIN[]>([]);
 
   useEffect(() => {
-    if (activeAddress) onUpdateFilter(1);
-  }, [activeAddress]);
+    if (address) onUpdateFilter(1);
+  }, [address]);
 
   const onUpdateFilter = async (_currentPage: number) => {
     const { domains: _domains, count } = await queryDomain(
-      { owner: activeAddress },
+      { owner: address },
       [],
       "LASTSOLDAMOUNT_DESC"
     );

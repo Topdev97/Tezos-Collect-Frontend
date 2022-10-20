@@ -14,7 +14,11 @@ import {
   getDomainActivityByAddress,
   queryDomainActivity,
 } from "helper/api/domain_activity.api";
-import { fetchProfile } from "helper/api/profile.api";
+import {
+  fetchProfile,
+  updateBookmarkedNamesByAddress,
+  fetchBookmarkedNamesByAddress,
+} from "helper/api/profile.api";
 import {
   DOMAIN_SUFFIX,
   MARKETPLACE_CONTRACT_ADDRESS,
@@ -101,6 +105,7 @@ interface ITezosCollectState {
 
   bookmarkedNames: string[];
   toggleBookmark: { (_name: string): void };
+  fetchBookmarkedNamesByAddress: { (_name: string): Promise<string[]> };
 
   cachedDomains: TYPE_DOMAIN[];
   cacheDomain: { (_domain: TYPE_DOMAIN): void };
@@ -341,6 +346,11 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       "bookmarkedNames",
       JSON.stringify(get().bookmarkedNames)
     );
+    updateBookmarkedNamesByAddress(get().activeAddress, get().bookmarkedNames);
+  },
+
+  fetchBookmarkedNamesByAddress: async (_address: string) => {
+    return await fetchBookmarkedNamesByAddress(_address);
   },
 
   cachedDomains: [],
@@ -543,6 +553,7 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       );
       return TaquitoUtils.bytes2Char(obj.name);
     } catch (error) {
+      console.log(error);
       return address.substring(0, 8);
     }
   },
@@ -1107,6 +1118,9 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
     holding: 0,
     totalVolume: 0,
     avatarLink: "",
+    bookmarkedNames: JSON.parse(
+      localStorage.getItem("bookmarkedNames") || "[]"
+    ),
   },
   fetchProfile: async (_address: string) => {
     let reversedName: string;
@@ -1115,12 +1129,13 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       get().fetchOnChainReverseRecord(_address),
       fetchProfile(_address),
     ]);
+
     profile = {
       ...profile,
       reversedName,
     };
 
-    if (profile.address === _address) {
+    if (profile.address === get().activeAddress) {
       set((state: any) => ({
         ...state,
         profile,

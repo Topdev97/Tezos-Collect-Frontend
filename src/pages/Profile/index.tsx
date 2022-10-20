@@ -2,8 +2,37 @@ import LinkWithSearchParams from "components/LinkWithSearchParams";
 
 import ProfileCard from "components/ProfileCard";
 import ProfileTabs from "components/ProfileTabs";
+import { useMemo } from "react";
+import { useParams } from "react-router-dom";
 
 const Profile = () => {
+  const { address } = useParams();
+  const TAB_LIST = useMemo(
+    () => [
+      {
+        path: `/profile/${address}/holdings`,
+        text: "Domains",
+      },
+      {
+        path: `/profile/${address}/activity`,
+        text: "Activity",
+      },
+      {
+        path: `/profile/${address}/offers`,
+        text: "Offers",
+      },
+      // {
+      //   path: `//${address}profile/notifications`,
+      //   text: "Notifications",
+      // },
+      {
+        path: `/profile/${address}/favourites`,
+        text: "Favorites",
+      },
+    ],
+    [address]
+  );
+
   return (
     <div className="flex flex-col gap-8 py-8">
       <ProfileCard />
@@ -35,26 +64,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-const TAB_LIST = [
-  {
-    path: "/profile/holdings",
-    text: "Domains",
-  },
-  {
-    path: "/profile/activity",
-    text: "Activity",
-  },
-  {
-    path: "/profile/offers",
-    text: "Offers",
-  },
-  // {
-  //   path: "/profile/notifications",
-  //   text: "Notifications",
-  // },
-  {
-    path: "/profile/favourites",
-    text: "Favorites",
-  },
-];

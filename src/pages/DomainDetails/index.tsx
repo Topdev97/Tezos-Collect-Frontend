@@ -628,7 +628,7 @@ const DomainDetails = () => {
       <div className="flex flex-col gap-4 mb-8">
         <h4 className="font-playfair font-medium">See Also</h4>
         <div className="grid grid-cols-5 gap-6">
-          {topSaleDomains[0].map((domain, index) => {
+          {topSaleDomains[0]?.map((domain, index) => {
             return (
               <div key={index} className="flex-1">
                 <DomainMarketCard domain={domain} cardHandler={() => {}} />

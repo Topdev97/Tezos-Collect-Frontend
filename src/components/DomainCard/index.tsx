@@ -1,12 +1,10 @@
 import { TbHeart } from "react-icons/tb";
 import tezosCollectLogo from "assets/images/tezos-collect-logo.svg";
-import { TYPE_DOMAIN } from "helper/interfaces";
+
 import LinkWithSearchParams from "components/LinkWithSearchParams";
 import { useTezosCollectStore } from "store";
 
-const DomainCard = (domain: TYPE_DOMAIN) => {
-  let { name } = domain;
-
+const DomainCard = ({ name }: { name: string }) => {
   const { bookmarkedNames, toggleBookmark } = useTezosCollectStore();
 
   return (

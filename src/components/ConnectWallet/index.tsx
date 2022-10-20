@@ -18,7 +18,7 @@ import { useTezosCollectStore } from "store";
 
 const ConnectWallet = () => {
   const navigate = useNavigate();
-  const activeAddress = useTezosCollectStore((store) => store.activeAddress);
+  const { activeAddress } = useTezosCollectStore();
   const setActiveAddress = useTezosCollectStore(
     (store) => store.setActiveAddress
   );
@@ -69,7 +69,7 @@ const ConnectWallet = () => {
           icon: <FaUserCircle size={20} />,
           text: "My Profile",
           handler: () => {
-            navigate("/profile");
+            navigate(`/profile/${activeAddress}`);
           },
         },
         {

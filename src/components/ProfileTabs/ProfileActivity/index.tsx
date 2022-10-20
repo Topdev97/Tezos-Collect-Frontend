@@ -7,19 +7,21 @@ import tezosCollectLogo from "assets/images/tezos-collect-logo.svg";
 import DomainBox from "components/UI/DomainBox";
 import AddressBox from "components/UI/AddressBox";
 import TxBox from "components/UI/TxBox";
+import { useParams } from "react-router-dom";
 
 const ProfileActivity = () => {
-  const { activeAddress, getDomainActivityByAddress } = useTezosCollectStore();
+  const { address } = useParams();
+  const { getDomainActivityByAddress } = useTezosCollectStore();
   const [domainActivities, setDomainActivities] = useState<I_DOMAIN_ACTIVITY[]>(
     []
   );
   useEffect(() => {
-    if (activeAddress) {
-      getDomainActivityByAddress(activeAddress).then((_domainActivities) => {
+    if (address) {
+      getDomainActivityByAddress(address).then((_domainActivities) => {
         setDomainActivities(_domainActivities);
       });
     }
-  }, [activeAddress]);
+  }, [address]);
 
   const domainActivitiesData = useMemo(() => {
     return {

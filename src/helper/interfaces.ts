@@ -175,6 +175,7 @@ interface I_PROFILE {
   address: string;
   totalVolume: number;
   holding: number;
+  bookmarkedNames: string[];
 }
 
 export const initializeDomainActivity = (): I_DOMAIN_ACTIVITY => {
