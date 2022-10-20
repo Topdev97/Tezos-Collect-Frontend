@@ -30,6 +30,24 @@ export const updateBookmarkedNamesByAddress = async (
     console.log(error);
   }
 };
+export const updateAvatarByAddress = async (
+  address: string,
+  payloadBytes: string,
+  avatarLink: string,
+  signature: string,
+  publicKey: string
+) => {
+  try {
+    await axios.put(`${API_ENDPOINT}/profile/avatar/${address}`, {
+      payloadBytes,
+      avatarLink,
+      signature,
+      publicKey,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const fetchBookmarkedNamesByAddress = async (
   address: string

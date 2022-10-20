@@ -1412,6 +1412,10 @@ svg{
   height: 1.25rem;
 }
 
+.h-32{
+  height: 8rem;
+}
+
 .max-h-\[0px\]{
   max-height: 0px;
 }
@@ -1526,6 +1530,14 @@ svg{
 
 .w-72{
   width: 18rem;
+}
+
+.w-8{
+  width: 2rem;
+}
+
+.w-64{
+  width: 16rem;
 }
 
 .min-w-\[5rem\]{
@@ -1729,6 +1741,10 @@ svg{
   border-radius: 9999px;
 }
 
+.rounded-none{
+  border-radius: 0px;
+}
+
 .border-2{
   border-width: 2px;
 }
@@ -1803,6 +1819,14 @@ svg{
 .border-itemBorder{
   --tw-border-opacity: 1;
   border-color: rgb(69 75 80 / var(--tw-border-opacity));
+}
+
+.border-white\/30{
+  border-color: rgb(255 255 255 / 0.3);
+}
+
+.border-componentBorder{
+  border-color: #FFFFFF14;
 }
 
 .border-y-componentBorder{
@@ -2130,6 +2154,10 @@ svg{
   color: rgb(22 30 36 / var(--tw-text-opacity));
 }
 
+.opacity-0{
+  opacity: 0;
+}
+
 .shadow-lg{
   --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
@@ -2140,9 +2168,20 @@ svg{
   outline-width: 0px;
 }
 
+.blur{
+  --tw-blur: blur(8px);
+  -webkit-filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+          filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
 .filter{
   -webkit-filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
           filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.backdrop-filter{
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
 
 .transition-all{
@@ -2295,6 +2334,10 @@ body {
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-black\/20:hover{
+  background-color: rgb(0 0 0 / 0.2);
+}
+
 .hover\:stroke-tezGrSt:hover{
   stroke: #00FBFB;
 }
@@ -2316,6 +2359,22 @@ body {
 
 .hover\:opacity-80:hover{
   opacity: 0.8;
+}
+
+.hover\:opacity-70:hover{
+  opacity: 0.7;
+}
+
+.hover\:opacity-20:hover{
+  opacity: 0.2;
+}
+
+.hover\:opacity-30:hover{
+  opacity: 0.3;
+}
+
+.hover\:opacity-50:hover{
+  opacity: 0.5;
 }
 
 .focus\:w-40:focus{

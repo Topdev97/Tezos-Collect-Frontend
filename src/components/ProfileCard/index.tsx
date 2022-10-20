@@ -5,14 +5,15 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { useTezosCollectStore } from "store";
 import { useParams } from "react-router-dom";
 import { I_PROFILE } from "helper/interfaces";
+import EditProfileModal from "components/EditProfileModal";
 const ProfileCard = () => {
+  const { address } = useParams();
   const {
     profile: myProfile,
     activeAddress,
     fetchProfile,
     contractReady,
   } = useTezosCollectStore();
-  const { address } = useParams();
   const [profile, setProfile] = useState<I_PROFILE>({
     address: "",
     avatarLink: "",
@@ -20,6 +21,10 @@ const ProfileCard = () => {
     totalVolume: 0,
     bookmarkedNames: [],
   });
+
+  const [editProfileModalVisible, setEditProfileModalVisible] =
+    useState<boolean>(false);
+
   useEffect(() => {
     if (contractReady === false) return;
     if (address && address !== activeAddress) {
@@ -32,7 +37,18 @@ const ProfileCard = () => {
 
   return (
     <div className="rounded-lg flex flex-col md:flex-row gap-8 items-center p-6 bg-componentBg">
-      <img src={tezosPunk} className="w-32" />
+      <EditProfileModal
+        editProfileModalVisible={editProfileModalVisible}
+        setEditProfileModalVisible={setEditProfileModalVisible}
+      />
+      <img
+        src={profile.avatarLink ? profile.avatarLink : tezosPunk}
+        onError={({ currentTarget }) => {
+          currentTarget.onerror = null; // prevents looping
+          currentTarget.src = tezosPunk;
+        }}
+        className="w-32 rounded-lg"
+      />
       <div className="flex flex-col h-full">
         <h3 className="font-semibold">{profile.reversedName}</h3>
         <div className="mt-4">
@@ -55,7 +71,10 @@ const ProfileCard = () => {
         </div>
       </div>
       {address === activeAddress && (
-        <button className="flex gap-2 items-center border-2 hover:bg-white/5">
+        <button
+          className="flex gap-2 items-center border-2 hover:bg-white/5"
+          onClick={() => setEditProfileModalVisible(true)}
+        >
           <AiOutlineEdit size={24} />
           Edit Profile
         </button>

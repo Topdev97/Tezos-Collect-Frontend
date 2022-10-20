@@ -11,6 +11,9 @@ export const TEZOS_COLLECT_NETWORK: Network = {
   type: NetworkType.GHOSTNET,
 };
 
+export const NFT_STORAGE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEZlOTRmMzBFRDQzMzkwQUVkMDBGQTNCY2E3NzY3Nzg2NjhiMDA3ZGQiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2MTM3MDI4MjE5MSwibmFtZSI6IkVya2tpIFBhcHVuZW4ifQ.W3e0ulvqTpj3lxnph-dBi8fL5Ja3mM9pI7jzd0LwT_k";
+
 export const TEZOS_COLLECT_SECRET = "TEZOS_COLLECT_SECRET";
 
 const MAINNET_RPC_URL: string = "https://rpc.tzkt.io/mainnet";

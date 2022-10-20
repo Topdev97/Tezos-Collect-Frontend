@@ -1,4 +1,6 @@
+import { RequestSignPayloadInput, SigningType } from "@airgap/beacon-sdk";
 import { ContractAbstraction, ContractProvider } from "@taquito/taquito";
+import { char2Bytes } from "@taquito/utils";
 import { fetchCollections } from "helper/api/collections.api";
 import {
   fetchAuctionedDomains,
@@ -24,6 +26,7 @@ import {
   MARKETPLACE_CONTRACT_ADDRESS,
   NAME_REGISTRY_CONTRACT_ADDRESS,
   Tezos,
+  TEZOS_COLLECT_WALLET,
 } from "helper/constants";
 import {
   initializeDomain,
@@ -153,6 +156,14 @@ interface ITezosCollectState {
   nameRegistryContract: ContractAbstraction<ContractProvider> | null;
   marketPlaceContract: ContractAbstraction<ContractProvider> | null;
   initializeContracts: { (): void };
+  requestSignMessage: {
+    (input: string): Promise<{
+      signature: string;
+      payloadBytes: string;
+      publicKey: string;
+    }>;
+  };
+
   makeOfferToDomain: {
     (tokenId: number, amount: number, durationId: number): Promise<boolean>;
   };
@@ -575,6 +586,45 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       marketPlaceContract: _marketPlaceContract,
     }));
   },
+  requestSignMessage: async (input: string) => {
+    // The data to format
+
+    const ISO8601formatedTimestamp = new Date().toISOString();
+
+    // The full string
+    const formattedInput: string = [
+      "Tezos Signed Message: \n",
+      ISO8601formatedTimestamp,
+      input,
+    ].join(" ");
+
+    // The bytes to sign
+    const bytes = char2Bytes(formattedInput);
+    const payloadBytes =
+      "05" + "0100" + char2Bytes(bytes.length.toString()) + bytes;
+
+    // The payload to send to the wallet
+    const payload: RequestSignPayloadInput = {
+      signingType: SigningType.MICHELINE,
+      payload: payloadBytes,
+      sourceAddress: get().activeAddress,
+    };
+
+    // The signing
+    const signedPayload = await TEZOS_COLLECT_WALLET.client.requestSignPayload(
+      payload
+    );
+
+    // The signature
+    const { signature } = signedPayload;
+    return {
+      signature,
+      payloadBytes,
+      publicKey:
+        (await TEZOS_COLLECT_WALLET.client.getActiveAccount())?.publicKey || "",
+    };
+  },
+
   makeOfferModal: { tokenId: -1, name: "", visible: false, callback: null },
   setMakeOfferModal: (_makeOfferModal: IMakeOfferModal) => {
     set((state: any) => ({
