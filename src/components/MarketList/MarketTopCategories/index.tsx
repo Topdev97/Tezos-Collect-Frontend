@@ -4,6 +4,8 @@ import CSVSvg from "assets/images/market/csv.svg";
 import { FiSearch } from "react-icons/fi";
 import { TbHeart } from "react-icons/tb";
 import { useTezosCollectStore } from "store";
+import LinkWithSearchParams from "components/LinkWithSearchParams";
+import PercentageChangeTag from "components/UI/PercentageChangeTag";
 
 const MarketTopCategories = () => {
   const { collectionStore } = useTezosCollectStore();
@@ -44,7 +46,10 @@ const MarketTopCategories = () => {
           {collectionStore.collections
             .filter((item) => item.slug.includes(searchValue))
             .map((collection, index) => (
-              <div
+              <LinkWithSearchParams
+                to={{
+                  pathname: `/collection/${collection.slug}`,
+                }}
                 key={index}
                 className="grid grid-cols-[30%_12%_17%_14%_13%_14%] items-center mt-4 cursor-pointer hover:bg-white/10 py-2"
               >
@@ -69,42 +74,20 @@ const MarketTopCategories = () => {
                 <div>
                   <span>{collection.volumeDay.toFixed(2)} ꜩ</span>
                   <br />
-                  <span
-                    className={`size-sm ${
-                      collection.volumeDayChange >= 0
-                        ? "text-tezSuccess"
-                        : "text-tezWarning"
-                    } font-normal`}
-                  >
-                    {collection.volumeDayChange >= 0
-                      ? `+${collection.volumeDayChange.toFixed(2)}`
-                      : collection.volumeDayChange.toFixed(2)}
-                    %
-                  </span>
+                  <PercentageChangeTag value={collection.volumeDayChange} />
                 </div>
                 <div>{collection.totalVolume.toFixed(2)} ꜩ</div>
                 <div>
                   <span>{collection.floorPrice.toFixed(2)} ꜩ</span>
                   <br />
-                  <span
-                    className={`size-sm ${
-                      collection.floorPriceChange >= 0
-                        ? "text-tezSuccess"
-                        : "text-tezWarning"
-                    } font-normal`}
-                  >
-                    {collection.floorPriceChange >= 0
-                      ? `+${collection.floorPriceChange.toFixed(2)}`
-                      : collection.floorPriceChange.toFixed(2)}
-                    %
-                  </span>
+                  <PercentageChangeTag value={collection.floorPriceChange} />
                 </div>
                 <div>{collection.numberOfOwners}</div>
                 <div>
                   {collection.numberOfMinted} / {collection.numberOfItems}
                 </div>
                 {/* {collection.maxSupply} */}
-              </div>
+              </LinkWithSearchParams>
             ))}
         </div>
       </div>

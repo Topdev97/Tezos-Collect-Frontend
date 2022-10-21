@@ -152,6 +152,7 @@ interface I_DOMAIN_SEARCH_VALUE {
   maxPrice?: number;
   contains?: string;
   owner?: string;
+  collectionId?: string;
 }
 
 interface I_DOMAIN_ACTIVITY_SEARCH_OPTION {
@@ -161,6 +162,7 @@ interface I_DOMAIN_ACTIVITY_SEARCH_OPTION {
   name?: string;
   from?: string;
   to?: string;
+  collectionId?: string;
 }
 
 type TYPE_ACTIVITY_SORT_VALUE =
@@ -176,6 +178,11 @@ interface I_PROFILE {
   totalVolume: number;
   holding: number;
   bookmarkedNames: string[];
+}
+
+interface I_COLLECTION_HOLDER {
+  _id: string;
+  count: number;
 }
 
 export const initializeDomainActivity = (): I_DOMAIN_ACTIVITY => {
@@ -271,4 +278,5 @@ export type {
   I_DOMAIN_ACTIVITY_SEARCH_OPTION,
   TYPE_ACTIVITY_SORT_VALUE,
   I_PROFILE,
+  I_COLLECTION_HOLDER,
 };

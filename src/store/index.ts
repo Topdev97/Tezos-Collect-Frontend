@@ -105,6 +105,7 @@ interface ITezosCollectState {
   collectionStore: ICollectionStore;
   fetchCollections: { (): void };
   findCollectionById: { (_collectionId: string): TYPE_COLLECTION | undefined };
+  findCollectionBySlug: { (_slug: string): TYPE_COLLECTION | undefined };
 
   bookmarkedNames: string[];
   toggleBookmark: { (_name: string): void };
@@ -339,6 +340,11 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
   findCollectionById: (_collectionId: string) => {
     return get().collectionStore.collections.find(
       (item) => item._id === _collectionId
+    );
+  },
+  findCollectionBySlug: (_slug: string) => {
+    return get().collectionStore.collections.find(
+      (item) => item.slug === _slug
     );
   },
 

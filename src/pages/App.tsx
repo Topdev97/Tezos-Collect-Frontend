@@ -10,6 +10,7 @@ import Market from "./Market";
 import Profile from "./Profile";
 import { useTezosCollectStore } from "store";
 import ModalsAndDrawers from "components/ModalsAndDrawers";
+import CollectionDetails from "./CollectionDetails";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -52,6 +53,7 @@ const App = () => {
           <Route path="/tokens" element={"tokens"} />
           <Route path="/market/*" element={<Market />} />
           <Route path="/domain/:domain" element={<DomainDetails />} />
+          <Route path="/collection/:slug/*" element={<CollectionDetails />} />
           <Route path="/auction" element={<Auctions />} />
           <Route path="/profile/:address/*" element={<Profile />} />
         </Routes>

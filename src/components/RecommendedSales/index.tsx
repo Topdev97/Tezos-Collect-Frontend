@@ -26,7 +26,8 @@ const RecommendedSales = () => {
         <div className="flex flex-col p-2">
           {recommendedSales.map((category, index) => {
             return (
-              <div
+              <LinkWithSearchParams
+                to={{ pathname: `/collection/${category.slug}` }}
                 key={index}
                 className="px-3 py-2 hover:bg-white/10 flex items-center cursor-pointer rounded-lg duration-100"
               >
@@ -35,9 +36,9 @@ const RecommendedSales = () => {
                 </div>
                 <span className="ml-4">{category.label}</span>
                 <span className="ml-auto">
-                  {category.totalVolume.toFixed(2)} ꜩ
+                  {category.volumeDay.toFixed(2)} ꜩ
                 </span>
-              </div>
+              </LinkWithSearchParams>
             );
           })}
         </div>

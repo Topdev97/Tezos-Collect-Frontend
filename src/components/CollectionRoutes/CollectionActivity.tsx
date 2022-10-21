@@ -11,15 +11,17 @@ import { dateDifFromNow } from "helper/formatters";
 import AddressBox from "components/UI/AddressBox";
 import TxBox from "components/UI/TxBox";
 import DomainBox from "components/UI/DomainBox";
+import { useParams } from "react-router-dom";
 
-const TopLastSales = () => {
-  const { queryDomainActivity } = useTezosCollectStore();
+const CollectionActivity = () => {
+  const { queryDomainActivity, findCollectionBySlug } = useTezosCollectStore();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
   const [domainActivities, setDomainActivities] = useState<I_DOMAIN_ACTIVITY[]>(
     []
   );
 
+  const { slug } = useParams();
   const [containStr, setContainStr] = useState<string>("");
 
   useEffect(() => {
@@ -29,7 +31,9 @@ const TopLastSales = () => {
   const marketLastSaleData = useMemo(() => {
     return {
       textAlign: "left",
-      heading: "Last Sales",
+      heading: `Collection ${slug?.toUpperCase()} Activity (${
+        domainActivities.length
+      })`,
       collapsible: true,
       header: ["Event", "Name", "Price", "From", "To", "TX", "Date"],
       tableData:
@@ -60,7 +64,7 @@ const TopLastSales = () => {
         {
           offset: _currentPage - 1,
           pageSize: DEFAULT_PAGE_SIZE,
-          type: "BUY_FROM_SALE",
+          collectionId: findCollectionBySlug(slug || "")?._id,
         },
         "TIMESTAMP_DESC"
       );
@@ -107,4 +111,4 @@ const TopLastSales = () => {
     </div>
   );
 };
-export default TopLastSales;
+export default CollectionActivity;
