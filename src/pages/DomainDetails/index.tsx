@@ -67,7 +67,7 @@ const DomainDetails = () => {
         label: "Last Sale Price",
         value: `${domain?.lastSoldAmount?.toFixed(2)} ꜩ`,
       },
-      { label: "TokenId", value: domain?.tokenId },
+      { label: "TokenId", value: domain?.isRegistered ? domain?.tokenId : "" },
       { label: "Length", value: domainName?.length },
       // {
       //   label: "Registration Date",
@@ -75,7 +75,9 @@ const DomainDetails = () => {
       // },
       {
         label: "Expiration Date",
-        value: domain?.expiresAt?.toLocaleString("en-us"),
+        value: domain?.isRegistered
+          ? domain?.expiresAt?.toLocaleString("en-us")
+          : "",
       },
     ];
   }, [domain, collection]);
@@ -91,7 +93,7 @@ const DomainDetails = () => {
       fetchOnChainDomainDataByName(domainName),
       findDomainByName(domainName || ""),
     ]);
-    // console.log(_cachedDomain);
+    console.log(_onChainDomain);
     const _domain: TYPE_DOMAIN = {
       ..._onChainDomain,
       ..._cachedDomain,
@@ -625,7 +627,7 @@ const DomainDetails = () => {
         </div>
       </div>
       <ComponentTable {...domainActivities} />
-      <PriceHistory heading="Price History" collapsible={true} />
+      {/* <PriceHistory heading="Price History" collapsible={true} /> */}
       <div className="flex flex-col gap-4 mb-8">
         <h4 className="font-playfair font-medium">See Also</h4>
         <div className="grid grid-cols-5 gap-6">

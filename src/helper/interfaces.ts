@@ -238,7 +238,7 @@ export const initializeDomain = (): TYPE_DOMAIN => {
 
     ownerChanged: true,
   };
-  _domain = JSON.parse(JSON.stringify(_domain));
+  // _domain = JSON.parse(JSON.stringify(_domain));
   return _domain;
 };
 

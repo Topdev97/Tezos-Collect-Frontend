@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import LinkWithSearchParams from "components/LinkWithSearchParams";
 import { FiSearch } from "react-icons/fi";
 import { AiFillStar } from "react-icons/ai";
@@ -15,6 +15,9 @@ const Header = () => {
   const setCartDrawerVisible = useTezosCollectStore(
     (state) => state.setCartDrawerVisible
   );
+  const navigate = useNavigate();
+
+  const domainInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <div className="flex items-center justify-between border-b-2 border-b-white/10 w-full top-0 lg:px-24 px-4 z-10 transition-all duration-300">
@@ -45,9 +48,16 @@ const Header = () => {
           <input
             className="border-0 p-1.5 md:p-2 z-[1] focus:border-2 pl-10 md:pl-12 text-[14px] w-0 focus:w-40 md:focus:w-48 duration-150"
             placeholder="Search"
+            ref={domainInputRef}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                const _domain: string = domainInputRef.current?.value || "";
+                if (_domain) navigate(`/domain/${_domain}`);
+              }
+            }}
           />
         </div>
-        <AiFillStar
+        {/* <AiFillStar
           className="cursor-pointer text-tezGrSt hover:text-tezGrMd"
           size={20}
         />
@@ -55,7 +65,7 @@ const Header = () => {
           className="cursor-pointer text-tezGrSt hover:text-tezGrMd"
           size={20}
           onClick={() => setCartDrawerVisible(!cartDrawerVisible)}
-        />
+        /> */}
         <ConnectWallet />
       </div>
     </div>

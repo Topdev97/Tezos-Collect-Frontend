@@ -15,14 +15,14 @@ const Footer = () => {
           <div className="home-logo my-2" />
         </LinkWithSearchParams>
         <div className="flex items-center gap-8">
-          <AiFillStar
+          {/* <AiFillStar
             className="cursor-pointer text-tezGrSt hover:text-tezGrMd"
             size={20}
           />
           <IoMdCart
             className="cursor-pointer text-tezGrSt hover:text-tezGrMd"
             size={20}
-          />
+          /> */}
         </div>
       </div>
       <div className="flex items-center justify-between transition-all duration-150">
@@ -50,15 +50,15 @@ export default Footer;
 const pageLinks = [
   {
     text: "Market",
-    link: "market",
+    link: "/market",
   },
   {
     text: "Categories",
-    link: "market",
+    link: "/market/top-categories",
   },
   {
     text: "Auctions",
-    link: "auction",
+    link: "/auction",
   },
   {
     text: "FAQ",

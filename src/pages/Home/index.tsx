@@ -27,7 +27,7 @@ const Home = () => {
                 className="mt-4 w-48 md:w-80 input-light"
               />
             </div>
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
               <span>Categories</span>
               <select id="states" className="select-light w-full mt-4 p-3">
                 <option>All types</option>
@@ -35,9 +35,10 @@ const Home = () => {
                   <option key={index}>{item.slug}</option>
                 ))}
               </select>
-            </div>
-            <button className="tezGr-button p-3">
-              <FiSearch size={24} />
+            </div> */}
+            <button className="tezGr-button py-3">
+              {/* <FiSearch size={24} /> */}
+              Explore
             </button>
           </div>
         </div>

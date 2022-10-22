@@ -18,7 +18,7 @@ const RecommendedSales = () => {
     <div className="flex flex-col md:flex-row gap-y-4 gap-x-12">
       <div className="flex w-full flex-col rounded-lg border-2 border-tezCyan recommended-sale-component">
         <div className="flex border-b-2 border-b-tezCyan p-4 items-center">
-          <span className="size-1">Top Categories</span>
+          <span className="size-1">💯 Top Categories</span>
           <select className="ml-auto">
             <option>24h</option>
           </select>
@@ -45,7 +45,7 @@ const RecommendedSales = () => {
       </div>
       <div className="flex w-full flex-col rounded-lg border-2 border-tezCyan recommended-sale-component">
         <div className="flex border-b-2 border-b-tezCyan p-4 items-center">
-          <span className="size-1">Top Sales</span>
+          <span className="size-1">💰 Top Sales</span>
           <select
             className="ml-auto"
             onChange={(e) => setCurrentDuration(parseInt(e.target.value))}
@@ -81,7 +81,7 @@ const RecommendedSales = () => {
       </div>
       <div className="flex w-full flex-col rounded-lg border-2 border-tezCyan recommended-sale-component">
         <div className="flex border-b-2 border-b-tezCyan p-4 items-center">
-          <span className="size-1 my-2">Featured Auctions</span>
+          <span className="size-1 my-2">💎 Featured Auctions</span>
         </div>
         <div className="flex flex-col p-2">
           {featuredAuctions.map((domain, index) => {

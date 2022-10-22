@@ -251,7 +251,8 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
         tezosPrice: _price,
       }));
     };
-    // setInterval(() => udpateTezosPrice(), 20000);
+    udpateTezosPrice();
+    setInterval(() => udpateTezosPrice(), 20000);
   },
   currentTransaction: {
     txHash: undefined,

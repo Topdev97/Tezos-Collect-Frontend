@@ -9,10 +9,10 @@ const TopLastSales = () => {
   return (
     <div className="flex flex-col md:my-12">
       <div className="flex items-center">
-        <h4 className="font-playfair mb-6">Top Categories (24h)</h4>
+        <h4 className="font-playfair mb-6">📈 Top Categories (24h)</h4>
         <LinkWithSearchParams
           to={{
-            pathname: "/categories",
+            pathname: "/market/top-categories",
           }}
           className="ml-auto size-1 text-tezLightGr hover:text-tezGr duration-50 flex items-center"
         >
