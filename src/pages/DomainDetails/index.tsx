@@ -44,6 +44,7 @@ const DomainDetails = () => {
     bookmarkedNames,
     toggleBookmark,
     getDomainActivityByName,
+    tezosPrice,
   } = useTezosCollectStore();
 
   const [domain, setDomain] = useState<TYPE_DOMAIN | undefined>(undefined);
@@ -428,7 +429,7 @@ const DomainDetails = () => {
                   <span className="font-bold size-2 text-right">
                     {domain?.price.toFixed(2)} ꜩ
                     <br />
-                    ($3,673.15)
+                    ($ {(tezosPrice * (domain?.price || 0)).toFixed(2)})
                   </span>
                 </div>
                 {!isYourDomain && (

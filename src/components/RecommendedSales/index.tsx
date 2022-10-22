@@ -81,7 +81,7 @@ const RecommendedSales = () => {
       </div>
       <div className="flex w-full flex-col rounded-lg border-2 border-tezCyan recommended-sale-component">
         <div className="flex border-b-2 border-b-tezCyan p-4 items-center">
-          <span className="size-1">Featured Auctions</span>
+          <span className="size-1 my-2">Featured Auctions</span>
         </div>
         <div className="flex flex-col p-2">
           {featuredAuctions.map((domain, index) => {

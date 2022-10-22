@@ -1,16 +1,14 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import AceModal from "components/UI/AceModal";
 import AceModalCloseButton from "components/UI/AceModal/AceModalCloseButton";
-import {
-  MARKETPLACE_AUCTION_DURATIONS,
-  MARKETPLACE_FEE,
-} from "helper/constants";
+// import { MARKETPLACE_AUCTION_DURATIONS } from "helper/constants";
 import { useTezosCollectStore } from "store";
+import { DateTimePicker } from "react-rainbow-components";
 
 const ListForSaleModal = () => {
   const { listForSaleModal, setListForSaleModalVisible, listForSale } =
     useTezosCollectStore();
-  const saleDurationRef = useRef<HTMLSelectElement>(null);
+
   const startingAmountRef = useRef<HTMLInputElement>(null);
   const onListForSale = async () => {
     if (parseFloat(startingAmountRef.current?.value || "0.0") < 1) return;
@@ -18,10 +16,15 @@ const ListForSaleModal = () => {
       listForSaleModal.tokenId,
       listForSaleModal.includingOperator,
       parseFloat(startingAmountRef.current?.value || "0.0"),
-      parseInt(saleDurationRef.current?.value || "0")
+      startTime,
+      endTime
     );
     if (listForSaleModal.callback) listForSaleModal.callback();
   };
+  const [startTime, setStartTime] = useState<Date>(new Date());
+  const [endTime, setEndTime] = useState<Date>(
+    new Date(new Date().getTime() + 600 * 1000)
+  );
   return (
     <AceModal
       modalVisible={listForSaleModal.visible}
@@ -43,14 +46,24 @@ const ListForSaleModal = () => {
             placeholder="0.0"
             ref={startingAmountRef}
           />
-          <span>Listing expiration (optional)</span>
-          <select className="border bg-componentBg" ref={saleDurationRef}>
+
+          <span>Select starting time</span>
+          <DateTimePicker value={startTime} onChange={setStartTime} />
+          <span>
+            Select ending time
+            <span className="size-xs text-tezWarning">
+              {" *"}
+              (10 mins ~ 6 months)
+            </span>
+          </span>
+          <DateTimePicker value={endTime} onChange={setEndTime} />
+          {/* <select className="border bg-componentBg" ref={saleDurationRef}>
             {MARKETPLACE_AUCTION_DURATIONS.map((item, index) => (
               <option key={index} value={index}>
                 {item.label}
               </option>
             ))}
-          </select>
+          </select> */}
         </div>
         <div className="flex flex-col gap-1">
           <span>Fees</span>

@@ -16,6 +16,7 @@ import {
   getDomainActivityByAddress,
   queryDomainActivity,
 } from "helper/api/domain_activity.api";
+import { getTezosPrice } from "helper/api/other.api";
 import {
   fetchProfile,
   updateBookmarkedNamesByAddress,
@@ -91,6 +92,8 @@ interface ICollectionStore {
 }
 
 interface ITezosCollectState {
+  tezosPrice: number;
+  fetcTezosPrice: { (): void };
   activeAddress: string;
   setActiveAddress: { (_activeAddress: string): void };
 
@@ -190,7 +193,9 @@ interface ITezosCollectState {
       tokenId: number,
       includingOperator: boolean,
       defaultAmount: number,
-      durationId: number
+      auction_started_at: Date,
+      auction_ends_at: Date
+      // durationId: number
     ): Promise<boolean>;
   };
 
@@ -218,7 +223,8 @@ interface ITezosCollectState {
       tokenId: number,
       includingOperator: boolean,
       defaultAmount: number,
-      durationId: number
+      sale_started_at: Date,
+      sale_ends_at: Date
     ): Promise<boolean>;
   };
 
@@ -236,6 +242,17 @@ interface ITezosCollectState {
 }
 
 export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
+  tezosPrice: 0,
+  fetcTezosPrice: async () => {
+    const udpateTezosPrice = async () => {
+      const _price = await getTezosPrice();
+      set((state) => ({
+        ...state,
+        tezosPrice: _price,
+      }));
+    };
+    // setInterval(() => udpateTezosPrice(), 20000);
+  },
   currentTransaction: {
     txHash: undefined,
     txStatus: "TX_NONE",
@@ -549,7 +566,6 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
           _domain.auctionStartedAt = new Date(orders_map.auction_started_at);
         }
         if (orders_map.is_for_sale) {
-          console.log(orders_map);
           _domain.saleEndsAt = new Date(orders_map.auction_ends_at);
           _domain.saleStartedAt = new Date(orders_map.auction_started_at);
         }
@@ -809,7 +825,8 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
     tokenId: number,
     includingOperator: boolean,
     defaultAmount: number,
-    durationId: number
+    auction_started_at: Date,
+    auction_ends_at: Date
   ) => {
     if (get().activeAddress === "") {
       alert("Need to connect wallet first!");
@@ -838,15 +855,21 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
         .withContractCall(
           // @ts-ignore
           _marketPlaceContract?.methods.list_for_auction(
+            auction_started_at,
+            auction_ends_at,
             defaultAmount * 10 ** 6,
-            durationId,
             tokenId
           )
         )
         .send();
     } else
       _txOp = await _marketPlaceContract?.methods
-        .list_for_auction(defaultAmount * 10 ** 6, durationId, tokenId)
+        .list_for_auction(
+          auction_started_at,
+          auction_ends_at,
+          defaultAmount * 10 ** 6,
+          tokenId
+        )
         .send();
 
     get().setOpenAuctionModalVisible(false);
@@ -1025,7 +1048,8 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
     tokenId: number,
     includingOperator: boolean,
     defaultAmount: number,
-    durationId: number
+    sale_started_at: Date,
+    sale_ends_at: Date
   ) => {
     if (get().activeAddress === "") {
       alert("Need to connect wallet first!");
@@ -1055,14 +1079,20 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
           // @ts-ignore
           _marketPlaceContract?.methods.list_for_sale(
             defaultAmount * 10 ** 6,
-            durationId,
+            sale_ends_at,
+            sale_started_at,
             tokenId
           )
         )
         .send();
     } else
       _txOp = await _marketPlaceContract?.methods
-        .list_for_sale(defaultAmount * 10 ** 6, durationId, tokenId)
+        .list_for_sale(
+          defaultAmount * 10 ** 6,
+          sale_ends_at,
+          sale_started_at,
+          tokenId
+        )
         .send();
 
     get().setListForSaleModalVisible(false);

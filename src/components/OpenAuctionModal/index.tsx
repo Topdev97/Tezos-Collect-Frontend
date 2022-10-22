@@ -1,21 +1,29 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import AceModal from "components/UI/AceModal";
 import AceModalCloseButton from "components/UI/AceModal/AceModalCloseButton";
 import { MARKETPLACE_AUCTION_DURATIONS } from "helper/constants";
 import { useTezosCollectStore } from "store";
+import { DateTimePicker } from "react-rainbow-components";
 
 const OpenAuctionModal = () => {
   const { openAuctionModal, setOpenAuctionModalVisible, listForAuction } =
     useTezosCollectStore();
-  const auctionDurationRef = useRef<HTMLSelectElement>(null);
+  // const auctionDurationRef = useRef<HTMLSelectElement>(null);
   const startingAmountRef = useRef<HTMLInputElement>(null);
+
+  const [startTime, setStartTime] = useState<Date>(new Date());
+  const [endTime, setEndTime] = useState<Date>(
+    new Date(new Date().getTime() + 600 * 1000)
+  );
+
   const onOpenAuction = async () => {
     if (parseFloat(startingAmountRef.current?.value || "0.0") < 1) return;
     await listForAuction(
       openAuctionModal.tokenId,
       openAuctionModal.includingOperator,
       parseFloat(startingAmountRef.current?.value || "0.0"),
-      parseInt(auctionDurationRef.current?.value || "0")
+      startTime,
+      endTime
     );
     if (openAuctionModal.callback) openAuctionModal.callback();
   };
@@ -40,14 +48,17 @@ const OpenAuctionModal = () => {
             placeholder="0.0"
             ref={startingAmountRef}
           />
-          <span>Duration</span>
-          <select className="border bg-componentBg" ref={auctionDurationRef}>
-            {MARKETPLACE_AUCTION_DURATIONS.map((item, index) => (
-              <option key={index} value={index}>
-                {item.label}
-              </option>
-            ))}
-          </select>
+
+          <span>Select starting time</span>
+          <DateTimePicker value={startTime} onChange={setStartTime} />
+          <span>
+            Select ending time
+            <span className="size-xs text-tezWarning">
+              {" *"}
+              (10 mins ~ one month)
+            </span>
+          </span>
+          <DateTimePicker value={endTime} onChange={setEndTime} />
         </div>
         <div className="flex flex-col gap-1">
           {/* <div className="flex">

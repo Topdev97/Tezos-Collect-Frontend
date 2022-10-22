@@ -1,11 +1,11 @@
 import LinkWithSearchParams from "components/LinkWithSearchParams";
-import { TEZOS_PRICE } from "helper/constants";
+
 import { commafyFormatter } from "helper/formatters";
 import { FiChevronRight } from "react-icons/fi";
 import { useTezosCollectStore } from "store";
 
 const TopLastSales = () => {
-  const { collectionStore } = useTezosCollectStore();
+  const { collectionStore, tezosPrice } = useTezosCollectStore();
   return (
     <div className="flex flex-col md:my-12">
       <div className="flex items-center">
@@ -25,7 +25,8 @@ const TopLastSales = () => {
           .sort((itemA, itemB) => itemB.volumeDay - itemA.volumeDay)
           .map((collection, index) => {
             return (
-              <div
+              <LinkWithSearchParams
+                to={{ pathname: `/collection/${collection.slug}` }}
                 key={index}
                 className="px-3 py-2 hover:bg-white/10 flex items-center cursor-pointer duration-100"
               >
@@ -44,19 +45,19 @@ const TopLastSales = () => {
                 <div className="hidden md:flex w-1/4">
                   <span className="font-normal tracking-wide">
                     <span className="text-grayText">24h Vol: </span>
-                    {commafyFormatter(collection.totalVolume)} ꜩ
+                    {commafyFormatter(collection.volumeDay)} ꜩ
                   </span>
                 </div>
                 <div className="flex flex-1 md:w-1/4">
                   <span className="tracking-wide">
                     <span className="text-grayText">30d Vol: </span>$
-                    {commafyFormatter(TEZOS_PRICE * collection.volumeMonth)}
+                    {commafyFormatter(tezosPrice * collection.volumeMonth)}
                   </span>
                   <span className="ml-auto mr-2 text-tezLightGr font-bold border-b-2 border-b-tezGrMd">
                     View
                   </span>
                 </div>
-              </div>
+              </LinkWithSearchParams>
             );
           })}
       </div>

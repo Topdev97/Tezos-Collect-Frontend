@@ -35,8 +35,6 @@ export const TEZOS_COLLECT_WALLET = new BeaconWallet({
   colorMode: ColorMode.DARK,
 });
 
-export const TEZOS_PRICE: number = 1.48;
-
 export const DOMAIN_SUFFIX = {
   ghostnet: ".gho",
   kathmandunet: ".kat",
@@ -54,7 +52,7 @@ export const DOMAIN_SUFFIX = {
 }[TEZOS_COLLECT_NETWORK.type];
 
 const MARKETPLACE_ADDRESSES = {
-  ghostnet: "KT1Qri3feHkLo23ttBSdnmxMuKNNmjfvx1vb",
+  ghostnet: "KT1DMDHGzWkedfh37yFFWrN5NgJeiJFYtNxe",
   kathmandunet: "KT1MoWntSgh7c6mVeja7wjNLavRkni4JyNgp",
   mainnet: "KT1Q4nCfd87KnBWmbgBiBchyysEhavf7qt5i",
   mondaynet: "",
@@ -206,3 +204,5 @@ export const marketSortOptions: {
 ];
 
 export const DEFAULT_PAGE_SIZE = 40;
+
+export const BSC_TEZOS_ADDRESS = "0x16939ef78684453bfdfb47825f8a5f714f12623a";
