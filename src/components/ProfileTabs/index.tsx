@@ -11,7 +11,7 @@ const ProfileTabs = () => {
       <Route path="activity" element={<ProfileActivity />} />
       <Route path="offers" element={<ProfileOffers />} />
       {/* <Route path="notifications" element={<ProfileActivity />} /> */}
-      <Route path="favourites" element={<ProfileFavorites />} />
+      <Route path="favorites" element={<ProfileFavorites />} />
     </Routes>
   );
 };

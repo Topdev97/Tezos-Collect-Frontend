@@ -26,7 +26,7 @@ const Profile = () => {
       //   text: "Notifications",
       // },
       {
-        path: `/profile/${address}/favourites`,
+        path: `/profile/${address}/favorites`,
         text: "Favorites",
       },
     ],

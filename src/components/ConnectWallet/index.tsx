@@ -76,14 +76,14 @@ const ConnectWallet = () => {
           icon: <img src={offerPercentage} />,
           text: "Offers",
           handler: () => {
-            navigate("/profile");
+            navigate(`/profile/${activeAddress}/offers`);
           },
         },
         {
           icon: <IoMdHeart size={20} />,
           text: "Watchlist",
           handler: () => {
-            navigate("/profile");
+            navigate(`/profile/${activeAddress}/favorites`);
           },
         },
         {
