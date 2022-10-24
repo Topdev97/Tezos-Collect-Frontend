@@ -169,7 +169,7 @@ interface ITezosCollectState {
   };
 
   makeOfferToDomain: {
-    (tokenId: number, amount: number, durationId: number): Promise<boolean>;
+    (tokenId: number, amount: number, offer_until: Date): Promise<boolean>;
   };
   cancelOfferToDomain: { (tokenId: number): Promise<boolean> };
   sellOfferForOffer: {
@@ -668,7 +668,7 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
   makeOfferToDomain: async (
     tokenId: number,
     amount: number,
-    durationId: number
+    offer_until: Date
   ) => {
     // console.log(tokenId, amount, durationId);
     if (get().activeAddress === "") {
@@ -679,7 +679,7 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
 
     const _marketPlaceContract = get().marketPlaceContract;
     const _txOp: any = await _marketPlaceContract?.methods
-      .make_offer(durationId, tokenId)
+      .make_offer(offer_until, tokenId)
       .send({ amount });
 
     get().setMakeOfferModalVisible(false);
@@ -790,8 +790,8 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       type: "SELL_ON_OFFER",
       txHash: _txOp.opHash,
       amount: amount,
-      from: get().activeAddress,
-      to: offerer,
+      from: offerer,
+      to: get().activeAddress,
     });
     get().setCurrentTransaction({
       txHash: _txOp.opHash,

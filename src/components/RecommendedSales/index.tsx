@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useTezosCollectStore } from "store";
 import tezosCollectLogo from "assets/images/tezos-collect-logo.svg";
 import { TOP_SALE_DURATIONS } from "helper/constants";
@@ -8,19 +8,39 @@ import LinkWithSearchParams from "components/LinkWithSearchParams";
 const RecommendedSales = () => {
   const { collectionStore, topSaleDomains, featuredAuctions } =
     useTezosCollectStore();
-  const recommendedSales = collectionStore.collections
-    .sort((itemB, itemA) => itemA.totalVolume - itemB.totalVolume)
-    .slice(0, 5);
+
+  const [topCategoryDuration, setTopCategoryDuration] = useState<number>(0);
 
   const [currentDuration, setCurrentDuration] = useState<number>(0);
+
+  const recommendedSales = useMemo(() => {
+    if (topCategoryDuration === 0)
+      return collectionStore.collections
+        .sort((itemB, itemA) => itemA.volumeDay - itemB.totalVolume)
+        .slice(0, 5);
+    if (topCategoryDuration === 1)
+      return collectionStore.collections
+        .sort((itemB, itemA) => itemA.volumeMonth - itemB.volumeMonth)
+        .slice(0, 5);
+    return collectionStore.collections
+      .sort((itemB, itemA) => itemA.totalVolume - itemB.totalVolume)
+      .slice(0, 5);
+  }, [collectionStore, topCategoryDuration]);
 
   return (
     <div className="flex flex-col md:flex-row gap-y-4 gap-x-12">
       <div className="flex w-full flex-col rounded-lg border-2 border-tezCyan recommended-sale-component">
         <div className="flex border-b-2 border-b-tezCyan p-4 items-center">
           <span className="size-1">💯 Top Categories</span>
-          <select className="ml-auto">
-            <option>24h</option>
+          <select
+            className="ml-auto"
+            onChange={(e) => {
+              setTopCategoryDuration(parseInt(e.target.value));
+            }}
+          >
+            <option value={0}>24h</option>
+            <option value={1}>1 month</option>
+            <option value={2}>Total</option>
           </select>
         </div>
         <div className="flex flex-col p-2">
@@ -36,7 +56,12 @@ const RecommendedSales = () => {
                 </div>
                 <span className="ml-4">{category.label}</span>
                 <span className="ml-auto">
-                  {category.volumeDay.toFixed(2)} ꜩ
+                  {topCategoryDuration === 0
+                    ? category.volumeDay.toFixed(2)
+                    : topCategoryDuration === 1
+                    ? category.volumeMonth.toFixed(2)
+                    : category.totalVolume.toFixed(2)}{" "}
+                  ꜩ
                 </span>
               </LinkWithSearchParams>
             );

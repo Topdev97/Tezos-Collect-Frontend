@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import AceModal from "components/UI/AceModal";
 import AceModalCloseButton from "components/UI/AceModal/AceModalCloseButton";
 import {
@@ -6,20 +6,26 @@ import {
   MARKETPLACE_FEE,
 } from "helper/constants";
 import { useTezosCollectStore } from "store";
+import { DateTimePicker } from "react-rainbow-components";
 
 const MakeOfferModal = () => {
   const { makeOfferModal, setMakeOfferModalVisible, makeOfferToDomain } =
     useTezosCollectStore();
-  const offerDurationRef = useRef<HTMLSelectElement>(null);
+  // const offerDurationRef = useRef<HTMLSelectElement>(null);
   const offerAmountRef = useRef<HTMLInputElement>(null);
   const onMakeOffer = async () => {
     await makeOfferToDomain(
       makeOfferModal.tokenId,
       parseFloat(offerAmountRef.current?.value || "0.0"),
-      parseInt(offerDurationRef.current?.value || "0")
+      endTime
     );
     if (makeOfferModal.callback) makeOfferModal.callback();
   };
+
+  const [endTime, setEndTime] = useState<Date>(
+    new Date(new Date().getTime() + 600 * 1000)
+  );
+
   return (
     <AceModal
       modalVisible={makeOfferModal.visible}
@@ -41,14 +47,16 @@ const MakeOfferModal = () => {
             placeholder="0.0"
             ref={offerAmountRef}
           />
-          <span>Offer Duration</span>
-          <select className="border bg-componentBg" ref={offerDurationRef}>
+          <span>Offer Until</span>
+          {/* <select className="border bg-componentBg" ref={offerDurationRef}>
             {MARKETPLACE_AUCTION_DURATIONS.map((item, index) => (
               <option key={index} value={index}>
                 {item.label}
               </option>
             ))}
-          </select>
+          </select> */}
+
+          <DateTimePicker value={endTime} onChange={setEndTime} />
         </div>
         <div className="flex flex-col gap-1">
           <div className="flex">

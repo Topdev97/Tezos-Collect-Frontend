@@ -17,6 +17,9 @@ import {
 import { useTezosCollectStore } from "store";
 import { beautifyAddress, dateDifFromNow } from "helper/formatters";
 import DomainMarketCard from "components/DomainMarketCard";
+import LinkWithSearchParams from "components/LinkWithSearchParams";
+import AddressBox from "components/UI/AddressBox";
+import TxBox from "components/UI/TxBox";
 
 const DomainDetails = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -56,12 +59,28 @@ const DomainDetails = () => {
       {
         label: "Owner",
         value: (
-          <span title={domain?.owner}>
-            {beautifyAddress(domain?.owner || "", 8)}
-          </span>
+          <LinkWithSearchParams
+            className="hover:opacity-80"
+            to={{ pathname: `/profile/${domain?.owner}` }}
+          >
+            <span title={domain?.owner}>
+              {beautifyAddress(domain?.owner || "", 8)}
+            </span>
+          </LinkWithSearchParams>
         ),
       },
-      { label: "Collection", value: collection?.label },
+      {
+        label: "Collection",
+        value: (
+          <LinkWithSearchParams
+            className="hover:opacity-80"
+            to={{ pathname: `/collection/${collection?.label}` }}
+          >
+            {" "}
+            {collection?.label}{" "}
+          </LinkWithSearchParams>
+        ),
+      },
       { label: "Tags", value: domain?.tags?.join(" ") },
       {
         label: "Last Sale Price",
@@ -249,9 +268,12 @@ const DomainDetails = () => {
               .filter((item) => item.type === "LIST_FOR_SALE")
               .map((item) => [
                 `${item.amount} ꜩ`,
-                <span className="address-gr-br-box p-2">
+                <LinkWithSearchParams
+                  className="address-gr-br-box p-2"
+                  to={{ pathname: `/profile/${item.from}` }}
+                >
                   {beautifyAddress(item.from)}
-                </span>,
+                </LinkWithSearchParams>,
                 dateDifFromNow(item.timestamp),
               ]),
     };
@@ -276,9 +298,7 @@ const DomainDetails = () => {
           offer.offer_until < new Date()
             ? "Expired"
             : dateDifFromNow(offer.offer_until),
-          offer.offerer === activeAddress
-            ? "- YOU -"
-            : beautifyAddress(offer.offerer),
+          <AddressBox address={offer.offerer} />,
           offer.offerer === activeAddress ? (
             <button
               className="mx-auto tezSecGr-button size-sm px-2 py-1"
@@ -341,13 +361,9 @@ const DomainDetails = () => {
           : domainActivity.map((item) => [
               DOMAIN_ACTIVITY_LABEL[item.type],
               `${item.amount} ꜩ`,
-              <span className="address-gr-br-box p-2">
-                {beautifyAddress(item.from)}
-              </span>,
-              <span className="address-gr-br-box p-2">
-                {beautifyAddress(item.to)}
-              </span>,
-              beautifyAddress(item.txHash),
+              <AddressBox address={item.from} />,
+              <AddressBox address={item.to} />,
+              <TxBox tx={item.txHash} />,
               dateDifFromNow(item.timestamp),
             ]),
     };
@@ -408,11 +424,14 @@ const DomainDetails = () => {
           <div className="md:ml-8 mt-4 md:mt-0 bg-tezDarkBg border-2 border-itemBorder rounded-lg flex-grow flex flex-col">
             <div className="flex border-b-2 px-4 py-4 border-itemBorder font-semibold">
               <span className="md:size-1">OWNER</span>
-              <span className="text-tezLightGr ml-auto">
+              <LinkWithSearchParams
+                className="text-tezLightGr ml-auto hover:opacity-80"
+                to={{ pathname: `/profile/${domain?.owner}` }}
+              >
                 {isYourDomain
                   ? "- YOU -"
                   : beautifyAddress(domain?.owner || "")}
-              </span>
+              </LinkWithSearchParams>
             </div>
             {domain?.isForSale && (
               <div className="flex flex-col p-4">
@@ -593,8 +612,8 @@ const DomainDetails = () => {
             ) : (
               <div className="flex items-center border-t-2 px-4 py-4 mt-auto border-itemBorder">
                 <a
-                  className="ml-auto tezGr-button px-6 md:py-3"
-                  href={`https://ghostnet.tezos.domains/domain/${domain?.name}.gho`}
+                  className="button ml-auto tezGr-button px-6 md:py-3"
+                  href={`https://ghostnet.tezos.domains/domain/${domainName}.gho`}
                   target="_blank"
                 >
                   Register
