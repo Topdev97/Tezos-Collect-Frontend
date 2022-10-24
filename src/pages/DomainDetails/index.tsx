@@ -592,12 +592,13 @@ const DomainDetails = () => {
               )
             ) : (
               <div className="flex items-center border-t-2 px-4 py-4 mt-auto border-itemBorder">
-                <button
+                <a
                   className="ml-auto tezGr-button px-6 md:py-3"
-                  onClick={onMakeOffer}
+                  href={`https://ghostnet.tezos.domains/domain/${domain?.name}.gho`}
+                  target="_blank"
                 >
                   Register
-                </button>
+                </a>
               </div>
             )}
           </div>
