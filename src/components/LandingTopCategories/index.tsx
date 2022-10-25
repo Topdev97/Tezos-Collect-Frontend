@@ -50,8 +50,8 @@ const TopLastSales = () => {
                 </div>
                 <div className="flex flex-1 md:w-1/4">
                   <span className="tracking-wide">
-                    <span className="text-grayText">30d Vol: </span>$
-                    {commafyFormatter(tezosPrice * collection.volumeMonth)}
+                    <span className="text-grayText">30d Vol: </span>
+                    {commafyFormatter(collection.volumeMonth)} ꜩ
                   </span>
                   <span className="ml-auto mr-2 text-tezLightGr font-bold border-b-2 border-b-tezGrMd">
                     View

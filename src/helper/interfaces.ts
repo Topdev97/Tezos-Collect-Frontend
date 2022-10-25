@@ -99,7 +99,7 @@ type T_DOMAIN_ACTIVITY_TYPE =
 export const DOMAIN_ACTIVITY_LABEL = {
   LIST_FOR_SALE: "List",
   DELIST_FOR_SALE: "Delist",
-  BUY_FROM_SALE: "Bought",
+  BUY_FROM_SALE: "Sold",
   LIST_FOR_AUCTION: "New Auction",
   PLACE_BID: "Bid Placed",
   COMPLETE_AUCTION: "Auction Won",

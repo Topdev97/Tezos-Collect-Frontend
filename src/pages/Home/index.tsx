@@ -1,10 +1,14 @@
 import TezosCollectCard from "assets/images/landing/tezos-collect-card.png";
 import RecommendedSales from "components/RecommendedSales";
 import TopCategories from "components/LandingTopCategories";
-import { FiSearch } from "react-icons/fi";
 import { useTezosCollectStore } from "store";
+import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import LinkWithSearchParams from "components/LinkWithSearchParams";
 const Home = () => {
-  const { collectionStore } = useTezosCollectStore();
+  const { collectionStore, activeAddress } = useTezosCollectStore();
+  const domainInputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col gap-12">
       <div className="flex flex-col-reverse md:flex-row">
@@ -20,13 +24,14 @@ const Home = () => {
             tz1VBLpuDKMoJuHRLZ4HrCgRuiLpEr7zZx2E
           </span>
           <div className="flex gap-8 items-end">
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
               <span>Search Domain</span>
               <input
                 placeholder="Type your perfect domain"
                 className="mt-4 w-48 md:w-80 input-light"
+                ref={domainInputRef}
               />
-            </div>
+            </div> */}
             {/* <div className="flex flex-col">
               <span>Categories</span>
               <select id="states" className="select-light w-full mt-4 p-3">
@@ -36,10 +41,25 @@ const Home = () => {
                 ))}
               </select>
             </div> */}
-            <button className="tezGr-button py-3">
+            <button
+              className="tezGr-button p-0.5"
+              onClick={() => {
+                if (activeAddress)
+                  navigate(`/profile/${activeAddress}/holdings`);
+                else document.getElementById("collect_wallet")?.click();
+              }}
+            >
+              <span className="bg-tezDarkBg rounded-lg p-2.5">List Domain</span>
+            </button>
+            <LinkWithSearchParams
+              className="button tezGr-button py-3"
+              to={{
+                pathname: "/market/all",
+              }}
+            >
               {/* <FiSearch size={24} /> */}
               Explore
-            </button>
+            </LinkWithSearchParams>
           </div>
         </div>
         <div className="ml-auto relative">

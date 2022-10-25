@@ -4,8 +4,9 @@ const HoverMenu = (props: {
   options: any[];
   icon: any;
   text: any | undefined;
+  customClassName?: string | undefined;
 }) => {
-  const { options, icon, text } = props;
+  const { options, icon, text, customClassName } = props;
   const [dropdown, setDropdown] = useState(false);
 
   const ref = useRef<HTMLDivElement>(null);
@@ -29,9 +30,13 @@ const HoverMenu = (props: {
       ref={ref}
     >
       <div
-        className={`flex justify-between items-center w-full input border rounded-full p-2 duration-150 ${
-          dropdown ? "border-white" : "border-grayText"
-        }`}
+        className={
+          customClassName
+            ? customClassName
+            : `flex justify-between items-center w-full input border rounded-full p-2 duration-150 ${
+                dropdown ? "border-white" : "border-grayText"
+              }`
+        }
       >
         {icon}
         {text}

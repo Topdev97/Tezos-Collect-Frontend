@@ -2,6 +2,9 @@ import { IoMdShare } from "react-icons/io";
 import { HiMenu, HiOutlineRefresh } from "react-icons/hi";
 import { AiFillHeart } from "react-icons/ai";
 import tezosCollectLogo from "assets/images/tezos-collect-logo.svg";
+import tzstatsLogo from "assets/images/other/tzstats.svg";
+import tezosDomainLogo from "assets/images/other/tezos-domains.png";
+import objktLogo from "assets/images/other/objkt.png";
 
 import ComponentTable from "components/UI/ComponentTable";
 import PriceHistory from "components/PriceHistory";
@@ -20,6 +23,7 @@ import DomainMarketCard from "components/DomainMarketCard";
 import LinkWithSearchParams from "components/LinkWithSearchParams";
 import AddressBox from "components/UI/AddressBox";
 import TxBox from "components/UI/TxBox";
+import HoverMenu from "components/UI/HoverMenu";
 
 const DomainDetails = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -398,14 +402,55 @@ const DomainDetails = () => {
           </span>
 
           <div className="flex text-tezText ml-auto gap-2 md:gap-6">
-            <IoMdShare className="size-1 md:size-3 hover:text-tezGrSt cursor-pointer duration-50" />
+            <IoMdShare
+              className="size-1 md:size-3 hover:text-tezGrSt cursor-pointer duration-50"
+              onClick={() => {
+                navigator.clipboard.writeText(window.location.href);
+              }}
+            />
             <HiOutlineRefresh
               className={`size-1 md:size-3 hover:text-tezGrSt cursor-pointer ${
                 loading ? " animate-spin" : ""
               }`}
               onClick={updateDomain}
             />
-            <HiMenu className="size-1 md:size-3 hover:text-tezGrSt cursor-pointer duration-50" />
+            <HoverMenu
+              options={[
+                // {
+                //   icon: <img src={tzstatsLogo} className="w-4" />,
+                //   text: " TZSTATS",
+                //   handler: () => {
+                //     window.open("/someURL", "_blank");
+                //   },
+                // },
+                {
+                  icon: <img src={tezosDomainLogo} className="w-6" />,
+                  text: "Tezos Domain",
+                  handler: () => {
+                    window.open(
+                      `https://app.tezos.domains/domain/${domain?.name}.tez`,
+                      "_blank"
+                    );
+                  },
+                },
+                {
+                  icon: <img src={objktLogo} className="w-6" />,
+                  text: "Objkt",
+                  handler: () => {
+                    window.open(
+                      `https://objkt.com/asset/tezosdomains/${domain?.tokenId}`,
+                      "_blank"
+                    );
+                  },
+                },
+              ]}
+              icon={
+                <HiMenu className="size-1 md:size-3 hover:text-tezGrSt cursor-pointer duration-50" />
+              }
+              text=""
+              customClassName="flex justify-between items-center w-full input duration-150"
+            />
+
             <AiFillHeart
               onClick={() => toggleBookmark(domain?.name || "")}
               className={`size-1 md:size-3 hover:text-tezGrSt cursor-pointer duration-50 ${
@@ -503,7 +548,9 @@ const DomainDetails = () => {
             )}
             {domain?.isForAuction === false && domain.isForSale === false && (
               <div className="flex flex-row size-2 justify-center items-center h-full py-8">
-                No Active Listings
+                {domain.isRegistered
+                  ? "No Active Listings"
+                  : "Not Registered Yet!"}
               </div>
             )}
 

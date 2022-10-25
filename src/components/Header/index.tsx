@@ -46,7 +46,8 @@ const Header = () => {
         <div className="relative flex items-center">
           <FiSearch className="absolute left-3 md:left-5" size={20} />
           <input
-            className="border-0 p-1.5 md:p-2 z-[1] focus:border-2 pl-10 md:pl-12 text-[14px] w-0 focus:w-40 md:focus:w-48 duration-150"
+            className="p-1.5 md:p-2 z-[1] border-2 pl-10 md:pl-12 text-[14px] w-40 md:w-80 duration-150"
+            // className="border-0 p-1.5 md:p-2 z-[1] focus:border-2 pl-10 md:pl-12 text-[14px] w-0 focus:w-40 md:focus:w-48 duration-150"
             placeholder="Search"
             ref={domainInputRef}
             onKeyDown={(e) => {

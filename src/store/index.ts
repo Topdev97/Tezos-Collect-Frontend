@@ -888,7 +888,7 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       txHash: _txOp.opHash,
       amount: defaultAmount,
       from: get().activeAddress,
-      to: _domain?.owner || "",
+      to: get().activeAddress,
     });
     get().setCurrentTransaction({
       txHash: _txOp.opHash,
@@ -1111,7 +1111,7 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       txHash: _txOp.opHash,
       amount: defaultAmount,
       from: get().activeAddress,
-      to: _domain?.owner || "",
+      to: get().activeAddress,
     });
 
     get().setCurrentTransaction({
@@ -1188,8 +1188,8 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       type: "BUY_FROM_SALE",
       txHash: _txOp.opHash,
       amount: price,
-      from: get().activeAddress,
-      to: _domain?.owner || "",
+      from: _domain?.owner || "",
+      to: get().activeAddress,
     });
 
     get().setCurrentTransaction({

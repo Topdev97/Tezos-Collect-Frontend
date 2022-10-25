@@ -29,7 +29,7 @@ const TopLastSales = () => {
   const marketLastSaleData = useMemo(() => {
     return {
       textAlign: "left",
-      heading: "Last Sales",
+      heading: "Recent Sales",
       collapsible: true,
       header: ["Event", "Name", "Price", "From", "To", "TX", "Date"],
       tableData:

@@ -1,15 +1,13 @@
 import LinkWithSearchParams from "components/LinkWithSearchParams";
-import AddressBox from "components/UI/AddressBox";
+// import AddressBox from "components/UI/AddressBox";
 import { fetchCollectionHoldersInfo } from "helper/api/collections.api";
 import { beautifyAddress } from "helper/formatters";
 import { I_COLLECTION_HOLDER } from "helper/interfaces";
 import { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Bar,
   BarChart,
-  CartesianGrid,
-  Legend,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -20,6 +18,7 @@ import { useTezosCollectStore } from "store";
 const CollectionHolders = () => {
   const { findCollectionBySlug } = useTezosCollectStore();
   const { slug } = useParams();
+  const navigate = useNavigate();
 
   const [holders, setHolders] = useState<I_COLLECTION_HOLDER[]>([]);
 
@@ -79,6 +78,9 @@ const CollectionHolders = () => {
           <div className="rounded-lg mt-4 py-4 bg-componentBg size-1 flex flex-col gap-2">
             <ResponsiveContainer width="100%" height={300}>
               <BarChart
+                onClick={(e: any) => {
+                  navigate(`/profile/${holders[e.activeTooltipIndex]._id}`);
+                }}
                 width={500}
                 height={300}
                 data={data}
@@ -91,32 +93,36 @@ const CollectionHolders = () => {
               >
                 <XAxis dataKey="name" fontSize={16} />
                 <YAxis allowDecimals={false} />
-                <Tooltip />
+                <Tooltip labelStyle={{ color: "black" }} />
                 <Bar dataKey="count" fill="#397DFF" />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
       </div>
-      <h4>Top 50</h4>
-      <div className="grid grid-cols-2 gap-4">
-        {holders.map((holder, index) => {
-          return (
-            <div
-              key={index}
-              className="bg-componentBg rounded-lg p-4 flex items-center"
-            >
-              <LinkWithSearchParams
-                className="hover:opacity-80"
-                to={{ pathname: `/profile/${holder._id}` }}
-              >
-                {beautifyAddress(holder._id, 6)}
-              </LinkWithSearchParams>
-              <span className="ml-auto">{holder.count}</span>
-            </div>
-          );
-        })}
-      </div>
+      {holders.length > 10 && (
+        <>
+          <h4>Top 50</h4>
+          <div className="grid grid-cols-2 gap-4">
+            {holders.map((holder, index) => {
+              return (
+                <div
+                  key={index}
+                  className="bg-componentBg rounded-lg p-4 flex items-center"
+                >
+                  <LinkWithSearchParams
+                    className="hover:opacity-80"
+                    to={{ pathname: `/profile/${holder._id}` }}
+                  >
+                    {beautifyAddress(holder._id, 6)}
+                  </LinkWithSearchParams>
+                  <span className="ml-auto">{holder.count}</span>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
     </div>
   );
 };

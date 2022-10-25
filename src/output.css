@@ -1477,6 +1477,10 @@ svg{
   width: 12rem;
 }
 
+.w-40{
+  width: 10rem;
+}
+
 .w-0{
   width: 0px;
 }
@@ -1503,10 +1507,6 @@ svg{
 
 .w-5{
   width: 1.25rem;
-}
-
-.w-40{
-  width: 10rem;
 }
 
 .w-36{
@@ -1927,6 +1927,10 @@ svg{
 
 .p-2\.5{
   padding: 0.625rem;
+}
+
+.p-0\.5{
+  padding: 0.125rem;
 }
 
 .py-4{

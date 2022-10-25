@@ -2,7 +2,7 @@ import { TbHeart } from "react-icons/tb";
 import tezosCollectLogo from "assets/images/tezos-collect-logo.svg";
 import { IoMdCart } from "react-icons/io";
 import { TYPE_DOMAIN, TYPE_DOMAIN_CARD } from "helper/interfaces";
-import { timerDifFromNow } from "helper/formatters";
+import { beautifyAddress, timerDifFromNow } from "helper/formatters";
 import { NavLink } from "react-router-dom";
 import { RiTimerFlashLine } from "react-icons/ri";
 import { useTezosCollectStore } from "store";
@@ -39,7 +39,7 @@ const DomainMarketCard = (props: {
               to={{ pathname: `/domain/${name}` }}
               className="hover:opacity-80"
             >
-              {name}.tez
+              {name.length < 10 ? name : beautifyAddress(name, 4)}.tez
             </NavLink>
             <TbHeart
               onClick={() => toggleBookmark(name)}

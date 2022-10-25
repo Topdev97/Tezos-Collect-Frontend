@@ -57,6 +57,7 @@ const ConnectWallet = () => {
   return activeAddress.length === 0 ? (
     <button
       className="tezGr-button px-2 md:px-6 ml-4 md:ml-0 duration-100"
+      id="collect_wallet"
       onClick={onConnectWallet}
     >
       <span className="hidden md:block">Connect Wallet</span>

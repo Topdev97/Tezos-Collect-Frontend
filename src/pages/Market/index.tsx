@@ -44,7 +44,7 @@ const MARKET_LIST = [
   },
   {
     path: "/market/last-sale",
-    text: "Last Sale",
+    text: "Recent Sales",
   },
   {
     path: "/market/new-listings",

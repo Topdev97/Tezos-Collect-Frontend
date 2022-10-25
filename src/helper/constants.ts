@@ -106,6 +106,10 @@ export const TOP_SALE_DURATIONS = [
     label: "30d",
     duration: 87600 * 30,
   },
+  {
+    label: "all time",
+    duration: 0,
+  },
 ];
 
 export const MARKETPLACE_FEE = "2.5%";

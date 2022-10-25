@@ -39,8 +39,8 @@ const RecommendedSales = () => {
             }}
           >
             <option value={0}>24h</option>
-            <option value={1}>1 month</option>
-            <option value={2}>Total</option>
+            <option value={1}>30d</option>
+            <option value={2}>all time</option>
           </select>
         </div>
         <div className="flex flex-col p-2">
