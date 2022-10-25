@@ -2,6 +2,7 @@ import LinkWithSearchParams from "components/LinkWithSearchParams";
 import { FiSearch } from "react-icons/fi";
 import { AiFillStar } from "react-icons/ai";
 import { IoMdCart } from "react-icons/io";
+import { NavLink } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -28,17 +29,29 @@ const Footer = () => {
       <div className="flex items-center justify-between transition-all duration-150">
         <span>© 2022 Tezos Collect. All rights reserved.</span>
         <div className="ml-auto flex">
-          {pageLinks.map((item, index) => (
-            <LinkWithSearchParams
-              key={index}
-              to={{
-                pathname: item.link,
-              }}
-              className="hidden xl:flex text-[15px] font-medium -tracking-tight items-start rounded-lg px-3 py-6 hover:text-tezGrSt duration-150"
-            >
-              {item.text}
-            </LinkWithSearchParams>
-          ))}
+          {pageLinks.map((item, index) =>
+            item.external ? (
+              <a
+                key={index}
+                href={item.link}
+                className="hidden xl:flex text-[15px] font-medium -tracking-tight items-start rounded-lg px-3 py-6 hover:text-tezGrSt duration-150"
+                target="_blank"
+              >
+                {item.text}
+              </a>
+            ) : (
+              <NavLink
+                key={index}
+                to={{
+                  pathname: item.link,
+                }}
+                className="hidden xl:flex text-[15px] font-medium -tracking-tight items-start rounded-lg px-3 py-6 hover:text-tezGrSt duration-150"
+                target={item.external ? "_blank" : undefined}
+              >
+                {item.text}
+              </NavLink>
+            )
+          )}
         </div>
       </div>
     </div>
@@ -62,6 +75,7 @@ const pageLinks = [
   },
   {
     text: "FAQ",
-    link: "faq",
+    link: "https://tezoscollect.gitbook.io",
+    external: true,
   },
 ];
