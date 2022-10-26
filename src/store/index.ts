@@ -522,8 +522,8 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
         ),
       ]);
       const [offers_map, orders_map] = await Promise.all([
-        _marketPlaceStorage?.offers_map.get(_record.tzip12_token_id),
-        _marketPlaceStorage?.orders_map.get(_record.tzip12_token_id),
+        _marketPlaceStorage?.offers_map?.get(_record.tzip12_token_id),
+        _marketPlaceStorage?.orders_map?.get(_record.tzip12_token_id),
       ]);
 
       const offers: TYPE_DOMAIN_OFFER[] = [];

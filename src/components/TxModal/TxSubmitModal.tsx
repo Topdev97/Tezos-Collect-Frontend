@@ -2,7 +2,7 @@ import { useState } from "react";
 import AceModal from "components/UI/AceModal";
 import { ReactComponent as TxWaitingSvg } from "assets/images/market/tx-waiting.svg";
 import { useTezosCollectStore } from "store";
-import { TEZOS_COLLECT_NETWORK } from "helper/constants";
+// import { TEZOS_COLLECT_NETWORK } from "helper/constants";
 
 const TxSubmitModal = () => {
   const currentTransaction = useTezosCollectStore(
@@ -28,7 +28,7 @@ const TxSubmitModal = () => {
         <div className="flex  mt-4">
           <a
             className="button tezGr-button w-40"
-            href={`https://${TEZOS_COLLECT_NETWORK.type}.tzkt.io/${currentTransaction.txHash}`}
+            href={`https://tzkt.io/${currentTransaction.txHash}`}
             target="_blank"
           >
             Explore

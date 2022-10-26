@@ -35,7 +35,7 @@ const TxFailedModal = () => {
         <div className="flex  mt-4">
           <a
             className="button tezGr-button w-40"
-            href={`https://ghostnet.tzkt.io/${currentTransaction.txHash}`}
+            href={`https://tzkt.io/${currentTransaction.txHash}`}
             target="_blank"
           >
             Explore

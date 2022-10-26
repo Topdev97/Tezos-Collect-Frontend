@@ -8,7 +8,7 @@ import {
 
 // Set the network (Mainnet is default)
 export const TEZOS_COLLECT_NETWORK: Network = {
-  type: NetworkType.GHOSTNET,
+  type: NetworkType.MAINNET,
 };
 
 export const NFT_STORAGE_KEY =
@@ -52,9 +52,9 @@ export const DOMAIN_SUFFIX = {
 }[TEZOS_COLLECT_NETWORK.type];
 
 const MARKETPLACE_ADDRESSES = {
-  ghostnet: "KT1L1XzSUgvBHSsJHtWdNa5HVCYnnCHxC2Zj",
+  ghostnet: "KT1NimfkpwDU6avikgin6RG9KZVwRtKiFvAT",
   kathmandunet: "KT1MoWntSgh7c6mVeja7wjNLavRkni4JyNgp",
-  mainnet: "KT1Q4nCfd87KnBWmbgBiBchyysEhavf7qt5i",
+  mainnet: "KT1QAiGD2CS2iwL3LuCc6UFVkdFKV1sXJm36",
   mondaynet: "",
   dailynet: "",
   delphinet: "",
