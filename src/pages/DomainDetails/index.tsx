@@ -78,7 +78,7 @@ const DomainDetails = () => {
         value: (
           <LinkWithSearchParams
             className="hover:opacity-80"
-            to={{ pathname: `/collection/${collection?.label}` }}
+            to={{ pathname: `/collection/${collection?.slug}` }}
           >
             {" "}
             {collection?.label}{" "}
