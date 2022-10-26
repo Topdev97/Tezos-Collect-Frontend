@@ -5,7 +5,7 @@ const PercentageChangeTag = ({ value }: { value: number }) => {
         value >= 0 ? "text-tezSuccess" : "text-tezWarning"
       } font-normal`}
     >
-      {value >= 0 ? `+${value.toFixed(2)}` : value.toFixed(2)}%
+      {value >= 0 ? `+${value?.toFixed(2)}` : value?.toFixed(2)}%
     </span>
   );
 };

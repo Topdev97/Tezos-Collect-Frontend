@@ -63,7 +63,7 @@ const ExpiredDomains = () => {
                   <div className="rounded-full p-2 bg-white/10 flex items-center justify-center tracking-tight font-oswald">
                     <img src={tezosCollectLogo} className="w-4" />
                   </div>
-                  Expiring
+                  Expired
                 </div>,
                 <DomainBox name={domain.name} />,
 

@@ -38,14 +38,14 @@ const CollectionDetails = () => {
     <div className="flex flex-col gap-8 pt-16">
       <div className="flex gap-8 rounded-lg bg-componentBg p-6">
         <div className="rounded-lg w-32 aspect-square bg-tezDarkBg flex items-center justify-center tracking-tight font-oswald size-6">
-          {collection.avatar}
+          {collection?.avatar}
         </div>
         <div className="flex flex-col justify-between items-start">
-          <h3>{collection.label}</h3>
-          <span className="text-grayText">{collection.description}</span>
+          <h3>{collection?.label}</h3>
+          <span className="text-grayText">{collection?.description}</span>
           <div className="flex gap-4">
             <a
-              href={collection.discordLink}
+              href={collection?.discordLink}
               target="_blank"
               className="rounded-lg border border-white p-2 hover:bg-grayText/50"
             >
@@ -65,41 +65,41 @@ const CollectionDetails = () => {
       <div className="grid grid-cols-6 gap-8">
         <div className="flex flex-col">
           <div className="size-3 flex items-center gap-2">
-            {collection.floorPrice.toFixed(2)} ꜩ
-            <PercentageChangeTag value={collection.floorPriceChange} />
+            {collection?.floorPrice.toFixed(2)} ꜩ
+            <PercentageChangeTag value={collection?.floorPriceChange} />
           </div>
           <span className="text-grayText">Floor</span>
         </div>
         <div className="flex flex-col">
-          <div className="size-3">{collection.topSale.toFixed(2)} ꜩ</div>
+          <div className="size-3">{collection?.topSale.toFixed(2)} ꜩ</div>
           <span className="text-grayText">Top Sale</span>
         </div>
         <div className="flex flex-col">
-          <div className="size-3">{collection.numberOfOwners}</div>
+          <div className="size-3">{collection?.numberOfOwners}</div>
           <span className="text-grayText">Owners</span>
         </div>
         <div className="flex flex-col col-span-3">
           <div className="size-3">
-            {collection.numberOfMinted}/{collection.numberOfItems}
+            {collection?.numberOfMinted}/{collection?.numberOfItems}
           </div>
           <span className="text-grayText">Items</span>
         </div>
         <div className="flex flex-col">
           <div className="size-3 flex items-center gap-2">
-            {collection.volumeDay.toFixed(2)} ꜩ
-            <PercentageChangeTag value={collection.volumeDayChange} />
+            {collection?.volumeDay.toFixed(2)} ꜩ
+            <PercentageChangeTag value={collection?.volumeDayChange} />
           </div>
           <span className="text-grayText">24h Volume</span>
         </div>
         <div className="flex flex-col">
           <div className="size-3 flex items-center gap-2">
-            {collection.volumeMonth.toFixed(2)} ꜩ
-            <PercentageChangeTag value={collection.volumeMonthChange} />
+            {collection?.volumeMonth.toFixed(2)} ꜩ
+            <PercentageChangeTag value={collection?.volumeMonthChange} />
           </div>
           <span className="text-grayText">1 Month Volume</span>
         </div>
         <div className="flex flex-col">
-          <div className="size-3">{collection.totalVolume.toFixed(2)} ꜩ</div>
+          <div className="size-3">{collection?.totalVolume.toFixed(2)} ꜩ</div>
           <span className="text-grayText">Total Volume</span>
         </div>
       </div>

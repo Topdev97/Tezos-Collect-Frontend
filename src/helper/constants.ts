@@ -16,7 +16,7 @@ export const NFT_STORAGE_KEY =
 
 export const TEZOS_COLLECT_SECRET = "TEZOS_COLLECT_SECRET";
 
-const MAINNET_RPC_URL: string = "https://rpc.tzkt.io/mainnet";
+const MAINNET_RPC_URL: string = "https://mainnet.api.tez.ie";
 const GHOSTNET_RPC_URL: string = "https://ghostnet.tezos.marigold.dev";
 const KATHMANDUNET_RPC_URL: string = "https://rpc.tzkt.io/kathmandunet";
 
