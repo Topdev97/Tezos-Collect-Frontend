@@ -660,7 +660,7 @@ const DomainDetails = () => {
               <div className="flex items-center border-t-2 px-4 py-4 mt-auto border-itemBorder">
                 <a
                   className="button ml-auto tezGr-button px-6 md:py-3"
-                  href={`https://ghostnet.tezos.domains/domain/${domainName}.gho`}
+                  href={`https://app.tezos.domains/domain/${domainName}.tez`}
                   target="_blank"
                 >
                   Register
