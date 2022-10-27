@@ -54,7 +54,7 @@ export const DOMAIN_SUFFIX = {
 const MARKETPLACE_ADDRESSES = {
   ghostnet: "KT1NimfkpwDU6avikgin6RG9KZVwRtKiFvAT",
   kathmandunet: "KT1MoWntSgh7c6mVeja7wjNLavRkni4JyNgp",
-  mainnet: "KT1QAiGD2CS2iwL3LuCc6UFVkdFKV1sXJm36",
+  mainnet: "KT1DvqD1ajyvgK6vPMhji2Mb5oBgm8uEXhCG",
   mondaynet: "",
   dailynet: "",
   delphinet: "",

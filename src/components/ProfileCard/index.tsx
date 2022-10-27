@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import tezosPunk from "assets/images/tezos-punk.png";
+import tezosPunk from "assets/images/tezos-punk.webp";
 import TextCopier from "components/UI/TextCopier";
 import { AiOutlineEdit } from "react-icons/ai";
 import { useTezosCollectStore } from "store";
@@ -47,7 +47,7 @@ const ProfileCard = () => {
           currentTarget.onerror = null; // prevents looping
           currentTarget.src = tezosPunk;
         }}
-        className="w-32 rounded-lg"
+        className="w-32 h-32 rounded-lg"
       />
       <div className="flex flex-col h-full">
         <h3 className="font-semibold">{profile.reversedName}</h3>

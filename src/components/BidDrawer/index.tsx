@@ -4,7 +4,7 @@ import { TYPE_DOMAIN } from "helper/interfaces";
 import { TbHeart } from "react-icons/tb";
 
 import tezosCollectLogo from "assets/images/tezos-collect-logo.svg";
-import tezosPunk from "assets/images/tezos-punk.png";
+import tezosPunk from "assets/images/tezos-punk.webp";
 import { useTezosCollectStore } from "store";
 import { beautifyAddress, timerDifFromNow } from "helper/formatters";
 import TezosTimer from "components/UI/TezosTimer";
