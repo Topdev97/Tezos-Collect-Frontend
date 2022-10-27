@@ -856,8 +856,8 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
         .withContractCall(
           // @ts-ignore
           _marketPlaceContract?.methods.list_for_auction(
-            auction_started_at,
             auction_ends_at,
+            auction_started_at,
             defaultAmount * 10 ** 6,
             tokenId
           )
@@ -866,8 +866,8 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
     } else
       _txOp = await _marketPlaceContract?.methods
         .list_for_auction(
-          auction_started_at,
           auction_ends_at,
+          auction_started_at,
           defaultAmount * 10 ** 6,
           tokenId
         )
