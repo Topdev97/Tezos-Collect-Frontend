@@ -128,7 +128,9 @@ const RecommendedSales = () => {
                       1000
                   )}
                 </span>
-                <span className="ml-auto">{domain.topBid.toFixed(2)} ꜩ</span>
+                <span className="ml-auto">
+                  {Math.max(domain.price, domain.topBid).toFixed(2)} ꜩ
+                </span>
               </LinkWithSearchParams>
             );
           })}

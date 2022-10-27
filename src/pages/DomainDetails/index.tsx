@@ -2,12 +2,12 @@ import { IoMdShare } from "react-icons/io";
 import { HiMenu, HiOutlineRefresh } from "react-icons/hi";
 import { AiFillHeart } from "react-icons/ai";
 import tezosCollectLogo from "assets/images/tezos-collect-logo.svg";
-import tzstatsLogo from "assets/images/other/tzstats.svg";
+// import tzstatsLogo from "assets/images/other/tzstats.svg";
 import tezosDomainLogo from "assets/images/other/tezos-domains.png";
 import objktLogo from "assets/images/other/objkt.png";
 
 import ComponentTable from "components/UI/ComponentTable";
-import PriceHistory from "components/PriceHistory";
+// import PriceHistory from "components/PriceHistory";
 
 import { useParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
@@ -393,6 +393,10 @@ const DomainDetails = () => {
       <div className="flex flex-col bg-componentBg rounded-lg">
         <div className="flex items-center py-3 md:py-6 px-4 md:px-8 border-b border-white/20">
           <h4>{domainName}.tez</h4>
+
+          <span className="bg-tezSecGr rounded-full px-2 ml-4">
+            {domain?.isFeatured && "Featured"}
+          </span>
           <span className="bg-tezGr rounded-full px-2 ml-4">
             {domain?.isForSale && "Sale"}
             {domain?.isForAuction &&
@@ -530,11 +534,22 @@ const DomainDetails = () => {
                       <br />
                       {dateDifFromNow(domain?.auctionEndsAt?.toLocaleString())}
                     </span>
+
+                    {domain.topBid === 0 && (
+                      <>
+                        <br />
+                        <span className="size-1 font-semibold">
+                          Starting from
+                        </span>
+                        <br />
+                        <span className="text-grayText">{domain.price} ꜩ</span>
+                      </>
+                    )}
                   </div>
                   <span className="font-bold size-2 text-right">
                     {domain?.topBid.toFixed(2)} ꜩ
                     <br />
-                    ($3,673.15)
+                    ($ {(tezosPrice * (domain?.topBid || 0)).toFixed(2)})
                   </span>
                 </div>
                 {!isYourDomain && domain.topBidder !== activeAddress && (
