@@ -8,6 +8,7 @@ import tezosPunk from "assets/images/tezos-punk.webp";
 import { useTezosCollectStore } from "store";
 import { beautifyAddress, timerDifFromNow } from "helper/formatters";
 import TezosTimer from "components/UI/TezosTimer";
+import LinkWithSearchParams from "components/LinkWithSearchParams";
 
 type IBidDrawerProps = {
   bidDrawerVisible: boolean;
@@ -22,9 +23,9 @@ const BidDrawer = ({
   setBidDrawerVisible,
   drawerDomain = undefined,
 }: IBidDrawerProps) => {
-  const [activeTab, setActiveTab] = useState<T_TABID>("TAB_DETAILS");
+  // const [activeTab, setActiveTab] = useState<T_TABID>("TAB_DETAILS");
 
-  const { setPlaceBidModal, bookmarkedNames, toggleBookmark } =
+  const { setPlaceBidModal, bookmarkedNames, toggleBookmark, tezosPrice } =
     useTezosCollectStore();
 
   const onPlaceBid = () => {
@@ -59,7 +60,11 @@ const BidDrawer = ({
           <h4>{drawerDomain?.name}.tez</h4>
           <div className="flex flex-col gap-2">
             <span className="text-grayText size-sm">Owner</span>
-            <div className="flex gap-3">
+
+            <LinkWithSearchParams
+              to={{ pathname: `/profile/${drawerDomain?.owner}` }}
+              className="flex gap-3 hover:opacity-80"
+            >
               <img src={tezosPunk} className="w-12 rounded-full" />
               <div>
                 <span>{beautifyAddress(drawerDomain?.owner || "")}</span>
@@ -68,7 +73,7 @@ const BidDrawer = ({
                   {beautifyAddress(drawerDomain?.owner || "")}
                 </span>
               </div>
-            </div>
+            </LinkWithSearchParams>
           </div>
           <div className="bg-tezDarkBg rounded-lg p-4 flex">
             <div className="flex flex-1 flex-col gap-2 items-center">
@@ -76,7 +81,9 @@ const BidDrawer = ({
               <span className="text-tezLightGr">
                 {drawerDomain?.topBid.toFixed(2)} ꜩ
               </span>
-              <span className="size-sm">$ 1802.42</span>
+              <span className="size-sm">
+                $ {(tezosPrice * (drawerDomain?.topBid || 0)).toFixed(2)}
+              </span>
             </div>
             <div className="border-r-2 border-r-itemBorder" />
             <div className="flex flex-1 flex-col gap-2 items-center">
@@ -90,7 +97,7 @@ const BidDrawer = ({
               <span className="size-sm">Day H:M:S</span>
             </div>
           </div>
-          <div className="flex">
+          {/* <div className="flex">
             {additionalTabs.map((tab, index) => (
               <div
                 className={`flex-1 font-semibold cursor-pointer hover:text-tezLightGr ${
@@ -116,7 +123,7 @@ const BidDrawer = ({
             Class aptent taciti sociosqu ad litora torquent per conubia nostra,
             per inceptos himenaeos. Curabitur tempus urna at turpis condimentum
             lobortis.
-          </div>
+          </div> */}
           <div className="flex justify-between border-y-2 border-y-componentBorder py-4">
             <div className="flex flex-col gap-2">
               <span className="text-grayText size-sm">Minimum Bid</span>
