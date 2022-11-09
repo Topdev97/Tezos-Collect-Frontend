@@ -8,12 +8,15 @@ import {
 
 // Set the network (Mainnet is default)
 export const TEZOS_COLLECT_NETWORK: Network = {
-  type: NetworkType.MAINNET,
+  type:
+    process.env.NODE_ENV === "development"
+      ? NetworkType.GHOSTNET
+      : NetworkType.MAINNET,
 };
 
 export const NFT_STORAGE_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEZlOTRmMzBFRDQzMzkwQUVkMDBGQTNCY2E3NzY3Nzg2NjhiMDA3ZGQiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2MTM3MDI4MjE5MSwibmFtZSI6IkVya2tpIFBhcHVuZW4ifQ.W3e0ulvqTpj3lxnph-dBi8fL5Ja3mM9pI7jzd0LwT_k";
-
+export const CONVALENT_KEY = "ckey_09503fb8f80d43a1b46a5b9da34";
 export const TEZOS_COLLECT_SECRET = "TEZOS_COLLECT_SECRET";
 
 const MAINNET_RPC_URL: string = "https://mainnet.api.tez.ie";
