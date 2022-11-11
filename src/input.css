@@ -155,7 +155,7 @@ body {
     @apply text-xl;
   }
   .size-2 {
-    @apply text-2xl;
+    @apply text-lg md:text-2xl;
   }
   .size-3 {
     @apply text-3xl;

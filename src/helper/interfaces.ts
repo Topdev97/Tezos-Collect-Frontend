@@ -185,6 +185,12 @@ interface I_COLLECTION_HOLDER {
   count: number;
 }
 
+interface I_TEZOSDOMAIN_MARKET_OFFER {
+  price: number;
+  expiration: Date;
+  valid: boolean;
+}
+
 export const initializeDomainActivity = (): I_DOMAIN_ACTIVITY => {
   return {
     uuid: uuidv4(),
@@ -279,4 +285,5 @@ export type {
   TYPE_ACTIVITY_SORT_VALUE,
   I_PROFILE,
   I_COLLECTION_HOLDER,
+  I_TEZOSDOMAIN_MARKET_OFFER,
 };

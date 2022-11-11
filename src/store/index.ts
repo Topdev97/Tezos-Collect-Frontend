@@ -1,5 +1,9 @@
 import { RequestSignPayloadInput, SigningType } from "@airgap/beacon-sdk";
-import { ContractAbstraction, ContractProvider } from "@taquito/taquito";
+import {
+  ContractAbstraction,
+  ContractProvider,
+  OpKind,
+} from "@taquito/taquito";
 import { char2Bytes } from "@taquito/utils";
 import { fetchCollections } from "helper/api/collections.api";
 import {
@@ -27,7 +31,9 @@ import {
   MARKETPLACE_CONTRACT_ADDRESS,
   NAME_REGISTRY_CONTRACT_ADDRESS,
   Tezos,
+  TEZOSDOMAINS_MARKET_CONTRACT_ADDRESS,
   TEZOS_COLLECT_WALLET,
+  VAULT_ADDRESS,
 } from "helper/constants";
 import {
   initializeDomain,
@@ -36,6 +42,7 @@ import {
   I_DOMAIN_ACTIVITY_SEARCH_OPTION,
   I_DOMAIN_SEARCH_VALUE,
   I_PROFILE,
+  I_TEZOSDOMAIN_MARKET_OFFER,
   TYPE_ACTIVITY_SORT_VALUE,
   TYPE_COLLECTION,
   TYPE_DOMAIN,
@@ -93,7 +100,7 @@ interface ICollectionStore {
 
 interface ITezosCollectState {
   tezosPrice: number;
-  fetcTezosPrice: { (): void };
+  fetchTezosPrice: { (): void };
   activeAddress: string;
   setActiveAddress: { (_activeAddress: string): void };
 
@@ -155,10 +162,19 @@ interface ITezosCollectState {
     (name: string): Promise<string>;
   };
 
+  fetchTezosDomainMarketOfferData: {
+    (owner: string, tokenId: number): Promise<I_TEZOSDOMAIN_MARKET_OFFER>;
+  };
+
+  executeOfferViaTezosDomainMarket: {
+    (seller: string, token_id: number, amount: number): Promise<any>;
+  };
+
   // interating with Tezos
   contractReady: boolean;
   nameRegistryContract: ContractAbstraction<ContractProvider> | null;
   marketPlaceContract: ContractAbstraction<ContractProvider> | null;
+  tezosDomainsMarketContract: ContractAbstraction<ContractProvider> | null;
   initializeContracts: { (): void };
   requestSignMessage: {
     (input: string): Promise<{
@@ -243,7 +259,7 @@ interface ITezosCollectState {
 
 export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
   tezosPrice: 0,
-  fetcTezosPrice: async () => {
+  fetchTezosPrice: async () => {
     const udpateTezosPrice = async () => {
       const _price = await getTezosPrice();
       set((state) => ({
@@ -252,7 +268,7 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       }));
     };
     udpateTezosPrice();
-    setInterval(() => udpateTezosPrice(), 20000);
+    // setInterval(() => udpateTezosPrice(), 20000);
   },
   currentTransaction: {
     txHash: undefined,
@@ -592,14 +608,69 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
     }
   },
 
+  fetchTezosDomainMarketOfferData: async (_owner: string, _tokenId: number) => {
+    const _tezosDomainsMarketContract = get().tezosDomainsMarketContract;
+    const _tezosDomainsMarketStorage: any =
+      await _tezosDomainsMarketContract?.storage();
+    const offer = await _tezosDomainsMarketStorage.offers.get({
+      0: _owner,
+      1: NAME_REGISTRY_CONTRACT_ADDRESS,
+      2: _tokenId,
+    });
+    if (offer) {
+      return {
+        expiration: new Date(offer.expiration),
+        price: offer.price.toNumber() / 10 ** 6,
+        valid: true,
+      };
+    }
+    return {
+      expiration: new Date(),
+      price: 0,
+      valid: false,
+    };
+  },
+
+  executeOfferViaTezosDomainMarket: async (
+    _seller: string,
+    _token_id: number,
+    _amount: number
+  ) => {
+    const _tezosDomainsMarketContract = get().tezosDomainsMarketContract;
+    const _txOp = await Tezos.wallet
+      .batch([
+        {
+          kind: OpKind.TRANSACTION,
+          // @ts-ignore
+          ..._tezosDomainsMarketContract.methods
+            .execute_offer(NAME_REGISTRY_CONTRACT_ADDRESS, _token_id, _seller)
+            .toTransferParams(),
+          amount: _amount,
+        },
+        {
+          kind: OpKind.TRANSACTION,
+          to: VAULT_ADDRESS,
+          amount: _amount * 0.025,
+        },
+      ])
+      .send();
+    await _txOp.confirmation(1);
+  },
+
   // Interacting with Tezs
   contractReady: false,
   nameRegistryContract: null,
   marketPlaceContract: null,
+  tezosDomainsMarketContract: null,
   initializeContracts: async () => {
-    const [_nameRegistryContract, _marketPlaceContract] = await Promise.all([
+    const [
+      _nameRegistryContract,
+      _marketPlaceContract,
+      _tezosDomainsMarketContract,
+    ] = await Promise.all([
       Tezos.wallet.at(NAME_REGISTRY_CONTRACT_ADDRESS),
       Tezos.wallet.at(MARKETPLACE_CONTRACT_ADDRESS),
+      Tezos.wallet.at(TEZOSDOMAINS_MARKET_CONTRACT_ADDRESS),
     ]);
 
     set((state: any) => ({
@@ -607,6 +678,7 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       contractReady: true,
       nameRegistryContract: _nameRegistryContract,
       marketPlaceContract: _marketPlaceContract,
+      tezosDomainsMarketContract: _tezosDomainsMarketContract,
     }));
   },
   requestSignMessage: async (input: string) => {

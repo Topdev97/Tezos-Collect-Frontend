@@ -465,8 +465,18 @@ h3{
 }
 
 h4{
-  font-size: 1.5rem;
-  line-height: 2rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+@media (min-width: 768px){
+  h4{
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+}
+
+h4{
   font-weight: 700;
 }
 
@@ -497,8 +507,15 @@ h5{
 }
 
 .size-2{
-  font-size: 1.5rem;
-  line-height: 2rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+@media (min-width: 768px){
+  .size-2{
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
 }
 
 .size-3{
@@ -1986,11 +2003,6 @@ svg{
   padding-bottom: 0.25rem;
 }
 
-.px-20{
-  padding-left: 5rem;
-  padding-right: 5rem;
-}
-
 .py-8{
   padding-top: 2rem;
   padding-bottom: 2rem;
@@ -2383,8 +2395,8 @@ body {
     margin-left: 0px;
   }
 
-  .md\:ml-8{
-    margin-left: 2rem;
+  .md\:ml-6{
+    margin-left: 1.5rem;
   }
 
   .md\:mt-0{
@@ -2477,6 +2489,11 @@ body {
   .md\:py-6{
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
+  }
+
+  .md\:px-20{
+    padding-left: 5rem;
+    padding-right: 5rem;
   }
 
   .md\:py-3{

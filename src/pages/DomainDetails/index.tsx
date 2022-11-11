@@ -24,6 +24,7 @@ import LinkWithSearchParams from "components/LinkWithSearchParams";
 import AddressBox from "components/UI/AddressBox";
 import TxBox from "components/UI/TxBox";
 import HoverMenu from "components/UI/HoverMenu";
+import TezosDomainMarketCard from "components/TezosDomainMarketCard";
 
 const DomainDetails = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -116,7 +117,6 @@ const DomainDetails = () => {
       fetchOnChainDomainDataByName(domainName),
       findDomainByName(domainName || ""),
     ]);
-    console.log(_onChainDomain);
     const _domain: TYPE_DOMAIN = {
       ..._onChainDomain,
       ..._cachedDomain,
@@ -394,9 +394,9 @@ const DomainDetails = () => {
         <div className="flex items-center py-3 md:py-6 px-4 md:px-8 border-b border-white/20">
           <h4>{domainName}.tez</h4>
 
-          <span className="bg-tezSecGr rounded-full px-2 ml-4">
-            {domain?.isFeatured && "Featured"}
-          </span>
+          {domain?.isFeatured && (
+            <span className="bg-tezSecGr rounded-full px-2 ml-4">Featured</span>
+          )}
           <span className="bg-tezGr rounded-full px-2 ml-4">
             {domain?.isForSale && "Sale"}
             {domain?.isForAuction &&
@@ -466,11 +466,11 @@ const DomainDetails = () => {
           </div>
         </div>
         <div className="flex flex-col md:flex-row p-6">
-          <div className="bg-tezDarkBg border-2 border-itemBorder rounded-lg px-20 aspect-square flex flex-col justify-center items-center">
+          <div className="bg-tezDarkBg border-2 border-itemBorder rounded-lg md:px-20 aspect-square flex flex-col justify-center items-center">
             <img src={tezosCollectLogo} className="w-32 mb-6" />
             <h4>{domainName}.tez</h4>
           </div>
-          <div className="md:ml-8 mt-4 md:mt-0 bg-tezDarkBg border-2 border-itemBorder rounded-lg flex-grow flex flex-col">
+          <div className="md:ml-6 mt-4 md:mt-0 bg-tezDarkBg border-2 border-itemBorder rounded-lg flex-1 flex flex-col">
             <div className="flex border-b-2 px-4 py-4 border-itemBorder font-semibold">
               <span className="md:size-1">OWNER</span>
               <LinkWithSearchParams
@@ -683,6 +683,13 @@ const DomainDetails = () => {
               </div>
             )}
           </div>
+          {!isYourDomain && (
+            <TezosDomainMarketCard
+              tokenId={domain?.tokenId}
+              owner={domain?.owner || ""}
+              callback={updateDomain}
+            />
+          )}
         </div>
 
         <div className="flex flex-col py-3 md:py-6 px-4 md:px-8 border-t border-white/20">

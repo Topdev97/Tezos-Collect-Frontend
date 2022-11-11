@@ -24,7 +24,7 @@ const App = () => {
     activeAddress,
     contractReady,
     fetchProfile,
-    fetcTezosPrice,
+    fetchTezosPrice,
   } = useTezosCollectStore();
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const App = () => {
     fetchTopSaleDomains();
     fetchAuctionedDomains();
     fetchFeaturedAuctions();
-    fetcTezosPrice();
+    fetchTezosPrice();
   }, []);
   useEffect(() => {
     if (activeAddress && contractReady) {
