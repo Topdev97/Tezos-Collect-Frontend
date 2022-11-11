@@ -9,7 +9,7 @@ import objktLogo from "assets/images/other/objkt.png";
 import ComponentTable from "components/UI/ComponentTable";
 // import PriceHistory from "components/PriceHistory";
 
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import {
   DOMAIN_ACTIVITY_LABEL,
@@ -27,6 +27,7 @@ import HoverMenu from "components/UI/HoverMenu";
 import TezosDomainMarketCard from "components/TezosDomainMarketCard";
 
 const DomainDetails = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(true);
   const { domain: domainName } = useParams<{ domain: string }>();
   const {
@@ -156,7 +157,11 @@ const DomainDetails = () => {
 
   useEffect(() => {
     if (domainName && contractReady) {
-      updateDomain();
+      if (/^[A-Za-z0-9-]*$/.test(domainName)) updateDomain();
+      else {
+        alert("Invalid domain name");
+        navigate("/");
+      }
     }
   }, [domainName, contractReady]);
 

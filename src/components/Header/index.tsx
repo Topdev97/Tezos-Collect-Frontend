@@ -65,7 +65,9 @@ const Header = () => {
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 const _domain: string = domainInputRef.current?.value || "";
-                if (_domain) navigate(`/domain/${_domain}`);
+                if (/^[A-Za-z0-9-]*$/.test(_domain) && _domain.length)
+                  navigate(`/domain/${_domain}`);
+                else alert("Invalid");
               }
             }}
           />
