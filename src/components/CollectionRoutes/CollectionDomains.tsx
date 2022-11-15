@@ -25,7 +25,7 @@ const CollectionDomains = () => {
   const { slug } = useParams();
 
   const [searchOptions, setSearchOptions] = useState<I_DOMAIN_SEARCH_VALUE>({
-    domainListed: false,
+    domainListed: true,
     pageSize: 40,
     offset: 0,
   });

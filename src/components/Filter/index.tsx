@@ -26,7 +26,7 @@ const Filter = (props: IPropsDomainFilter) => {
   const maxPriceRef = useRef<HTMLInputElement>(null);
 
   const onResetFilter = () => {
-    if (listedRef?.current) listedRef.current.checked = false;
+    if (listedRef?.current) listedRef.current.checked = true;
     if (showRef?.current) showRef.current.value = "SHOW_ALL";
     if (pageSizeRef?.current) pageSizeRef.current.value = "40";
     if (startWithRef?.current) startWithRef.current.value = "";
@@ -100,6 +100,7 @@ const Filter = (props: IPropsDomainFilter) => {
             className="ml-auto"
             id="listed"
             type="checkbox"
+            defaultChecked={true}
           />
         </div>
         <div className="flex flex-col">

@@ -9,9 +9,9 @@ import {
 // Set the network (Mainnet is default)
 export const TEZOS_COLLECT_NETWORK: Network = {
   type:
-    process.env.NODE_ENV === "development"
-      ? NetworkType.GHOSTNET
-      : NetworkType.MAINNET,
+    // process.env.NODE_ENV === "development"
+    // ? NetworkType.GHOSTNET:
+    NetworkType.MAINNET,
 };
 
 export const NFT_STORAGE_KEY =

@@ -49,6 +49,10 @@ interface TYPE_DOMAIN {
   bids?: TYPE_DOMAIN_BID[];
 
   ownerChanged: boolean;
+
+  tdOfferStatus: boolean;
+  tdOfferPrice: number;
+  tdOfferExpires: Date;
 }
 
 interface TYPE_COLLECTION {
@@ -243,6 +247,9 @@ export const initializeDomain = (): TYPE_DOMAIN => {
     bids: [],
 
     ownerChanged: true,
+    tdOfferExpires: new Date(),
+    tdOfferPrice: 0,
+    tdOfferStatus: false,
   };
   // _domain = JSON.parse(JSON.stringify(_domain));
   return _domain;

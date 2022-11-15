@@ -8,6 +8,7 @@ import { RiTimerFlashLine } from "react-icons/ri";
 import { useTezosCollectStore } from "store";
 import TezosTimer from "components/UI/TezosTimer";
 import LinkWithSearchParams from "components/LinkWithSearchParams";
+import tezosDomainLogo from "assets/images/other/tezos-domains.png";
 
 const DomainMarketCard = (props: {
   domain: TYPE_DOMAIN;
@@ -22,6 +23,9 @@ const DomainMarketCard = (props: {
     isForAuction,
     isForSale,
     isRegistered,
+    tdOfferStatus,
+    tdOfferExpires,
+    tdOfferPrice,
   } = props.domain;
   let { cardType, cardHandler } = props;
 
@@ -60,9 +64,9 @@ const DomainMarketCard = (props: {
                 Register
               </a>
             )}
-            {(isForAuction || isForSale) && (
+            {(isForAuction || isForSale || tdOfferStatus) && (
               <span className="text-tezLightGr flex items-center">
-                {Math.max(price, topBid)} ꜩ
+                {Math.max(price, topBid) || tdOfferPrice} ꜩ
               </span>
             )}
             {isForSale && (
@@ -79,6 +83,12 @@ const DomainMarketCard = (props: {
                   size={24}
                   className="text-tezGrSt hover:text-tezGrMd"
                 />
+              </div>
+            )}
+
+            {!(isForAuction || isForSale) && tdOfferStatus && (
+              <div className="ml-auto cursor-pointer">
+                <img src={tezosDomainLogo} className="w-6" />
               </div>
             )}
           </div>
