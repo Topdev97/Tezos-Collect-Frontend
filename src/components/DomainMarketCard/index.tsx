@@ -26,6 +26,7 @@ const DomainMarketCard = (props: {
     tdOfferStatus,
     tdOfferExpires,
     tdOfferPrice,
+    fairPrice,
   } = props.domain;
   let { cardType, cardHandler } = props;
 
@@ -66,11 +67,7 @@ const DomainMarketCard = (props: {
             )}
             {(isForAuction || isForSale || tdOfferStatus) && (
               <span className="text-tezLightGr flex items-center">
-                {Math.min(
-                  Math.max(price, topBid) || tdOfferPrice,
-                  tdOfferPrice || Math.max(price, topBid)
-                )}{" "}
-                ꜩ
+                {fairPrice} ꜩ
               </span>
             )}
             {isForSale && (

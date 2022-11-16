@@ -449,34 +449,34 @@ export const useTezosCollectStore = create<ITezosCollectState>((set, get) => ({
       _sortOption
     );
 
-    if (_sortOption === "PRICE_ASC") {
-      result.domains.sort((a, b) => {
-        return (
-          Math.min(
-            Math.max(a.price, a.topBid) || a.tdOfferPrice,
-            a.tdOfferPrice || Math.max(a.price, a.topBid)
-          ) -
-          Math.min(
-            Math.max(b.price, b.topBid) || b.tdOfferPrice,
-            b.tdOfferPrice || Math.max(b.price, b.topBid)
-          )
-        );
-      });
-    }
-    if (_sortOption === "PRICE_DESC") {
-      result.domains.sort((b, a) => {
-        return (
-          Math.min(
-            Math.max(a.price, a.topBid) || a.tdOfferPrice,
-            a.tdOfferPrice || Math.max(a.price, a.topBid)
-          ) -
-          Math.min(
-            Math.max(b.price, b.topBid) || b.tdOfferPrice,
-            b.tdOfferPrice || Math.max(b.price, b.topBid)
-          )
-        );
-      });
-    }
+    // if (_sortOption === "PRICE_ASC") {
+    //   result.domains.sort((a, b) => {
+    //     return (
+    //       Math.min(
+    //         Math.max(a.price, a.topBid) || a.tdOfferPrice,
+    //         a.tdOfferPrice || Math.max(a.price, a.topBid)
+    //       ) -
+    //       Math.min(
+    //         Math.max(b.price, b.topBid) || b.tdOfferPrice,
+    //         b.tdOfferPrice || Math.max(b.price, b.topBid)
+    //       )
+    //     );
+    //   });
+    // }
+    // if (_sortOption === "PRICE_DESC") {
+    //   result.domains.sort((b, a) => {
+    //     return (
+    //       Math.min(
+    //         Math.max(a.price, a.topBid) || a.tdOfferPrice,
+    //         a.tdOfferPrice || Math.max(a.price, a.topBid)
+    //       ) -
+    //       Math.min(
+    //         Math.max(b.price, b.topBid) || b.tdOfferPrice,
+    //         b.tdOfferPrice || Math.max(b.price, b.topBid)
+    //       )
+    //     );
+    //   });
+    // }
     return result;
   },
   topSaleDomains: [],

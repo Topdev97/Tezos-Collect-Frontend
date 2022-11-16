@@ -53,6 +53,8 @@ interface TYPE_DOMAIN {
   tdOfferStatus: boolean;
   tdOfferPrice: number;
   tdOfferExpires: Date;
+
+  fairPrice: number;
 }
 
 interface TYPE_COLLECTION {
@@ -250,6 +252,8 @@ export const initializeDomain = (): TYPE_DOMAIN => {
     tdOfferExpires: new Date(),
     tdOfferPrice: 0,
     tdOfferStatus: false,
+
+    fairPrice: 0,
   };
   // _domain = JSON.parse(JSON.stringify(_domain));
   return _domain;
