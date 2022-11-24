@@ -1248,6 +1248,10 @@ svg{
   grid-column: span 3 / span 3;
 }
 
+.col-span-full{
+  grid-column: 1 / -1;
+}
+
 .col-start-1{
   grid-column-start: 1;
 }
@@ -1360,6 +1364,10 @@ svg{
 
 .ml-1{
   margin-left: 0.25rem;
+}
+
+.ml-8{
+  margin-left: 2rem;
 }
 
 .block{
@@ -1494,6 +1502,10 @@ svg{
   width: 6rem;
 }
 
+.w-6{
+  width: 1.5rem;
+}
+
 .w-72{
   width: 18rem;
 }
@@ -1540,10 +1552,6 @@ svg{
 
 .w-8{
   width: 2rem;
-}
-
-.w-6{
-  width: 1.5rem;
 }
 
 .w-1\/2{
@@ -1619,6 +1627,26 @@ svg{
 
 .grid-cols-\[30\%_12\%_17\%_14\%_13\%_14\%\]{
   grid-template-columns: 30% 12% 17% 14% 13% 14%;
+}
+
+.grid-cols-3{
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-cols-1{
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.grid-rows-3{
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+}
+
+.grid-rows-2{
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.grid-rows-6{
+  grid-template-rows: repeat(6, minmax(0, 1fr));
 }
 
 .flex-row{
@@ -1787,6 +1815,11 @@ svg{
   border-color: rgb(51 223 234 / var(--tw-border-opacity));
 }
 
+.border-itemBorder{
+  --tw-border-opacity: 1;
+  border-color: rgb(69 75 80 / var(--tw-border-opacity));
+}
+
 .border-white{
   --tw-border-opacity: 1;
   border-color: rgb(255 255 255 / var(--tw-border-opacity));
@@ -1803,11 +1836,6 @@ svg{
 
 .border-white\/20{
   border-color: rgb(255 255 255 / 0.2);
-}
-
-.border-itemBorder{
-  --tw-border-opacity: 1;
-  border-color: rgb(69 75 80 / var(--tw-border-opacity));
 }
 
 .border-y-componentBorder{
@@ -2366,6 +2394,12 @@ body {
   }
 }
 
+@media (min-width: 640px){
+  .sm\:hidden{
+    display: none;
+  }
+}
+
 @media (min-width: 768px){
   .md\:size-base{
     font-size: 1rem;
@@ -2451,6 +2485,10 @@ body {
             transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   }
 
+  .md\:grid-cols-2{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .md\:flex-row{
     flex-direction: row;
   }
@@ -2481,6 +2519,11 @@ body {
     padding-right: 6rem;
   }
 
+  .md\:py-3{
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
   .md\:px-8{
     padding-left: 2rem;
     padding-right: 2rem;
@@ -2494,11 +2537,6 @@ body {
   .md\:px-20{
     padding-left: 5rem;
     padding-right: 5rem;
-  }
-
-  .md\:py-3{
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
   }
 
   .md\:pl-12{
@@ -2515,6 +2553,30 @@ body {
 }
 
 @media (min-width: 1024px){
+  .lg\:ml-24{
+    margin-left: 6rem;
+  }
+
+  .lg\:h-24{
+    height: 6rem;
+  }
+
+  .lg\:w-16{
+    width: 4rem;
+  }
+
+  .lg\:w-24{
+    width: 6rem;
+  }
+
+  .lg\:grid-cols-3{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lg\:grid-rows-3{
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+  }
+
   .lg\:justify-between{
     justify-content: space-between;
   }
@@ -2528,5 +2590,35 @@ body {
 @media (min-width: 1280px){
   .xl\:flex{
     display: flex;
+  }
+
+  .xl\:grid-cols-4{
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1536px){
+  .\32xl\:h-24{
+    height: 6rem;
+  }
+
+  .\32xl\:h-16{
+    height: 4rem;
+  }
+
+  .\32xl\:w-24{
+    width: 6rem;
+  }
+
+  .\32xl\:w-16{
+    width: 4rem;
+  }
+
+  .\32xl\:grid-cols-4{
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .\32xl\:grid-rows-4{
+    grid-template-rows: repeat(4, minmax(0, 1fr));
   }
 }

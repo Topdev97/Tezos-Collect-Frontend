@@ -108,7 +108,7 @@ const CollectionDomains = () => {
       </div>
       <div className="flex flex-col md:flex-row items-start gap-5">
         <Filter updateFilter={onUpdateFilter} />
-        <div className="md:grid grid-cols-4 flex-1 gap-4">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 flex-1 gap-4">
           {domains.map((domain, index) => {
             return (
               <DomainMarketCard
@@ -118,7 +118,7 @@ const CollectionDomains = () => {
               />
             );
           })}
-          <div className="col-span-4 col-start-1 flex justify-center">
+          <div className="col-span-full col-start-1 flex justify-center">
             <Pagination
               currentPage={currentPage}
               totalPage={totalPage}

@@ -35,8 +35,8 @@ const DomainMarketCard = (props: {
   if (cardType === "DC_COMPACT") {
     return (
       <div className="flex p-3 bg-componentBg rounded-lg">
-        <div className="bg-tezDarkBg rounded-lg flex justify-center w-24 aspect-square">
-          <img src={tezosCollectLogo} className="w-16" />
+        <div className="bg-tezDarkBg rounded-lg flex justify-center items-center w-12 2xl:w-24 h-12 2xl:h-24 aspect-square">
+          <img src={tezosCollectLogo} className="w-8 2xl:w-16 h-8 2xl:h-16" />
         </div>
         <div className="flex flex-col justify-between flex-1 ml-4">
           <div className="flex">
@@ -44,7 +44,7 @@ const DomainMarketCard = (props: {
               to={{ pathname: `/domain/${name}` }}
               className="hover:opacity-80"
             >
-              {name.length < 10 ? name : beautifyAddress(name, 4)}.tez
+              {name.length < 10 ? name : beautifyAddress(name, 3)}.tez
             </NavLink>
             <TbHeart
               onClick={() => toggleBookmark(name)}

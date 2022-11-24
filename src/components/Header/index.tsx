@@ -29,7 +29,7 @@ const Header = () => {
       >
         <div className="home-logo my-2" />
       </LinkWithSearchParams>
-      <div className="hidden md:flex ml-24 mr-auto">
+      <div className="hidden md:flex ml-4 lg:ml-24 mr-auto">
         {pageLinks.map((item, index) =>
           item.external ? (
             <a
@@ -54,7 +54,7 @@ const Header = () => {
           )
         )}
       </div>
-      <div className="flex md:px-24 items-center gap-4 md:gap-8">
+      <div className="flex lg:px-24 items-center gap-4 md:gap-8">
         <div className="relative flex items-center">
           <FiSearch className="absolute left-3 md:left-5" size={20} />
           <input
